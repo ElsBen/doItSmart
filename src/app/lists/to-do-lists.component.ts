@@ -1,4 +1,4 @@
-import { Component, Injectable } from '@angular/core';
+import { Component, Injectable, OnInit } from '@angular/core';
 import { ListObjectService } from '../list-service/list-object.service';
 import { CommonModule } from '@angular/common';
 
@@ -16,7 +16,7 @@ import { CommonModule } from '@angular/common';
 @Injectable({
   providedIn: 'root',
 })
-export class ToDoListsComponent {
+export class ToDoListsComponent implements OnInit {
   listObject: any;
   activeTab: string = 'active';
   sublist = false;
@@ -30,5 +30,9 @@ export class ToDoListsComponent {
         console.log(element);
       });
     }
+  }
+
+  ngOnInit() {
+    this.getLists();
   }
 }

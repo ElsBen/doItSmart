@@ -9,15 +9,20 @@ export class ListObjectService {
   listObject = [
     {
       name: 'Einkaufen',
-      sublist: { name: 'Schokolade' },
+      sublist: ['Schokolade', 'Milch', 'Brot'],
+      note: 'Nicht vergessen!',
       completitionDate: '2021-12-24',
       creationDate: '2021-12-23',
     },
     {
       name: 'Saugen',
-      sublist: { name: 'hinter dem Schrank' },
-      completitionDate: '2021-12-23',
+      sublist: ['hinter dem Schrank'],
       creationDate: '2021-12-22',
+    },
+    {
+      name: 'Garage aufräumen',
+      completitionDate: '2021-12-28',
+      creationDate: '2021-12-20',
     },
   ];
 }

@@ -1,9 +1,9 @@
-<div class="to-do-lists" *ngFor="let list of listObject">
+<h2 class="display-5 m-3">Deine to Do`s</h2>
+
+<div class="to-do-lists mb-2 ms-2" *ngFor="let list of listObject">
   <div *ngIf="list">
-    ">
-    <h2 class="display-5 m-3">{{ list.name }}</h2>
     <!-- Einzelnes Kartentemplate -->
-    <div class="card text-center col-6">
+    <div class="card text-center">
       <div class="card-header">
         <ul class="nav nav-tabs card-header-tabs">
           <li class="nav-item">
@@ -11,24 +11,20 @@
               class="nav-link tab-links"
               [class.active]="activeTab === 'active'"
               (click)="activeTab = 'active'"
-              >Active</a
+              >To Do</a
             >
           </li>
           <li class="nav-item">
             <a
               class="nav-link tab-links"
-              [class.active]="activeTab === 'link'"
-              (click)="activeTab = 'link'"
-              >Link</a
+              [class.active]="activeTab === 'plus'"
+              (click)="activeTab = 'plus'"
+              >Plus</a
             >
           </li>
           <div *ngIf="sublist">
             <li class="nav-item">
-              <a
-                class="nav-link tab-links"
-                href="#"
-                tabindex="-1"
-                aria-disabled="true"
+              <a class="nav-link tab-links" tabindex="-1" aria-disabled="true"
                 >Disabled</a
               >
             </li>
@@ -37,20 +33,48 @@
       </div>
       <div class="card-body">
         <div *ngIf="activeTab === 'active'">
-          <h5 class="card-title">Active Card</h5>
+          <h5 class="card-title">{{ list.name }}</h5>
           <p class="card-text">
-            With supporting text below as a natural lead-in to additional
-            content.
+            <li *ngIf="list.note"><b>Notiz: </b>{{ list.note }}</li>
+            <li *ngIf="list.completitionDate">
+              <b>Fällig am: </b> {{ list.completitionDate }}
+            </li>
+            <li><b>Erstellungsdatum: </b> {{ list.creationDate }}</li>
           </p>
-          <a href="#" class="btn btn-primary" (click)="getLists()">Löschen</a>
+          <a class="btn btn-outline-danger me-2">Löschen</a>
+          <a class="btn btn-outline-success me-2">Erledigt</a>
+          <a class="btn btn-outline-primary">Bearbeiten</a>
         </div>
-        <div *ngIf="activeTab === 'link'">
-          <h5 class="card-title">Link Card</h5>
-          <p class="card-text">
-            With supporting text below as a natural lead-in to additional
-            content.
-          </p>
-          <a class="btn btn-primary">Löschen</a>
+        <div *ngIf="activeTab === 'plus'">
+          <div *ngIf="list.sublist; else noSublist">
+            <h5 class="card-title">Unterpunkte</h5>
+
+            <div *ngFor="let entry of list.sublist">
+              <p class="card-text mb-1">
+                {{ entry }}
+              </p>
+            </div>
+          </div>
+          <ng-template #noSublist>
+            <h5>Keine Einträge gefunden!</h5>
+          </ng-template>
+
+          <div class="input-group input-group-sm mb-3">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Gib hier deinen Unterpunkt ein!"
+              aria-label="Recipient's username"
+              aria-describedby="button-addon2"
+            />
+            <button
+              class="btn btn-outline-secondary"
+              type="button"
+              id="button-addon2"
+            >
+              Hinzufügen
+            </button>
+          </div>
         </div>
       </div>
     </div>

@@ -1,5 +1,11 @@
 <main class="bg-light">
-  <app-header style="width: 100vw"></app-header>
-  <app-to-do-lists></app-to-do-lists>
-  <router-outlet></router-outlet>
+  <app-header></app-header>
+  <div class="row">
+    <div class="col-6">
+      <app-to-do-lists></app-to-do-lists>
+    </div>
+    <div class="col-6">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
 </main>
