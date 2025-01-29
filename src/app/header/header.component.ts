@@ -10,7 +10,7 @@ import { Component } from '@angular/core';
         class="row display-inline align-items-center justify-content-between"
       >
         <div class="col-4 m-0">
-          <h1 class="ms-3">Do It!</h1>
+          <h1 class="display-3 ms-3">Do It!</h1>
         </div>
         <div class="col mt-2 me-3 mb-2">
           <ul

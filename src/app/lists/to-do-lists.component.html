@@ -1,3 +1,58 @@
-<div class="to-do-lists">
-  <button class="btn btn-danger" (click)="getLists()">Drück mich!</button>
+<div class="to-do-lists" *ngFor="let list of listObject">
+  <div *ngIf="list">
+    ">
+    <h2 class="display-5 m-3">{{ list.name }}</h2>
+    <!-- Einzelnes Kartentemplate -->
+    <div class="card text-center col-6">
+      <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs">
+          <li class="nav-item">
+            <a
+              class="nav-link tab-links"
+              [class.active]="activeTab === 'active'"
+              (click)="activeTab = 'active'"
+              >Active</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link tab-links"
+              [class.active]="activeTab === 'link'"
+              (click)="activeTab = 'link'"
+              >Link</a
+            >
+          </li>
+          <div *ngIf="sublist">
+            <li class="nav-item">
+              <a
+                class="nav-link tab-links"
+                href="#"
+                tabindex="-1"
+                aria-disabled="true"
+                >Disabled</a
+              >
+            </li>
+          </div>
+        </ul>
+      </div>
+      <div class="card-body">
+        <div *ngIf="activeTab === 'active'">
+          <h5 class="card-title">Active Card</h5>
+          <p class="card-text">
+            With supporting text below as a natural lead-in to additional
+            content.
+          </p>
+          <a href="#" class="btn btn-primary" (click)="getLists()">Löschen</a>
+        </div>
+        <div *ngIf="activeTab === 'link'">
+          <h5 class="card-title">Link Card</h5>
+          <p class="card-text">
+            With supporting text below as a natural lead-in to additional
+            content.
+          </p>
+          <a class="btn btn-primary">Löschen</a>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 export class ListObjectService {
   constructor() {}
 
-  listObject: Array<object> = [
+  listObject = [
     {
       name: 'Einkaufen',
       sublist: { name: 'Schokolade' },
