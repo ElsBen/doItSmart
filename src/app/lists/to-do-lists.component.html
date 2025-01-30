@@ -1,4 +1,4 @@
-<h2 class="display-5 m-3">Deine to Do`s</h2>
+<h2 class="display-5 m-3">Deine to Do's</h2>
 
 <div class="to-do-lists mb-2 ms-2" *ngFor="let list of listObject">
   <div *ngIf="list">
@@ -59,17 +59,22 @@
             <h5>Keine Einträge gefunden!</h5>
           </ng-template>
 
-          <div class="input-group input-group-sm mb-3">
+          <div
+            [formGroup]="form"
+            (click)="onSubmit(list)"
+            class="input-group input-group-sm mb-3"
+          >
             <input
               type="text"
               class="form-control"
+              formControlName="subEntry"
               placeholder="Gib hier deinen Unterpunkt ein!"
               aria-label="Recipient's username"
               aria-describedby="button-addon2"
             />
             <button
               class="btn btn-outline-secondary"
-              type="button"
+              type="submit"
               id="button-addon2"
             >
               Hinzufügen

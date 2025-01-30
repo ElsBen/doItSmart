@@ -1,11 +1,17 @@
 import { Component, Injectable, OnInit } from '@angular/core';
 import { ListObjectService } from '../list-service/list-object.service';
 import { CommonModule } from '@angular/common';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-to-do-lists',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './to-do-lists.component.html',
   styles: `
   .tab-links{
@@ -20,19 +26,39 @@ export class ToDoListsComponent implements OnInit {
   listObject: any;
   activeTab: string = 'active';
   sublist = false;
+  createSublist: object = {};
+  form: FormGroup = new FormGroup({});
 
-  constructor(private listObj: ListObjectService) {}
+  constructor(
+    private listObj: ListObjectService,
+    private formBuilder: FormBuilder
+  ) {}
 
   getLists() {
     this.listObject = this.listObj.listObject;
-    if (this.listObj) {
-      this.listObject.forEach((element: object) => {
-        console.log(element);
-      });
+  }
+
+  onSubmit(list: any) {
+    const itemIndex = this.listObj.listObject.indexOf(list);
+    const addItem = this.form.value.subEntry;
+
+    if (list.sublist && addItem) {
+      this.listObj.listObject[itemIndex].sublist?.push(addItem);
+    } else if (addItem) {
+      this.listObj.listObject[itemIndex].sublist = [addItem];
     }
+
+    this.form.reset();
   }
 
   ngOnInit() {
     this.getLists();
+    this.form = this.formBuilder.group({
+      subEntry: this.formBuilder.control(null, [Validators.required]),
+    });
+
+    this.form.statusChanges.subscribe((entry) => {
+      console.log(entry);
+    });
   }
 }
