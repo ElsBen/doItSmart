@@ -26,7 +26,7 @@ export class ToDoListsComponent implements OnInit {
   listObject: any;
   activeTab: string = 'active';
   sublist = false;
-  createSublist: object = {};
+
   form: FormGroup = new FormGroup({});
 
   constructor(
@@ -47,7 +47,6 @@ export class ToDoListsComponent implements OnInit {
     } else if (addItem) {
       this.listObj.listObject[itemIndex].sublist = [addItem];
     }
-
     this.form.reset();
   }
 
