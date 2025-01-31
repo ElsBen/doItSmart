@@ -6,11 +6,26 @@ import { Component } from '@angular/core';
   imports: [],
   template: `
     <div class="header-cont container-fluid m-0 p-0 bg-black text-light">
-      <div
-        class="row display-inline align-items-center justify-content-between"
-      >
-        <div class="col-4 m-0 p-0">
+      <div class="row d-flex align-items-center justify-content-between">
+        <div class="col-6 m-0 p-0">
           <h1 class="display-3 ms-4">Do It!</h1>
+        </div>
+        <div class="col-6">
+          <div class="dropdown float-end me-3">
+            <button
+              class="btn btn-secondary dropdown-toggle"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              Dropdown button
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Action</a></li>
+              <li><a class="dropdown-item" href="#">Another action</a></li>
+              <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>

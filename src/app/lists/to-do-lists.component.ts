@@ -39,14 +39,15 @@ export class ToDoListsComponent implements OnInit {
   }
 
   onSubmit(list: any) {
-    const itemIndex = this.listObj.listObject.indexOf(list);
+    const itemIndex = this.listObject.indexOf(list);
     const addItem = this.form.value.subEntry;
 
     if (list.sublist && addItem) {
-      this.listObj.listObject[itemIndex].sublist?.push(addItem);
+      this.listObject[itemIndex].sublist?.push(addItem);
     } else if (addItem) {
-      this.listObj.listObject[itemIndex].sublist = [addItem];
+      this.listObject[itemIndex].sublist = [addItem];
     }
+
     this.form.reset();
   }
 
@@ -59,5 +60,7 @@ export class ToDoListsComponent implements OnInit {
     this.form.statusChanges.subscribe((entry) => {
       console.log(entry);
     });
+
+    console.log(this.listObject.length);
   }
 }
