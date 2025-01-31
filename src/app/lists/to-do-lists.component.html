@@ -1,9 +1,59 @@
 <h2 class="display-5 m-3">Deine to Do's</h2>
 
-<div class="to-do-lists mb-2 ms-2" *ngFor="let list of listObject">
-  <div *ngIf="list">
-    <!-- Einzelnes Kartentemplate -->
-    <div class="card text-center">
+<div class="to-do-lists mb-2 ms-2 me-2" style="height: 100vh">
+  <div class="accordion accordion-flush" id="accordionFlushExample">
+    <div class="accordion-item" *ngFor="let list of listObject; let i = index">
+      <h2 class="accordion-header">
+        <button
+          class="accordion-button collapsed"
+          type="button"
+          data-bs-toggle="collapse"
+          [attr.data-bs-target]="'#item-' + i"
+          aria-expanded="false"
+          [attr.aria-controls]="'item-' + i"
+        >
+          {{ list.name }}
+        </button>
+      </h2>
+      <div
+        [id]="'item-' + i"
+        class="accordion-collapse collapse"
+        data-bs-parent="#accordionFlushExample"
+      >
+        <div class="accordion-body d-flex justify-content-between">
+          <div class="col-3">
+            Placeholder content for this accordion, which is intended to
+            demonstrate the <code>.accordion-flush</code> class. This is the
+            first item's accordion body.
+          </div>
+          <div
+            [formGroup]="form"
+            (click)="onSubmit(list)"
+            class="input-group input-group-sm mb-3"
+            style="height: 30px; width: 300px"
+          >
+            <input
+              type="text"
+              class="form-control"
+              formControlName="subEntry"
+              placeholder="Gib hier deinen Unterpunkt ein!"
+              aria-label="Recipient's username"
+              aria-describedby="button-addon2"
+            />
+            <button
+              class="btn btn-outline-secondary"
+              type="submit"
+              id="button-addon2"
+            >
+              Hinzufügen
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="card text-center">
       <div class="card-header">
         <ul class="nav nav-tabs card-header-tabs">
           <li class="nav-item">
@@ -82,6 +132,5 @@
           </div>
         </div>
       </div>
-    </div>
-  </div>
+    </div> -->
 </div>
