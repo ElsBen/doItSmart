@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, Injectable } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [],
+  imports: [RouterLink],
   template: `
     <div class="header-cont container-fluid m-0 p-0 bg-black text-light">
       <div class="row d-flex align-items-center justify-content-between">
@@ -18,12 +19,14 @@ import { Component } from '@angular/core';
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              Dropdown button
+              Menü
             </button>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
+              <li>
+                <a class="dropdown-item" routerLink="create">Erstellen</a>
+              </li>
+              <li><a class="dropdown-item" routerLink="lists">Liste</a></li>
+              <!-- <li><a class="dropdown-item" href="#">Something else here</a></li> -->
             </ul>
           </div>
         </div>
@@ -31,5 +34,8 @@ import { Component } from '@angular/core';
     </div>
   `,
   styles: ``,
+})
+@Injectable({
+  providedIn: 'root',
 })
 export class HeaderComponent {}

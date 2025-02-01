@@ -1,1 +1,53 @@
-<form action="" [formGroup]="form">Hallo Welt</form>
+<div
+  class="d-flex justify-content-center align-items-center"
+  style="height: 80vh"
+>
+  <form [formGroup]="form" (click)="onSubmit()">
+    <div class="mb-3">
+      <label for="exampleInputTodo1" class="form-label">Erledigung</label>
+      <input
+        type="todo"
+        class="form-control"
+        id="exampleInputTodo1"
+        aria-describedby="todoHelp"
+        formControlName="todo"
+      />
+      <div id="todoHelp" class="form-text">
+        Hier kannst du deine Erledigung eintragen.
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <!-- <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="exampleCheck1" />
+        <label class="form-check-label" for="exampleCheck1">Unterpunkte</label>
+      </div> -->
+      <!-- <label for="exampleInputSubpoint1" class="form-label">Unterpunkte</label> -->
+      <div class="input-group mb-3">
+        <button
+          class="btn btn-outline-secondary"
+          type="button"
+          id="button-addon1"
+          (click)="addSubPoint()"
+        >
+          Button
+        </button>
+        <!-- Neue Logik für Unterpunkte einfügen mit separatem object welches sich beim Klick erweitert -->
+        <input
+          type="text"
+          class="form-control"
+          placeholder=""
+          aria-label="Example text with button addon"
+          aria-describedby="button-addon1"
+          formControlName="subpoint"
+        />
+      </div>
+      <div id="subPointHelp" class="form-text">
+        Für größere Projekte kannst du <br />
+        hier Unterpunkte erstellen.
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-secondary mt-4">Erstellen</button>
+  </form>
+</div>
