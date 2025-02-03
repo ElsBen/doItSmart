@@ -28,7 +28,12 @@
 
                 <div *ngFor="let entry of list.sublist">
                   <p class="card-text mb-1">
-                    {{ entry }}
+                    <input
+                      class="form-check-input me-1"
+                      type="checkbox"
+                      value=""
+                      aria-label="..."
+                    />{{ entry }}
                   </p>
                 </div>
               </div>

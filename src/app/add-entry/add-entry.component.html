@@ -2,7 +2,7 @@
   class="d-flex justify-content-center align-items-center"
   style="height: 80vh"
 >
-  <form [formGroup]="form" (click)="onSubmit()">
+  <form [formGroup]="form">
     <div class="mb-3">
       <label for="exampleInputTodo1" class="form-label">Erledigung</label>
       <input
@@ -43,12 +43,6 @@
         <div *ngIf="subpoint != undefined">
           <ul class="list-group">
             <li class="list-group-item">
-              <input
-                class="form-check-input me-1"
-                type="checkbox"
-                value=""
-                aria-label="..."
-              />
               {{ subpoint }}
             </li>
           </ul>
@@ -56,6 +50,8 @@
       </div>
     </div>
 
-    <button type="submit" class="btn btn-secondary mt-4">Erstellen</button>
+    <button type="submit" (click)="onSubmit()" class="btn btn-secondary mt-4">
+      Erstellen
+    </button>
   </form>
 </div>

@@ -26,37 +26,41 @@ export class AddEntryComponent implements OnInit {
 
   onSubmit() {
     const formTodo: string = this.form.value.todo;
-    const ifSubPoints = this.subPoints.length > 0;
-    const liObService = this.listObjectService.listObject;
+    const liObService: Array<any> = this.listObjectService.listObject;
+    const ifSubPoints: boolean = this.subPoints.length > 0;
+    const ifValueExist: boolean = liObService.some(
+      (object) => object.name === formTodo
+    );
 
-    if (formTodo && !ifSubPoints) {
-      console.log(formTodo);
-
-      liObService.push({
-        name: formTodo,
-        sublist: [],
-        completitionDate: '2025-03-23',
-        creationDate: '2025-03-23',
-        note: 'hat geklappt!',
-      });
-    } else if (ifSubPoints) {
-      liObService.push({
-        name: formTodo,
-        sublist: this.subPoints,
-        completitionDate: '2025-03-23',
-        creationDate: '2025-03-25',
-        note: 'hat geklappt!',
-      });
+    if (formTodo && !ifSubPoints && !ifValueExist) {
+      const newEntry: Object = this.listObjectService.createObject(
+        formTodo,
+        '2025-03-23',
+        '2025-03-23'
+      );
+      liObService.push(newEntry);
+    } else if (ifSubPoints && !ifValueExist) {
+      const newEntry: Object = this.listObjectService.createObject(
+        formTodo,
+        '2025-03-23',
+        '2025-03-25',
+        this.subPoints
+      );
+      liObService.push(newEntry);
+    } else {
+      console.log('Der Eintrag ist schon vorhanden!');
     }
-    console.log(this.listObjectService.listObject);
+    this.form.reset();
   }
 
   addSubPoint() {
-    const subValue = this.form.value.subpoint;
-    const filterValue = this.subPoints.some((arrVal) => arrVal === subValue);
+    const subpValue: any = this.form.value.subpoint;
+    const filterValue: boolean = this.subPoints.some(
+      (arrVal) => arrVal === subpValue
+    );
 
-    !filterValue && subValue
-      ? this.subPoints.push(subValue)
+    !filterValue && subpValue
+      ? this.subPoints.push(subpValue)
       : console.log('Kein Wert oder gleicher Wert eingetragen!');
     this.form.get('subpoint')!.reset();
   }

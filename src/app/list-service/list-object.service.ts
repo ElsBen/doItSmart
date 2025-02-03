@@ -6,6 +6,20 @@ import { Injectable } from '@angular/core';
 export class ListObjectService {
   constructor() {}
 
+  createObject(
+    name: string,
+    completitionDate: any,
+    creationDate: any,
+    sublist?: any
+  ) {
+    return {
+      name: name,
+      sublist: sublist,
+      completitionDate: completitionDate,
+      creationDate: creationDate,
+    };
+  }
+
   listObject = [
     {
       name: 'Einkaufen',
