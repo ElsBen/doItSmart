@@ -32,24 +32,20 @@ export class AddEntryComponent implements OnInit {
       (object) => object.name === formTodo
     );
 
-    if (formTodo && !ifSubPoints && !ifValueExist) {
+    if (formTodo && !ifValueExist) {
       const newEntry: Object = this.listObjectService.createObject(
         formTodo,
         '2025-03-23',
-        '2025-03-23'
-      );
-      liObService.push(newEntry);
-    } else if (ifSubPoints && !ifValueExist) {
-      const newEntry: Object = this.listObjectService.createObject(
-        formTodo,
         '2025-03-23',
-        '2025-03-25',
-        this.subPoints
+        ifSubPoints ? this.subPoints : undefined
       );
+
       liObService.push(newEntry);
     } else {
       console.log('Der Eintrag ist schon vorhanden!');
     }
+
+    this.subPoints = [];
     this.form.reset();
   }
 
