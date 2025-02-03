@@ -3,7 +3,7 @@
 <div class="to-do-lists mb-2 ms-2 me-2">
   <div class="accordion accordion-flush" id="accordionFlushExample">
     <div class="accordion-item" *ngFor="let list of listObject; let i = index">
-      <div *ngIf="list; else noList">
+      <div *ngIf="list">
         <h2 class="accordion-header">
           <button
             class="accordion-button collapsed"
@@ -64,11 +64,13 @@
               </button>
             </div>
           </div>
+          <div class="d-flex justify-content-end">
+            <p class="mb-1 me-2">
+              <b class="me-2">Erstellt am: </b> {{ list.creationDate }}
+            </p>
+          </div>
         </div>
       </div>
-      <ng-template #noList>
-        <h2>Noch keine Einträge vorhanden!</h2>
-      </ng-template>
     </div>
   </div>
 </div>

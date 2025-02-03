@@ -27,16 +27,18 @@ export class AddEntryComponent implements OnInit {
   onSubmit() {
     const formTodo: string = this.form.value.todo;
     const liObService: Array<any> = this.listObjectService.listObject;
+    const creationTime = new Date();
+
     const ifSubPoints: boolean = this.subPoints.length > 0;
     const ifValueExist: boolean = liObService.some(
       (object) => object.name === formTodo
     );
-
+    // Datum setzen lassen und Datum & erstellung Zeitstempel
     if (formTodo && !ifValueExist) {
       const newEntry: Object = this.listObjectService.createObject(
         formTodo,
         '2025-03-23',
-        '2025-03-23',
+        creationTime.toLocaleString('de-DE'),
         ifSubPoints ? this.subPoints : undefined
       );
 
@@ -44,7 +46,6 @@ export class AddEntryComponent implements OnInit {
     } else {
       console.log('Der Eintrag ist schon vorhanden!');
     }
-
     this.subPoints = [];
     this.form.reset();
   }
