@@ -18,11 +18,7 @@
     </div>
 
     <div class="mb-3">
-      <!-- <div class="mb-3 form-check">
-        <input type="checkbox" class="form-check-input" id="exampleCheck1" />
-        <label class="form-check-label" for="exampleCheck1">Unterpunkte</label>
-      </div> -->
-      <!-- <label for="exampleInputSubpoint1" class="form-label">Unterpunkte</label> -->
+      <label for="exampleInputSubpoint1" class="form-label">Unterpunkte</label>
       <div class="input-group mb-3">
         <button
           class="btn btn-outline-secondary"
@@ -30,21 +26,37 @@
           id="button-addon1"
           (click)="addSubPoint()"
         >
-          Button
+          +
         </button>
         <!-- Neue Logik für Unterpunkte einfügen mit separatem object welches sich beim Klick erweitert -->
         <input
           type="text"
           class="form-control"
           placeholder=""
+          id="exampleInputSubpoint1"
           aria-label="Example text with button addon"
           aria-describedby="button-addon1"
           formControlName="subpoint"
         />
       </div>
-      <div id="subPointHelp" class="form-text">
-        Für größere Projekte kannst du <br />
-        hier Unterpunkte erstellen.
+      <div *ngFor="let subpoint of subPoints">
+        <!-- <div id="subPointHelp" class="form-text">
+          Für größere Projekte kannst du <br />
+          hier Unterpunkte erstellen.
+        </div> -->
+        <div *ngIf="subpoint != undefined">
+          <ul class="list-group">
+            <li class="list-group-item">
+              <input
+                class="form-check-input me-1"
+                type="checkbox"
+                value=""
+                aria-label="..."
+              />
+              {{ subpoint }}
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
 

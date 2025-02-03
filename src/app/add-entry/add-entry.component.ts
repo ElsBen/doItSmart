@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   FormGroup,
@@ -9,7 +10,7 @@ import {
 @Component({
   selector: 'app-add-entry',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './add-entry.component.html',
   styles: ``,
 })
@@ -34,11 +35,11 @@ export class AddEntryComponent implements OnInit {
   addSubPoint() {
     const subValue = this.form.value.subpoint;
     const filterValue = this.subPoints.some((arrVal) => arrVal === subValue);
-    console.log(filterValue);
+
     !filterValue
       ? this.subPoints.push(subValue)
-      : console.log('Kein Wert eingetragen!');
-    console.log(this.subPoints);
+      : console.log('Kein Wert oder gleicher Wert eingetragen!');
+    this.form.get('subpoint')!.reset();
   }
 
   ngOnInit(): void {
