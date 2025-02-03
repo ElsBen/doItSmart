@@ -28,7 +28,7 @@
         >
           +
         </button>
-        <!-- Neue Logik für Unterpunkte einfügen mit separatem object welches sich beim Klick erweitert -->
+
         <input
           type="text"
           class="form-control"
@@ -40,10 +40,6 @@
         />
       </div>
       <div *ngFor="let subpoint of subPoints">
-        <!-- <div id="subPointHelp" class="form-text">
-          Für größere Projekte kannst du <br />
-          hier Unterpunkte erstellen.
-        </div> -->
         <div *ngIf="subpoint != undefined">
           <ul class="list-group">
             <li class="list-group-item">
