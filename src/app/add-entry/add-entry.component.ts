@@ -29,9 +29,9 @@ export class AddEntryComponent implements OnInit {
     const formTodo: string = this.form.value.todo;
     const liObService: Array<any> = this.listObjectService.listObject;
     const boltString: string = ` um: `;
-    const compDate = new Date(this.form.value.completionDate).toLocaleString(
-      'de-DE'
-    );
+    const compDate = new Date(this.form.value.completionDate)
+      .toLocaleString('de-DE')
+      .replace(',', boltString);
     console.log(compDate);
     const creationTime = new Date()
       .toLocaleString('de-DE')
@@ -73,6 +73,11 @@ export class AddEntryComponent implements OnInit {
 
   displayCurrentDate() {
     return this.form.get('completionDate')?.setValue(this.currentDate);
+  }
+
+  deleteEntry(subpoint: string) {
+    const findEntry = this.subPoints.indexOf(subpoint);
+    this.subPoints.splice(findEntry, 1);
   }
 
   ngOnInit(): void {

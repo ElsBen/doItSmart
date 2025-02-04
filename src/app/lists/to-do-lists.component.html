@@ -13,7 +13,9 @@
             aria-expanded="false"
             [attr.aria-controls]="'item-' + i"
           >
-            {{ list.name }}
+            <strong>{{ list.name }}</strong>
+            <span class="ms-5 me-2">für den:</span>
+            {{ list.completitionDate }}
           </button>
         </h2>
         <div
@@ -24,7 +26,7 @@
           <div class="accordion-body d-flex justify-content-between">
             <div class="col-4">
               <div *ngIf="list.sublist; else noSublist">
-                <h5 class="card-title">Unterpunkte</h5>
+                <h5 class="card-title mb-3">Unterpunkte</h5>
 
                 <div *ngFor="let entry of list.sublist">
                   <p class="card-text mb-1">
@@ -51,7 +53,7 @@
                 type="text"
                 class="form-control"
                 formControlName="subEntry"
-                placeholder="Gib hier deinen Unterpunkt ein!"
+                placeholder="Gib hier deinen neuen Unterpunkt ein!"
                 aria-label="Recipient's username"
                 aria-describedby="button-addon2"
               />
