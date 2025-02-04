@@ -27,7 +27,10 @@ export class AddEntryComponent implements OnInit {
   onSubmit() {
     const formTodo: string = this.form.value.todo;
     const liObService: Array<any> = this.listObjectService.listObject;
-    const creationTime = new Date();
+    const boltString: string = ` um: `;
+    const creationTime = new Date()
+      .toLocaleString('de-DE')
+      .replace(',', boltString);
 
     const ifSubPoints: boolean = this.subPoints.length > 0;
     const ifValueExist: boolean = liObService.some(
@@ -38,7 +41,7 @@ export class AddEntryComponent implements OnInit {
       const newEntry: Object = this.listObjectService.createObject(
         formTodo,
         '2025-03-23',
-        creationTime.toLocaleString('de-DE'),
+        creationTime,
         ifSubPoints ? this.subPoints : undefined
       );
 
