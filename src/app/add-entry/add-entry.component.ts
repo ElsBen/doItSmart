@@ -18,6 +18,7 @@ import { ListObjectService } from '../list-service/list-object.service';
 export class AddEntryComponent implements OnInit {
   form: FormGroup = new FormGroup({});
   subPoints: Array<string> = [];
+  currentDate: string = new Date().toLocaleString('sv-SE').slice(0, 16);
 
   constructor(
     private formBuilder: FormBuilder,
@@ -28,6 +29,10 @@ export class AddEntryComponent implements OnInit {
     const formTodo: string = this.form.value.todo;
     const liObService: Array<any> = this.listObjectService.listObject;
     const boltString: string = ` um: `;
+    const compDate = new Date(this.form.value.completionDate).toLocaleString(
+      'de-DE'
+    );
+    console.log(compDate);
     const creationTime = new Date()
       .toLocaleString('de-DE')
       .replace(',', boltString);
@@ -36,11 +41,11 @@ export class AddEntryComponent implements OnInit {
     const ifValueExist: boolean = liObService.some(
       (object) => object.name === formTodo
     );
-    // Datum setzen lassen und Datum & erstellung Zeitstempel
+
     if (formTodo && !ifValueExist) {
       const newEntry: Object = this.listObjectService.createObject(
         formTodo,
-        '2025-03-23',
+        compDate,
         creationTime,
         ifSubPoints ? this.subPoints : undefined
       );
@@ -51,6 +56,7 @@ export class AddEntryComponent implements OnInit {
     }
     this.subPoints = [];
     this.form.reset();
+    this.displayCurrentDate();
   }
 
   addSubPoint() {
@@ -65,14 +71,21 @@ export class AddEntryComponent implements OnInit {
     this.form.get('subpoint')!.reset();
   }
 
+  displayCurrentDate() {
+    return this.form.get('completionDate')?.setValue(this.currentDate);
+  }
+
   ngOnInit(): void {
     this.form = this.formBuilder.group({
       todo: [null, Validators.required],
       subpoint: [null],
+      completionDate: [null, Validators.required],
     });
 
     this.form.statusChanges.subscribe((entry) => {
       console.log(entry);
     });
+
+    this.displayCurrentDate();
   }
 }
