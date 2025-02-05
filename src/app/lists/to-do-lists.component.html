@@ -13,9 +13,17 @@
             aria-expanded="false"
             [attr.aria-controls]="'item-' + i"
           >
-            <strong>{{ list.name }}</strong>
-            <span class="ms-5 me-2">für den:</span>
-            {{ list.completitionDate }}
+            <strong class="col">{{ list.name }}</strong>
+            <!-- <span class="ms-5 me-2 col-2">für den:</span>
+            {{ list.completitionDate }} -->
+            <span class="col d-flex justify-content-end me-5">
+              <button
+                class="btn btn-outline-warning btn-sm bi bi-gear me-2"
+              ></button>
+              <button
+                class="btn btn-outline-danger btn-sm bi bi-trash"
+              ></button>
+            </span>
           </button>
         </h2>
         <div
@@ -23,11 +31,33 @@
           class="accordion-collapse collapse"
           data-bs-parent="#accordionFlushExample"
         >
-          <div class="accordion-body d-flex justify-content-between">
-            <div class="col-4">
+          <div class="accordion-body">
+            <div class="col-12 d-flex justify-content-end">
+              <div
+                [formGroup]="form"
+                (click)="onSubmit(list)"
+                class="input-group input-group-sm mb-3 me-2"
+                style="width: 400px"
+              >
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="subEntry"
+                  placeholder="Gib hier deinen neuen Unterpunkt ein!"
+                  aria-label="Recipient's username"
+                  aria-describedby="button-addon2"
+                />
+                <button
+                  class="btn btn-outline-secondary"
+                  type="submit"
+                  id="button-addon2"
+                >
+                  Hinzufügen
+                </button>
+              </div>
+            </div>
+            <div class="col-12 ms-3 mb-3">
               <div *ngIf="list.sublist; else noSublist">
-                <h5 class="card-title mb-3">Unterpunkte</h5>
-
                 <div *ngFor="let entry of list.sublist">
                   <p class="card-text mb-1">
                     <input
@@ -43,34 +73,15 @@
                 <h5>Keine Einträge gefunden!</h5>
               </ng-template>
             </div>
-            <div
-              [formGroup]="form"
-              (click)="onSubmit(list)"
-              class="input-group input-group-sm mb-3"
-              style="height: 30px; max-width: 400px"
-            >
-              <input
-                type="text"
-                class="form-control"
-                formControlName="subEntry"
-                placeholder="Gib hier deinen neuen Unterpunkt ein!"
-                aria-label="Recipient's username"
-                aria-describedby="button-addon2"
-              />
-              <button
-                class="btn btn-outline-secondary"
-                type="submit"
-                id="button-addon2"
-              >
-                Hinzufügen
-              </button>
+            <div class="col-12 d-sm-flex justify-content-end">
+              <p class="me-5 mb-0">
+                <b>Fällig am: </b> {{ list.completitionDate }}
+              </p>
+              <p class="me-2 mb-0">
+                <b class="me-2">Erstellt am: </b>
+                {{ list.creationDate }}
+              </p>
             </div>
-          </div>
-          <div class="d-flex justify-content-end">
-            <p class="me-5"><b>Fällig am: </b>{{ list.completitionDate }}</p>
-            <p class="mb-1 me-4">
-              <b class="me-2">Erstellt am: </b> {{ list.creationDate }}
-            </p>
           </div>
         </div>
       </div>
