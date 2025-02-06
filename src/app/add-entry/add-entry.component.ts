@@ -7,6 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ListObjectService } from '../list-service/list-object.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-add-entry',
@@ -19,10 +20,12 @@ export class AddEntryComponent implements OnInit {
   form: FormGroup = new FormGroup({});
   subPoints: Array<string> = [];
   currentDate: string = new Date().toLocaleString('sv-SE').slice(0, 16);
+  queryParam: string | null = null;
 
   constructor(
     private formBuilder: FormBuilder,
-    private listObjectService: ListObjectService
+    private listObjectService: ListObjectService,
+    private actRoute: ActivatedRoute
   ) {}
 
   onSubmit() {
@@ -83,6 +86,11 @@ export class AddEntryComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.actRoute.queryParams.subscribe((params) => {
+      this.queryParam = params['i'];
+      console.log(this.queryParam);
+    });
+
     this.form = this.formBuilder.group({
       todo: [null, Validators.required],
       subpoint: [null],

@@ -7,6 +7,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-to-do-lists',
@@ -30,7 +31,8 @@ export class ToDoListsComponent implements OnInit {
 
   constructor(
     private listObj: ListObjectService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private router: Router
   ) {}
 
   getLists() {
@@ -49,8 +51,10 @@ export class ToDoListsComponent implements OnInit {
     this.form.reset();
   }
 
-  onEdit(list: object) {
+  onEdit(list: any) {
     console.log(list);
+    const indexEntry = this.listObj.listObject.indexOf(list as never);
+    this.router.navigate(['create'], { queryParams: { i: indexEntry } });
   }
 
   onDelete(list: any) {
