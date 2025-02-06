@@ -47,7 +47,7 @@
                 </button>
               </div>
             </div>
-            <span class="col-5 float-end d-flex justify-content-end me-2">
+            <span class="col-3 float-end d-flex justify-content-end me-2">
               <button
                 type="button"
                 [id]="list.creationDate"
@@ -61,9 +61,9 @@
                 (click)="onDelete(list)"
               ></button>
             </span>
-            <div class="col-6 ms-2 mb-3">
+            <div class="col ms-2 mb-3">
               <div *ngIf="list.sublist; else noSublist">
-                <h5>Unterpunkte</h5>
+                <h5 class="mb-3">Unterpunkte</h5>
                 <div *ngFor="let entry of list.sublist">
                   <p class="card-text mb-1">
                     <input

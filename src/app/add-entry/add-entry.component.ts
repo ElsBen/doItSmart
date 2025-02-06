@@ -78,7 +78,7 @@ export class AddEntryComponent implements OnInit {
   convertCompletionDate() {
     return new Date(this.form.value.completionDate)
       .toLocaleString('de-DE')
-      .replace(',', 'um: ')
+      .replace(',', ', um: ')
       .replace(':00', '');
   }
 
