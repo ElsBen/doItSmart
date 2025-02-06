@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ListObjectService {
+export class ListObjectService implements OnChanges {
   constructor() {}
 
   createObject(
@@ -20,7 +20,7 @@ export class ListObjectService {
     };
   }
 
-  listObject = [
+  @Input() listObject = [
     // {
     //   name: 'Einkaufen',
     //   sublist: ['Schokolade', 'Milch', 'Brot'],
@@ -39,4 +39,23 @@ export class ListObjectService {
     //   creationDate: '2021-12-20',
     // },
   ];
+
+  saveEntrys() {
+    localStorage.setItem('listObject', JSON.stringify(this.listObject));
+  }
+
+  getSavedEntrys() {
+    const savedEntrys = localStorage.getItem('listObject');
+    if (savedEntrys) {
+      this.listObject = JSON.parse(savedEntrys);
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log(changes);
+    if (changes['listObject']) {
+      console.log('Einträge wurden geändert!', this.listObject);
+      localStorage.setItem('listObject', JSON.stringify(this.listObject));
+    }
+  }
 }

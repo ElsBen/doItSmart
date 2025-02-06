@@ -58,6 +58,7 @@ export class ToDoListsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.listObj.getSavedEntrys();
     this.getLists();
     this.form = this.formBuilder.group({
       subEntry: this.formBuilder.control(null, [Validators.required]),

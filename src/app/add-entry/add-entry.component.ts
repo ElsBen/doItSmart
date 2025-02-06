@@ -33,7 +33,7 @@ export class AddEntryComponent implements OnInit {
       .toLocaleString('de-DE')
       .replace(',', boltString)
       .replace(':00', '');
-    console.log(compDate);
+
     const creationTime = new Date().toLocaleString('de-DE').replace(', ', '-');
 
     const ifSubPoints: boolean = this.subPoints.length > 0;
@@ -50,6 +50,7 @@ export class AddEntryComponent implements OnInit {
       );
 
       liObService.push(newEntry);
+      this.listObjectService.saveEntrys();
     } else {
       console.log('Der Eintrag ist schon vorhanden!');
     }
