@@ -7,7 +7,6 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { findIndex } from 'rxjs';
 
 @Component({
   selector: 'app-to-do-lists',
@@ -54,16 +53,12 @@ export class ToDoListsComponent implements OnInit {
     console.log(list);
   }
 
-  onDelete(list: object) {
-    console.log(list);
+  onDelete(list: any) {
     const entryObject = this.listObj.listObject;
-    entryObject.forEach((entry) => {
-      entry === findIndex(list)
-        ? entryObject.slice(entry)
-        : console.log('Fehler beim Löschen!, ');
-    });
-    // const result = entryObject.some((entry) => entry === list);
-    // console.log(result);
+    const indexEntry = entryObject.indexOf(list as never);
+
+    entryObject.splice(indexEntry, 1);
+    this.listObj.saveEntrys();
   }
 
   ngOnInit() {
