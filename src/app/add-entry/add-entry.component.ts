@@ -19,8 +19,9 @@ import { ActivatedRoute } from '@angular/router';
 export class AddEntryComponent implements OnInit {
   form: FormGroup = new FormGroup({});
   subPoints: Array<string> = [];
-  currentDate: string = new Date().toLocaleString('sv-SE').slice(0, 16);
-  queryParam: string | null = null;
+
+  queryParam: number | null = null;
+  editEntry: any = null;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -75,7 +76,23 @@ export class AddEntryComponent implements OnInit {
   }
 
   displayCurrentDate() {
-    return this.form.get('completionDate')?.setValue(this.currentDate);
+    const getComplDate = this.form.get('completionDate');
+
+    if (!this.editEntry) {
+      const currentDate: string = new Date()
+        .toLocaleString('sv-SE')
+        .slice(0, 16);
+
+      return getComplDate?.setValue(currentDate);
+    } else if (this.editEntry) {
+      const convertTime = new Date(
+        this.editEntry.completitionDate.replace(', um: ', ',')
+      )
+        .toISOString()
+        .slice(0, 16);
+      console.log(convertTime);
+      return getComplDate?.setValue(convertTime);
+    }
   }
 
   convertCompletionDate() {
@@ -87,13 +104,17 @@ export class AddEntryComponent implements OnInit {
 
   ngOnInit(): void {
     this.actRoute.queryParams.subscribe((params) => {
-      this.queryParam = params['i'];
-      console.log(this.queryParam);
+      this.queryParam = Number(params['i']);
+      if (this.queryParam) {
+        this.listObjectService.getSavedEntrys();
+        this.editEntry = this.listObjectService.listObject[this.queryParam];
+        console.log(this.editEntry);
+      }
     });
 
     this.form = this.formBuilder.group({
-      todo: [null, Validators.required],
-      subpoint: [null],
+      todo: [this.editEntry ? this.editEntry.name : null, Validators.required],
+      subpoint: [this.editEntry ? this.editEntry.sublist : null],
       completionDate: [null, Validators.required],
     });
 
