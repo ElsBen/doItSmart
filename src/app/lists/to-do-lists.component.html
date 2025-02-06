@@ -52,13 +52,13 @@
                 type="button"
                 [id]="list.creationDate"
                 class="btn btn-outline-warning btn-sm bi bi-gear me-2"
-                (click)="onEdit($event)"
+                (click)="onEdit(list.creationDate)"
               ></button>
               <button
                 type="button"
                 [id]="list.creationDate"
                 class="btn btn-outline-danger btn-sm bi bi-trash"
-                (click)="onDelete($event)"
+                (click)="onDelete(list)"
               ></button>
             </span>
             <div class="col-6 ms-2 mb-3">

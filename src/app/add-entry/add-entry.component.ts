@@ -28,12 +28,7 @@ export class AddEntryComponent implements OnInit {
   onSubmit() {
     const formTodo: string = this.form.value.todo;
     const liObService: Array<any> = this.listObjectService.listObject;
-    const boltString: string = ` um: `;
-    const compDate = new Date(this.form.value.completionDate)
-      .toLocaleString('de-DE')
-      .replace(',', boltString)
-      .replace(':00', '');
-
+    const compDate = this.convertCompletionDate();
     const creationTime = new Date().toLocaleString('de-DE').replace(', ', '-');
 
     const ifSubPoints: boolean = this.subPoints.length > 0;
@@ -71,13 +66,20 @@ export class AddEntryComponent implements OnInit {
     this.form.get('subpoint')!.reset();
   }
 
+  deleteEntry(subpoint: string) {
+    const findEntry = this.subPoints.indexOf(subpoint);
+    this.subPoints.splice(findEntry, 1);
+  }
+
   displayCurrentDate() {
     return this.form.get('completionDate')?.setValue(this.currentDate);
   }
 
-  deleteEntry(subpoint: string) {
-    const findEntry = this.subPoints.indexOf(subpoint);
-    this.subPoints.splice(findEntry, 1);
+  convertCompletionDate() {
+    return new Date(this.form.value.completionDate)
+      .toLocaleString('de-DE')
+      .replace(',', 'um: ')
+      .replace(':00', '');
   }
 
   ngOnInit(): void {
