@@ -49,6 +49,14 @@ export class ToDoListsComponent implements OnInit {
     this.form.reset();
   }
 
+  onEdit(event: Event): void {
+    console.log('Bearbeiten', event.target);
+  }
+
+  onDelete(event: Event): void {
+    console.log('Löschen', event.target);
+  }
+
   ngOnInit() {
     this.getLists();
     this.form = this.formBuilder.group({

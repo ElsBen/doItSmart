@@ -31,11 +31,10 @@ export class AddEntryComponent implements OnInit {
     const boltString: string = ` um: `;
     const compDate = new Date(this.form.value.completionDate)
       .toLocaleString('de-DE')
-      .replace(',', boltString);
+      .replace(',', boltString)
+      .replace(':00', '');
     console.log(compDate);
-    const creationTime = new Date()
-      .toLocaleString('de-DE')
-      .replace(',', boltString);
+    const creationTime = new Date().toLocaleString('de-DE').replace(', ', '-');
 
     const ifSubPoints: boolean = this.subPoints.length > 0;
     const ifValueExist: boolean = liObService.some(
