@@ -32,15 +32,21 @@ export class AddEntryComponent implements OnInit {
   onSubmit() {
     const formTodo: string = this.form.value.todo;
     const liObService: Array<any> = this.listObjectService.listObject;
-    const compDate = this.convertCompletionDate();
+    const compDate = new Date(this.form.value.completionDate).toLocaleString(
+      'de-DE'
+    );
     const creationTime = new Date().toLocaleString('de-DE').replace(', ', '-');
 
     const ifSubPoints: boolean = this.subPoints.length > 0;
-    const ifValueExist: boolean = liObService.some(
-      (object) => object.name === formTodo
+    // const ifValueExist: boolean = liObService.some(
+    //   (object) => object.name === formTodo
+    // );
+    const checkExistingElements = liObService.filter(
+      (element) => element.name === formTodo
     );
 
-    if (formTodo && !ifValueExist) {
+    // Prüfung das bei änderung nicht die gleichen Namen in der liste stehen
+    if (checkExistingElements.length < 1) {
       const newEntry: Object = this.listObjectService.createObject(
         formTodo,
         compDate,
@@ -48,14 +54,19 @@ export class AddEntryComponent implements OnInit {
         ifSubPoints ? this.subPoints : undefined
       );
 
-      liObService.push(newEntry);
+      if (this.queryParam) {
+        liObService[this.queryParam] = newEntry;
+      } else {
+        liObService.push(newEntry);
+      }
+
       this.listObjectService.saveEntrys();
+      this.subPoints = [];
+      this.form.reset();
+      this.displayCurrentDate();
     } else {
       console.log('Der Eintrag ist schon vorhanden!');
     }
-    this.subPoints = [];
-    this.form.reset();
-    this.displayCurrentDate();
   }
 
   addSubPoint() {
@@ -85,36 +96,37 @@ export class AddEntryComponent implements OnInit {
 
       return getComplDate?.setValue(currentDate);
     } else if (this.editEntry) {
-      const convertTime = new Date(
-        this.editEntry.completitionDate.replace(', um: ', ',')
-      )
-        .toISOString()
-        .slice(0, 16);
-      console.log(convertTime);
-      return getComplDate?.setValue(convertTime);
+      console.log(this.editEntry.completitionDate);
+      let toConvertDate = this.editEntry.completitionDate;
+      // new Date(
+      //   this.editEntry.completitionDate
+      // ).toLocaleString('en-US');
+      const yearTime = toConvertDate.slice(-14, -3);
+      const days = toConvertDate.split('.')[0];
+      const month = toConvertDate.split('.')[1];
+      const convertedDate = new Date(
+        `${month}/${days}/${yearTime}`
+      ).toLocaleString('sv-SE');
+      // .toISOString();
+      console.log(convertedDate);
+      return getComplDate?.setValue(convertedDate);
     }
-  }
-
-  convertCompletionDate() {
-    return new Date(this.form.value.completionDate)
-      .toLocaleString('de-DE')
-      .replace(',', ', um: ')
-      .replace(':00', '');
   }
 
   ngOnInit(): void {
     this.actRoute.queryParams.subscribe((params) => {
       this.queryParam = Number(params['i']);
-      if (this.queryParam) {
+      if (this.queryParam || this.queryParam === 0) {
         this.listObjectService.getSavedEntrys();
         this.editEntry = this.listObjectService.listObject[this.queryParam];
-        console.log(this.editEntry);
+        this.subPoints = this.editEntry.sublist;
       }
     });
 
+    // this.editEntry ? this.editEntry.completitionDate
     this.form = this.formBuilder.group({
       todo: [this.editEntry ? this.editEntry.name : null, Validators.required],
-      subpoint: [this.editEntry ? this.editEntry.sublist : null],
+      subpoint: [null],
       completionDate: [null, Validators.required],
     });
 

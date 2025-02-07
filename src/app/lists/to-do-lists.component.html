@@ -14,7 +14,9 @@
             [attr.aria-controls]="'item-' + i"
           >
             <strong class="col">{{ list.name }}</strong>
-            <span class="ms-2 me-2 col">{{ list.completitionDate }}</span>
+            <span class="ms-2 me-2 col">{{
+              list.completitionDate.replace(",", ", um: ").replace(":00", "")
+            }}</span>
           </button>
         </h2>
         <div
