@@ -38,15 +38,13 @@ export class AddEntryComponent implements OnInit {
     const creationTime = new Date().toLocaleString('de-DE').replace(', ', '-');
 
     const ifSubPoints: boolean = this.subPoints.length > 0;
-    // const ifValueExist: boolean = liObService.some(
-    //   (object) => object.name === formTodo
-    // );
+
     const checkExistingElements = liObService.filter(
       (element) => element.name === formTodo
     );
 
     // Prüfung das bei änderung nicht die gleichen Namen in der liste stehen
-    if (checkExistingElements.length < 1) {
+    if (checkExistingElements.length < 1 || this.queryParam) {
       const newEntry: Object = this.listObjectService.createObject(
         formTodo,
         compDate,
@@ -96,21 +94,23 @@ export class AddEntryComponent implements OnInit {
 
       return getComplDate?.setValue(currentDate);
     } else if (this.editEntry) {
-      console.log(this.editEntry.completitionDate);
       let toConvertDate = this.editEntry.completitionDate;
-      // new Date(
-      //   this.editEntry.completitionDate
-      // ).toLocaleString('en-US');
+
       const yearTime = toConvertDate.slice(-14, -3);
       const days = toConvertDate.split('.')[0];
       const month = toConvertDate.split('.')[1];
       const convertedDate = new Date(
         `${month}/${days}/${yearTime}`
       ).toLocaleString('sv-SE');
-      // .toISOString();
-      console.log(convertedDate);
+
       return getComplDate?.setValue(convertedDate);
     }
+  }
+
+  onClear() {
+    this.subPoints = [];
+    this.form.reset();
+    this.displayCurrentDate();
   }
 
   ngOnInit(): void {
@@ -123,7 +123,6 @@ export class AddEntryComponent implements OnInit {
       }
     });
 
-    // this.editEntry ? this.editEntry.completitionDate
     this.form = this.formBuilder.group({
       todo: [this.editEntry ? this.editEntry.name : null, Validators.required],
       subpoint: [null],

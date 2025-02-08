@@ -30,16 +30,7 @@
 
     <div class="mb-3">
       <label for="exampleInputSubpoint1" class="form-label">Unterpunkte</label>
-      <div class="input-group mb-3">
-        <button
-          class="btn btn-outline-secondary"
-          type="button"
-          id="button-addon1"
-          (click)="addSubPoint()"
-        >
-          +
-        </button>
-
+      <div class="input-group mb-4">
         <input
           type="text"
           class="form-control"
@@ -49,6 +40,12 @@
           aria-describedby="button-addon1"
           formControlName="subpoint"
         />
+        <button
+          class="btn btn-outline-secondary bi-clipboard2-plus"
+          type="button"
+          id="button-addon1"
+          (click)="addSubPoint()"
+        ></button>
       </div>
       <div *ngFor="let subpoint of subPoints">
         <div *ngIf="subpoint != undefined">
@@ -69,6 +66,9 @@
 
     <button type="submit" (click)="onSubmit()" class="btn btn-secondary mt-4">
       Erstellen
+    </button>
+    <button type="submit" (click)="onClear()" class="btn btn-danger mt-4 ms-3">
+      Leeren
     </button>
   </form>
 </div>

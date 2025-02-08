@@ -30,13 +30,13 @@ export class ToDoListsComponent implements OnInit {
   form: FormGroup = new FormGroup({});
 
   constructor(
-    private listObj: ListObjectService,
+    private listObjectService: ListObjectService,
     private formBuilder: FormBuilder,
     private router: Router
   ) {}
 
   getLists() {
-    this.listObject = this.listObj.listObject;
+    this.listObject = this.listObjectService.listObject;
   }
 
   onSubmit(list: any) {
@@ -48,25 +48,26 @@ export class ToDoListsComponent implements OnInit {
     } else if (addItem) {
       this.listObject[itemIndex].sublist = [addItem];
     }
+    this.listObjectService.saveEntrys();
     this.form.reset();
   }
 
   onEdit(list: any) {
     console.log(list);
-    const indexEntry = this.listObj.listObject.indexOf(list as never);
+    const indexEntry = this.listObjectService.listObject.indexOf(list as never);
     this.router.navigate(['create'], { queryParams: { i: indexEntry } });
   }
 
   onDelete(list: any) {
-    const entryObject = this.listObj.listObject;
+    const entryObject = this.listObjectService.listObject;
     const indexEntry = entryObject.indexOf(list as never);
 
     entryObject.splice(indexEntry, 1);
-    this.listObj.saveEntrys();
+    this.listObjectService.saveEntrys();
   }
 
   ngOnInit() {
-    this.listObj.getSavedEntrys();
+    this.listObjectService.getSavedEntrys();
     this.getLists();
     this.form = this.formBuilder.group({
       subEntry: this.formBuilder.control(null, [Validators.required]),
