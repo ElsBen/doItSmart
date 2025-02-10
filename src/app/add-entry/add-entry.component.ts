@@ -30,6 +30,7 @@ export class AddEntryComponent implements OnInit {
   ) {}
 
   onSubmit() {
+    // Set form entrys
     const formTodo: string = this.form.value.todo;
     const isExistingEntry: number | null = this.queryParam;
     const listObject: Array<any> = this.listObjectService.listObject;
@@ -38,13 +39,13 @@ export class AddEntryComponent implements OnInit {
     );
     const creationTime = new Date().toLocaleString('de-DE').replace(', ', '-');
 
+    // check existing entrys or edit entry
     const ifSubPoints: boolean = this.subPoints.length > 0;
 
     const checkExistingElements = listObject.filter(
       (element) => element.name === formTodo
     );
 
-    // Prüfung das bei änderung nicht die gleichen Namen in der liste stehen
     if (checkExistingElements.length < 1 || isExistingEntry) {
       const newEntry: Object = this.listObjectService.createObject(
         formTodo,
@@ -60,22 +61,20 @@ export class AddEntryComponent implements OnInit {
       }
 
       this.listObjectService.saveEntrys();
-      this.subPoints = [];
-      this.form.reset();
-      this.displayCurrentDate();
+      this.onClear();
     } else {
       console.log('Der Eintrag ist schon vorhanden!');
     }
   }
 
   addSubPoint() {
-    const subpValue: any = this.form.value.subpoint;
-    const filterValue: boolean = this.subPoints.some(
-      (arrVal) => arrVal === subpValue
+    const subPointValue: any = this.form.value.subpoint;
+    const isSubPoint: boolean = this.subPoints.some(
+      (arrVal) => arrVal === subPointValue
     );
 
-    !filterValue && subpValue
-      ? this.subPoints.push(subpValue)
+    !isSubPoint && subPointValue
+      ? this.subPoints.push(subPointValue)
       : console.log('Kein Wert oder gleicher Wert eingetragen!');
     this.form.get('subpoint')!.reset();
   }
@@ -116,8 +115,10 @@ export class AddEntryComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe((params) => {
-      this.queryParam = Number(params['i']);
-      if (this.queryParam || this.queryParam === 0) {
+      // Set existed param or null
+      this.queryParam = Number(params['i']) || null;
+
+      if (this.queryParam) {
         this.listObjectService.getSavedEntrys();
         this.editEntry = this.listObjectService.listObject[this.queryParam];
         this.subPoints = this.editEntry.sublist;
