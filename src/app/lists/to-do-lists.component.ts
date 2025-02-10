@@ -34,7 +34,7 @@ export class ToDoListsComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router
   ) {}
-
+  // Hallo
   getLists() {
     this.listObject = this.listObjectService.listObject;
   }
