@@ -26,12 +26,13 @@ export class AddEntryComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private listObjectService: ListObjectService,
-    private actRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute
   ) {}
 
   onSubmit() {
     const formTodo: string = this.form.value.todo;
-    const liObService: Array<any> = this.listObjectService.listObject;
+    const isExistingEntry: number | null = this.queryParam;
+    const listObject: Array<any> = this.listObjectService.listObject;
     const compDate = new Date(this.form.value.completionDate).toLocaleString(
       'de-DE'
     );
@@ -39,12 +40,12 @@ export class AddEntryComponent implements OnInit {
 
     const ifSubPoints: boolean = this.subPoints.length > 0;
 
-    const checkExistingElements = liObService.filter(
+    const checkExistingElements = listObject.filter(
       (element) => element.name === formTodo
     );
 
     // Prüfung das bei änderung nicht die gleichen Namen in der liste stehen
-    if (checkExistingElements.length < 1 || this.queryParam) {
+    if (checkExistingElements.length < 1 || isExistingEntry) {
       const newEntry: Object = this.listObjectService.createObject(
         formTodo,
         compDate,
@@ -52,10 +53,10 @@ export class AddEntryComponent implements OnInit {
         ifSubPoints ? this.subPoints : undefined
       );
 
-      if (this.queryParam) {
-        liObService[this.queryParam] = newEntry;
+      if (isExistingEntry) {
+        listObject[isExistingEntry] = newEntry;
       } else {
-        liObService.push(newEntry);
+        listObject.push(newEntry);
       }
 
       this.listObjectService.saveEntrys();
@@ -114,7 +115,7 @@ export class AddEntryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.actRoute.queryParams.subscribe((params) => {
+    this.activatedRoute.queryParams.subscribe((params) => {
       this.queryParam = Number(params['i']);
       if (this.queryParam || this.queryParam === 0) {
         this.listObjectService.getSavedEntrys();
