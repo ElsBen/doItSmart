@@ -1,14 +1,18 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, Injectable, OnInit } from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ToDoListService } from '../list-service/list-object.service';
+import { ToDoListService } from '../list-service/todoList.service';
 import { ActivatedRoute } from '@angular/router';
+import { DateService } from '../date-service/date.service';
 
+@Injectable({
+  providedIn: 'root',
+})
 @Component({
   selector: 'app-add-entry',
   standalone: true,
@@ -26,7 +30,8 @@ export class AddEntryComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private toDoListService: ToDoListService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private dateService: DateService
   ) {}
 
   onSubmit() {
@@ -34,10 +39,14 @@ export class AddEntryComponent implements OnInit {
     const nameTodoForm: string = this.form.value.todo;
     const isEditing: boolean = this.queryParam !== null;
     const toDoList: Array<any> = this.toDoListService.toDoList;
-    const completionDate = new Date(
+    const completionDate = this.dateService.convertSelectedDateToLocalDate(
       this.form.value.completionDate
-    ).toLocaleString('de-DE');
-    const creationTime = new Date().toLocaleString('de-DE').replace(', ', '-');
+    );
+
+    // evtl. die replace Methode auch in den Date Service packen
+    const creationTime = this.dateService
+      .convertCurrentDateToLocalDate()
+      .replace(', ', '-');
 
     // check existing entrys or edit entry
     const ifSubPoints: boolean = this.subPoints.length > 0;
@@ -89,29 +98,21 @@ export class AddEntryComponent implements OnInit {
     const getComplDate = this.form.get('completionDate');
 
     if (!this.editEntry) {
-      const currentDate: string = new Date()
-        .toLocaleString('sv-SE')
-        .slice(0, 16);
-
+      const currentDate = this.dateService.createCurrentDate();
       return getComplDate?.setValue(currentDate);
     } else if (this.editEntry) {
       let toConvertDate = this.editEntry.completionDate;
-
-      const yearTime = toConvertDate.slice(-14, -3);
-      const days = toConvertDate.split('.')[0];
-      const month = toConvertDate.split('.')[1];
-      const convertedDate = new Date(
-        `${month}/${days}/${yearTime}`
-      ).toLocaleString('sv-SE');
-
+      const convertedDate =
+        this.dateService.convertToDatepickerFormat(toConvertDate);
       return getComplDate?.setValue(convertedDate);
     }
   }
 
   onClear() {
     this.subPoints = [];
-    this.form.reset();
+    // Datum wird beim leeren des Form nicht zurückgesetzt
     this.displayCurrentDate();
+    this.form.reset();
   }
 
   ngOnInit(): void {
