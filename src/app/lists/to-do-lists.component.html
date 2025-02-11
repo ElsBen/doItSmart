@@ -2,7 +2,7 @@
 
 <div class="to-do-lists mb-2 ms-2 me-2">
   <div class="accordion accordion-flush" id="accordionFlushExample">
-    <div class="accordion-item" *ngFor="let list of listObject; let i = index">
+    <div class="accordion-item" *ngFor="let list of toDoList; let i = index">
       <div *ngIf="list">
         <h2 class="accordion-header">
           <button
@@ -15,7 +15,7 @@
           >
             <strong class="col">{{ list.name }}</strong>
             <span class="ms-2 me-2 col">{{
-              list.completitionDate.replace(",", ", um: ").replace(":00", "")
+              list.completionDate.replace(",", ", um: ").replace(":00", "")
             }}</span>
           </button>
         </h2>

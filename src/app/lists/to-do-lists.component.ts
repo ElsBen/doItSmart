@@ -1,5 +1,5 @@
 import { Component, Injectable, OnInit } from '@angular/core';
-import { ListObjectService } from '../list-service/list-object.service';
+import { ToDoListService } from '../list-service/list-object.service';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
@@ -24,50 +24,50 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class ToDoListsComponent implements OnInit {
-  listObject: any;
+  toDoList: any;
   activeTab: string = 'active';
 
   form: FormGroup = new FormGroup({});
 
   constructor(
-    private listObjectService: ListObjectService,
+    private toDoListService: ToDoListService,
     private formBuilder: FormBuilder,
     private router: Router
   ) {}
 
   getLists() {
-    this.listObject = this.listObjectService.listObject;
+    this.toDoList = this.toDoListService.toDoList;
   }
 
   onSubmit(list: any) {
-    const itemIndex = this.listObject.indexOf(list);
+    const itemIndex = this.toDoList.indexOf(list);
     const addItem = this.form.value.subEntry;
 
     if (list.sublist && addItem) {
-      this.listObject[itemIndex].sublist?.push(addItem);
+      this.toDoList[itemIndex].sublist?.push(addItem);
     } else if (addItem) {
-      this.listObject[itemIndex].sublist = [addItem];
+      this.toDoList[itemIndex].sublist = [addItem];
     }
-    this.listObjectService.saveEntrys();
+    this.toDoListService.saveEntrys();
     this.form.reset();
   }
 
   onEdit(list: any) {
-    console.log(list);
-    const indexEntry = this.listObjectService.listObject.indexOf(list as never);
-    this.router.navigate(['create'], { queryParams: { i: indexEntry } });
+    //multiplying with 1 avoids problems with null or undefined in add-entry
+    const indexEntry = this.toDoListService.toDoList.indexOf(list);
+    this.router.navigate(['create'], { queryParams: { i: indexEntry + 1 } });
   }
 
   onDelete(list: any) {
-    const entryObject = this.listObjectService.listObject;
-    const indexEntry = entryObject.indexOf(list as never);
+    const entryObject = this.toDoListService.toDoList;
+    const indexEntry = entryObject.indexOf(list);
 
     entryObject.splice(indexEntry, 1);
-    this.listObjectService.saveEntrys();
+    this.toDoListService.saveEntrys();
   }
 
   ngOnInit() {
-    this.listObjectService.getSavedEntrys();
+    this.toDoListService.getSavedEntrys();
     this.getLists();
     this.form = this.formBuilder.group({
       subEntry: this.formBuilder.control(null, [Validators.required]),

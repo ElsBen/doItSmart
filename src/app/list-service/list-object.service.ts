@@ -1,61 +1,43 @@
-import { Injectable, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Injectable, OnChanges, SimpleChanges } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ListObjectService implements OnChanges {
+export class ToDoListService implements OnChanges {
   constructor() {}
 
   createObject(
     name: string,
-    completitionDate: any,
+    completionDate: any,
     creationDate: any,
     sublist?: any
   ) {
     return {
       name: name,
       sublist: sublist,
-      completitionDate: completitionDate,
+      completionDate: completionDate,
       creationDate: creationDate,
     };
   }
 
-  @Input() listObject = [
-    // {
-    //   name: 'Einkaufen',
-    //   sublist: ['Schokolade', 'Milch', 'Brot'],
-    //   note: 'Nicht vergessen!',
-    //   completitionDate: '2021-12-24',
-    //   creationDate: '2021-12-23',
-    // },
-    // {
-    //   name: 'Saugen',
-    //   sublist: ['hinter dem Schrank'],
-    //   creationDate: '2021-12-22',
-    // },
-    // {
-    //   name: 'Garage aufräumen',
-    //   completitionDate: '2021-12-28',
-    //   creationDate: '2021-12-20',
-    // },
-  ];
+  toDoList: Array<any> = [];
 
   saveEntrys() {
-    localStorage.setItem('listObject', JSON.stringify(this.listObject));
+    localStorage.setItem('toDoList', JSON.stringify(this.toDoList));
   }
 
   getSavedEntrys() {
-    const savedEntrys = localStorage.getItem('listObject');
+    const savedEntrys = localStorage.getItem('toDoList');
     if (savedEntrys) {
-      this.listObject = JSON.parse(savedEntrys);
+      this.toDoList = JSON.parse(savedEntrys);
     }
   }
 
   ngOnChanges(changes: SimpleChanges) {
     console.log(changes);
-    if (changes['listObject']) {
-      console.log('Einträge wurden geändert!', this.listObject);
-      localStorage.setItem('listObject', JSON.stringify(this.listObject));
+    if (changes['toDoList']) {
+      console.log('Einträge wurden geändert!', this.toDoList);
+      localStorage.setItem('toDoList', JSON.stringify(this.toDoList));
     }
   }
 }
