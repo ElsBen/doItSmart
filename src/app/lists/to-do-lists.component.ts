@@ -1,19 +1,21 @@
-import { Component, Injectable, input, OnInit } from '@angular/core';
-import { ToDoListService } from '../list-service/todoList.service';
+import { Component, Injectable, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import {
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
+
 import { DateService } from '../date-service/date.service';
+import { ShareDateModule } from '../shared-modules/share-date/share-date.module';
+import { ToDoListService } from '../list-service/todoList.service';
 
 @Component({
   selector: 'app-to-do-lists',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, ShareDateModule],
   templateUrl: './to-do-lists.component.html',
   styles: `
   .tab-links{
@@ -67,10 +69,6 @@ export class ToDoListsComponent implements OnInit {
     entryObject.splice(indexEntry, 1);
     this.toDoListService.saveEntrys();
   }
-
-  // get convertCompletionDateShortView(): string {
-  //   return this.dateService.convertCompletionDateShortView(completionDate);
-  // }
 
   ngOnInit() {
     this.toDoListService.getSavedEntrys();
