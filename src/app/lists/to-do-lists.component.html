@@ -15,11 +15,17 @@
           >
             <strong class="col">{{ list.name }}</strong>
             <span class="ms-2 me-2 col">
-              <!-- schauen wie hier der Date Service implementiert werden kann -->
-              {{
-                list.completionDate.replace(",", ", um: ").replace(":00", "")
-              }}</span
-            >
+              <!-- Publik dateService ändern und get dafür setzen -->
+              <span class="badge bg-secondary">
+                <span class="bi bi-calendar-check"></span>
+                <span></span>
+                {{
+                  this.dateService.convertCompletionDateShortView(
+                    list.completionDate
+                  )
+                }}
+              </span>
+            </span>
           </button>
         </h2>
         <div
@@ -84,9 +90,13 @@
             </div>
             <div class="col-12 d-flex justify-content-start border-top">
               <p class="ms-2 me-2 mb-0 mt-2">
-                <span class="me-2">Erstellt am: </span>
                 <!-- schauen wie hier der Date Service implementiert werden kann -->
-                {{ list.creationDate.slice(-20, -3).replace("-", ", um: ") }}
+                <span class="bi bi-calendar-plus"></span>
+                {{ this.dateService.convertDateFullView(list.creationDate) }}
+              </p>
+              <p class="ms-2 me-2 mb-0 mt-2">
+                <span class="bi bi-calendar-check"></span>
+                {{ this.dateService.convertDateFullView(list.completionDate) }}
               </p>
             </div>
           </div>

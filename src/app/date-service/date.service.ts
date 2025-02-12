@@ -17,11 +17,16 @@ export class DateService {
     return new Date(`${month}/${days}/${yearTime}`).toLocaleString('sv-SE');
   }
 
-  convertCurrentDateToLocalDate(): string {
-    return new Date().toLocaleString('de-DE');
+  convertDateToLocalDate(selectedDate?: string): string {
+    return selectedDate
+      ? new Date(selectedDate).toLocaleString('de-DE')
+      : new Date().toLocaleString('de-DE');
+  }
+  convertCompletionDateShortView(completionDate: string): string {
+    return completionDate.slice(-20, -10);
   }
 
-  convertSelectedDateToLocalDate(selectedDate: string): string {
-    return new Date(selectedDate).toLocaleString('de-DE');
+  convertDateFullView(fullViewDate: string): string {
+    return fullViewDate.slice(-20, -3).replace('-', ', ');
   }
 }

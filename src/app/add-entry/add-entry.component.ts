@@ -39,15 +39,12 @@ export class AddEntryComponent implements OnInit {
     const nameTodoForm: string = this.form.value.todo;
     const isEditing: boolean = this.queryParam !== null;
     const toDoList: Array<any> = this.toDoListService.toDoList;
-    const completionDate = this.dateService.convertSelectedDateToLocalDate(
+    const completionDate = this.dateService.convertDateToLocalDate(
       this.form.value.completionDate
     );
 
     // evtl. die replace Methode auch in den Date Service packen
-    const creationTime = this.dateService
-      .convertCurrentDateToLocalDate()
-      .replace(', ', '-');
-
+    const creationTime = this.dateService.convertDateToLocalDate();
     // check existing entrys or edit entry
     const ifSubPoints: boolean = this.subPoints.length > 0;
 
@@ -109,10 +106,11 @@ export class AddEntryComponent implements OnInit {
   }
 
   onClear() {
+    this.editEntry = null;
     this.subPoints = [];
     // Datum wird beim leeren des Form nicht zurückgesetzt
-    this.displayCurrentDate();
     this.form.reset();
+    this.displayCurrentDate();
   }
 
   ngOnInit(): void {

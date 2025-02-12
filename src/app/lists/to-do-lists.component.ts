@@ -1,4 +1,4 @@
-import { Component, Injectable, OnInit } from '@angular/core';
+import { Component, Injectable, input, OnInit } from '@angular/core';
 import { ToDoListService } from '../list-service/todoList.service';
 import { CommonModule } from '@angular/common';
 import {
@@ -8,6 +8,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { DateService } from '../date-service/date.service';
 
 @Component({
   selector: 'app-to-do-lists',
@@ -28,11 +29,12 @@ export class ToDoListsComponent implements OnInit {
   activeTab: string = 'active';
 
   form: FormGroup = new FormGroup({});
-
+  // Public umstellen auf getter
   constructor(
     private toDoListService: ToDoListService,
     private formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    public dateService: DateService
   ) {}
 
   getLists() {
@@ -65,6 +67,10 @@ export class ToDoListsComponent implements OnInit {
     entryObject.splice(indexEntry, 1);
     this.toDoListService.saveEntrys();
   }
+
+  // get convertCompletionDateShortView(): string {
+  //   return this.dateService.convertCompletionDateShortView(completionDate);
+  // }
 
   ngOnInit() {
     this.toDoListService.getSavedEntrys();
