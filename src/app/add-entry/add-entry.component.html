@@ -55,6 +55,7 @@
             >
               {{ subpoint }}
               <button
+                type="button"
                 class="btn btn-outline-danger btn-sm bi bi-trash"
                 (click)="deleteSubpoint(subpoint)"
               ></button>
@@ -64,10 +65,12 @@
       </div>
     </div>
 
+    <app-notification></app-notification>
+
     <button type="submit" (click)="onSubmit()" class="btn btn-secondary mt-4">
       Erstellen
     </button>
-    <button type="submit" (click)="onClear()" class="btn btn-danger mt-4 ms-3">
+    <button type="button" (click)="onClear()" class="btn btn-danger mt-4 ms-3">
       Leeren
     </button>
   </form>

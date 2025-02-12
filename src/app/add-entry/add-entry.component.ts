@@ -1,14 +1,17 @@
 import { CommonModule } from '@angular/common';
 import { Component, Injectable, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   FormGroup,
   FormBuilder,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+
 import { ToDoListService } from '../list-service/todoList.service';
-import { ActivatedRoute } from '@angular/router';
 import { DateService } from '../date-service/date.service';
+import { NotificationComponent } from '../notification/notification.component';
+import { NotificationService } from '../notification/notification-service/notification.service';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +19,7 @@ import { DateService } from '../date-service/date.service';
 @Component({
   selector: 'app-add-entry',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, NotificationComponent],
   templateUrl: './add-entry.component.html',
   styles: ``,
 })
@@ -30,8 +33,10 @@ export class AddEntryComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private toDoListService: ToDoListService,
-    private activatedRoute: ActivatedRoute,
-    private dateService: DateService
+    private route: ActivatedRoute,
+    private router: Router,
+    private dateService: DateService,
+    private notificService: NotificationService
   ) {}
 
   onSubmit() {
@@ -43,13 +48,12 @@ export class AddEntryComponent implements OnInit {
       this.form.value.completionDate
     );
 
-    // evtl. die replace Methode auch in den Date Service packen
     const creationTime = this.dateService.convertDateToLocalDate();
     // check existing entrys or edit entry
     const ifSubPoints: boolean = this.subPoints.length > 0;
 
     if (this.isDuplicateEntry(nameTodoForm) && !isEditing) {
-      console.log('Der Eintrag ist schon vorhanden!');
+      this.notificService.showMessage('Eintrag ist schon vorhanden!', 'red');
       return;
     }
 
@@ -68,6 +72,7 @@ export class AddEntryComponent implements OnInit {
 
     this.toDoListService.saveEntrys();
     this.onClear();
+    this.notificService.showMessage('Ihr Eintrag wurde gesichert!', 'green');
   }
 
   private isDuplicateEntry(todo: string): boolean {
@@ -82,7 +87,10 @@ export class AddEntryComponent implements OnInit {
 
     !isSubPoint && subPointValue
       ? this.subPoints.push(subPointValue)
-      : console.log('Kein Wert oder gleicher Wert eingetragen!');
+      : this.notificService.showMessage(
+          'Der Eintrag ist schon oder nicht vorhanden!',
+          'red'
+        );
     this.form.get('subpoint')!.reset();
   }
 
@@ -108,13 +116,18 @@ export class AddEntryComponent implements OnInit {
   onClear() {
     this.editEntry = null;
     this.subPoints = [];
-    // Datum wird beim leeren des Form nicht zurückgesetzt
+    this.queryParam = null;
     this.form.reset();
     this.displayCurrentDate();
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { ['i']: null },
+      queryParamsHandling: 'merge',
+    });
   }
 
   ngOnInit(): void {
-    this.activatedRoute.queryParams.subscribe((params) => {
+    this.route.queryParams.subscribe((params) => {
       // Set existed param or null
       this.queryParam = Number(params['i']) || null;
 
