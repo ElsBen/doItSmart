@@ -32,11 +32,11 @@ export class AddEntryComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private toDoListService: ToDoListService,
     private route: ActivatedRoute,
     private router: Router,
     private dateService: DateService,
-    private notificService: NotificationService
+    private toDoListService: ToDoListService,
+    private notificationService: NotificationService
   ) {}
 
   onSubmit() {
@@ -50,10 +50,13 @@ export class AddEntryComponent implements OnInit {
 
     const creationTime = this.dateService.convertDateToLocalDate();
     // check existing entrys or edit entry
-    const ifSubPoints: boolean = this.subPoints.length > 0;
+    const hasSubPoints: boolean = this.subPoints.length > 0;
 
     if (this.isDuplicateEntry(nameTodoForm) && !isEditing) {
-      this.notificService.showMessage('Eintrag ist schon vorhanden!', 'red');
+      this.notificationService.showMessage(
+        'Eintrag ist schon vorhanden!',
+        'red'
+      );
       return;
     }
 
@@ -61,7 +64,7 @@ export class AddEntryComponent implements OnInit {
       nameTodoForm,
       completionDate,
       creationTime,
-      ifSubPoints ? this.subPoints : undefined
+      hasSubPoints ? this.subPoints : undefined
     );
 
     if (isEditing && this.queryParam) {
@@ -72,7 +75,10 @@ export class AddEntryComponent implements OnInit {
 
     this.toDoListService.saveEntrys();
     this.onClear();
-    this.notificService.showMessage('Ihr Eintrag wurde gesichert!', 'green');
+    this.notificationService.showMessage(
+      'Ihr Eintrag wurde gesichert!',
+      'green'
+    );
   }
 
   private isDuplicateEntry(todo: string): boolean {
@@ -87,7 +93,7 @@ export class AddEntryComponent implements OnInit {
 
     !isSubPoint && subPointValue
       ? this.subPoints.push(subPointValue)
-      : this.notificService.showMessage(
+      : this.notificationService.showMessage(
           'Der Eintrag ist schon oder nicht vorhanden!',
           'red'
         );

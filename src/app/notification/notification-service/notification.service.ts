@@ -11,8 +11,9 @@ export class NotificationService {
 
   showMessage(message: string, messageColor: string) {
     this.messageSource.next([message, messageColor]);
+
     setTimeout(() => {
       this.messageSource.next([]);
-    }, 3000);
+    }, 3500);
   }
 }

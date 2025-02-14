@@ -33,9 +33,9 @@ export class ToDoListsComponent implements OnInit {
   form: FormGroup = new FormGroup({});
   // Public umstellen auf getter
   constructor(
-    private toDoListService: ToDoListService,
     private formBuilder: FormBuilder,
     private router: Router,
+    private toDoListService: ToDoListService,
     public dateService: DateService
   ) {}
 
