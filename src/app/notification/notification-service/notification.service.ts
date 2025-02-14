@@ -6,16 +6,13 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class NotificationService {
   constructor() {}
-  messageSource = new BehaviorSubject<object | null>(null);
+  messageSource = new BehaviorSubject<Array<string>>([]);
   currentMessage = this.messageSource.asObservable();
 
   showMessage(message: string, messageColor: string) {
-    this.messageSource.next({
-      currMessage: message,
-      currMessageColor: messageColor,
-    });
+    this.messageSource.next([message, messageColor]);
     setTimeout(() => {
-      this.messageSource.next(null);
+      this.messageSource.next([]);
     }, 3000);
   }
 }

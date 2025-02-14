@@ -16,12 +16,14 @@ import { CommonModule } from '@angular/common';
 export class NotificationComponent {
   message: string | null = null;
   alertColor: string | null = null;
+
   constructor(private notificationService: NotificationService) {
     this.notificationService.currentMessage.subscribe((msg) => {
-      if (msg) {
-        this.message = msg.currMessage;
-        this.alertColor = msg.currMessageColor;
-      }
+      this.message = msg[0];
+
+      msg[1] === 'red'
+        ? (this.alertColor = 'alert alert-danger')
+        : (this.alertColor = 'alert alert-success');
     });
   }
 }
