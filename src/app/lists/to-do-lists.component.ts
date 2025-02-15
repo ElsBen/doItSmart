@@ -8,7 +8,6 @@ import {
   Validators,
 } from '@angular/forms';
 
-import { DateService } from '../date-service/date.service';
 import { ShareDateModule } from '../shared-modules/share-date/share-date.module';
 import { ToDoListService } from '../list-service/todoList.service';
 
@@ -31,26 +30,25 @@ export class ToDoListsComponent implements OnInit {
   activeTab: string = 'active';
 
   form: FormGroup = new FormGroup({});
-  // Public umstellen auf getter
+
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private toDoListService: ToDoListService,
-    public dateService: DateService
+    private toDoListService: ToDoListService
   ) {}
 
-  getLists() {
+  getTodoLists() {
     this.toDoList = this.toDoListService.toDoList;
   }
 
   onSubmit(list: any) {
-    const itemIndex = this.toDoList.indexOf(list);
-    const addItem = this.form.value.subEntry;
+    const sublistExists = this.toDoList.indexOf(list);
+    const newSublistEntry = this.form.value.subEntry;
 
-    if (list.sublist && addItem) {
-      this.toDoList[itemIndex].sublist?.push(addItem);
-    } else if (addItem) {
-      this.toDoList[itemIndex].sublist = [addItem];
+    if (list.sublist && newSublistEntry) {
+      this.toDoList[sublistExists].sublist?.push(newSublistEntry);
+    } else if (newSublistEntry) {
+      this.toDoList[sublistExists].sublist = [newSublistEntry];
     }
     this.toDoListService.saveEntrys();
     this.form.reset();
@@ -58,21 +56,21 @@ export class ToDoListsComponent implements OnInit {
 
   onEdit(list: any) {
     //multiplying with 1 avoids problems with null or undefined in add-entry
-    const indexEntry = this.toDoListService.toDoList.indexOf(list);
-    this.router.navigate(['create'], { queryParams: { i: indexEntry + 1 } });
+    const entryIndex = this.toDoListService.toDoList.indexOf(list);
+    this.router.navigate(['create'], { queryParams: { i: entryIndex + 1 } });
   }
 
   onDelete(list: any) {
     const entryObject = this.toDoListService.toDoList;
-    const indexEntry = entryObject.indexOf(list);
+    const entryIndex = entryObject.indexOf(list);
 
-    entryObject.splice(indexEntry, 1);
+    entryObject.splice(entryIndex, 1);
     this.toDoListService.saveEntrys();
   }
 
   ngOnInit() {
     this.toDoListService.getSavedEntrys();
-    this.getLists();
+    this.getTodoLists();
     this.form = this.formBuilder.group({
       subEntry: this.formBuilder.control(null, [Validators.required]),
     });
