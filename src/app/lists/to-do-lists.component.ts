@@ -26,7 +26,7 @@ import { ToDoListService } from '../list-service/todoList.service';
   providedIn: 'root',
 })
 export class ToDoListsComponent implements OnInit {
-  toDoList: any;
+  toDoList: Array<any> = [];
   activeTab: string = 'active';
 
   form: FormGroup = new FormGroup({});
@@ -42,13 +42,20 @@ export class ToDoListsComponent implements OnInit {
   }
 
   onSubmit(list: any) {
-    const sublistExists = this.toDoList.indexOf(list);
+    const entryIndex = this.toDoList.indexOf(list);
+    if (entryIndex === -1) return;
+
     const newSublistEntry = this.form.value.subEntry;
+    const existSublist: Array<string> = this.toDoList[entryIndex].sublist;
+    const dupplicateSublistEntry: boolean = existSublist.some((item) => {
+      item != newSublistEntry;
+    });
+    console.log(dupplicateSublistEntry);
 
     if (list.sublist && newSublistEntry) {
-      this.toDoList[sublistExists].sublist?.push(newSublistEntry);
+      this.toDoList[entryIndex].sublist?.push(newSublistEntry);
     } else if (newSublistEntry) {
-      this.toDoList[sublistExists].sublist = [newSublistEntry];
+      this.toDoList[entryIndex].sublist = [newSublistEntry];
     }
     this.toDoListService.saveEntrys();
     this.form.reset();
