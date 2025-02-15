@@ -43,16 +43,10 @@ export class ToDoListsComponent implements OnInit {
 
   onSubmit(list: any) {
     const entryIndex = this.toDoList.indexOf(list);
-    if (entryIndex === -1) return;
-
+    const existSublist = this.toDoList.some((item) => !item.sublist);
     const newSublistEntry = this.form.value.subEntry;
-    const existSublist: Array<string> = this.toDoList[entryIndex].sublist;
-    const dupplicateSublistEntry: boolean = existSublist.some((item) => {
-      item != newSublistEntry;
-    });
-    console.log(dupplicateSublistEntry);
 
-    if (list.sublist && newSublistEntry) {
+    if (existSublist && newSublistEntry) {
       this.toDoList[entryIndex].sublist?.push(newSublistEntry);
     } else if (newSublistEntry) {
       this.toDoList[entryIndex].sublist = [newSublistEntry];

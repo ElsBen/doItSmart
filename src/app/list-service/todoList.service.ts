@@ -34,9 +34,7 @@ export class ToDoListService implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes);
     if (changes['toDoList']) {
-      console.log('Einträge wurden geändert!', this.toDoList);
       localStorage.setItem('toDoList', JSON.stringify(this.toDoList));
     }
   }
