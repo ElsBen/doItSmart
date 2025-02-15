@@ -94,7 +94,7 @@ export class AddEntryComponent implements OnInit {
     !isSubPoint && subPointValue
       ? this.subPoints.push(subPointValue)
       : this.notificationService.showMessage(
-          'Der Eintrag ist schon oder nicht vorhanden!',
+          'Der Eintrag ist schon vorhanden!',
           'red'
         );
     this.form.get('subpoint')!.reset();
