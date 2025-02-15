@@ -43,12 +43,21 @@ export class ToDoListsComponent implements OnInit {
 
   onSubmit(list: any) {
     const entryIndex = this.toDoList.indexOf(list);
-    const existSublist = this.toDoList.some((item) => !item.sublist);
+    const existSublist = this.toDoList[entryIndex].sublist;
     const newSublistEntry = this.form.value.subEntry;
-
-    if (existSublist && newSublistEntry) {
+    if (!newSublistEntry) return;
+    const exSublist = this.toDoList.find(
+      (item) => item.sublist === newSublistEntry
+    );
+    if (existSublist.includes(newSublistEntry)) {
+      console.log('zwei gleiche Einträge');
+      // Hier kommt die logik zum filtern gleicher Einträge
+      return;
+    }
+    // prüfen ob die verneinung auch anders geht
+    if (existSublist) {
       this.toDoList[entryIndex].sublist?.push(newSublistEntry);
-    } else if (newSublistEntry) {
+    } else if (!existSublist) {
       this.toDoList[entryIndex].sublist = [newSublistEntry];
     }
     this.toDoListService.saveEntrys();
