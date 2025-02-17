@@ -1,5 +1,9 @@
 <div class="to-do-lists mb-2 ms-2 me-2">
-  <div class="accordion accordion-flush" id="accordionFlushExample">
+  <div
+    class="accordion accordion-flush"
+    id="accordionFlushExample"
+    *ngIf="toDoList.length > 0; else noToDoList"
+  >
     <div
       class="accordion-item"
       *ngFor="let list of toDoList; let i = index"
@@ -105,4 +109,18 @@
       </div>
     </div>
   </div>
+  <ng-template #noToDoList>
+    <div
+      class="d-flex justify-content-center align-items-center"
+      style="height: 90vh; width: 97vw"
+    >
+      <span class="text-center">
+        <h2>Noch kein To Do erstellt!</h2>
+        <p>Klick den Button unten oder gehe auf Menü und dann auf Erstellen</p>
+        <button class="btn btn-outline-secondary" routerLink="/create">
+          Klicke hier zum erstellen!
+        </button>
+      </span>
+    </div>
+  </ng-template>
 </div>

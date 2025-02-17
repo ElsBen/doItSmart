@@ -1,6 +1,6 @@
 import { Component, Injectable, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import {
   FormBuilder,
   FormGroup,
@@ -28,6 +28,7 @@ import { NotificationService } from '../notification/notification-service/notifi
     ReactiveFormsModule,
     ShareDateModule,
     NotificationComponent,
+    RouterLink,
   ],
   templateUrl: './to-do-lists.component.html',
   styles: `
