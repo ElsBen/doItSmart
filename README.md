@@ -25,3 +25,19 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+About the Do It Smart App
+
+Do It Smart is my app that helps you efficiently manage your tasks and deadlines. The app is open-source and uses the MIT License, which means you can use, modify, and distribute the code for free. You can find more details in the LICENSE file.
+
+Upcoming Features
+I’m working on expanding the app by integrating Artificial Intelligence. Planned features include:
+
++Label color changes for the deadline date based on the remaining time.
++Autocomplete and suggested examples for user inputs to optimize the user experience and make task entry easier.
++Notifications and reminders to alert you about upcoming deadlines.
++Task prioritization, where you can sort tasks by urgency.
++Calendar integration to transfer deadlines directly to your personal calendar.
++Task categorization with tags or colors to quickly group similar tasks together.
+
+Stay tuned to experience these exciting updates!
