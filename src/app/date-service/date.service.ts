@@ -11,10 +11,10 @@ export class DateService {
   }
 
   convertToDatepickerFormat(toConvertDate: string): string {
-    const yearTime = toConvertDate.slice(-14, -3);
+    const date = toConvertDate.slice(-14, -3);
     const days = toConvertDate.split('.')[0];
     const month = toConvertDate.split('.')[1];
-    return new Date(`${month}/${days}/${yearTime}`).toLocaleString('sv-SE');
+    return new Date(`${month}/${days}/${date}`).toLocaleString('sv-SE');
   }
 
   convertDateToLocalDate(selectedDate?: string): string {
