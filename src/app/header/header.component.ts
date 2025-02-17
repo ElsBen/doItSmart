@@ -29,6 +29,7 @@ import { RouterLink } from '@angular/router';
                 <a class="dropdown-item" routerLink="create">Erstellen</a>
               </li>
               <li><a class="dropdown-item" routerLink="lists">Liste</a></li>
+              <li><a class="dropdown-item" routerLink="about">Über</a></li>
               <!-- <li><a class="dropdown-item" href="#">Something else here</a></li> -->
             </ul>
           </div>

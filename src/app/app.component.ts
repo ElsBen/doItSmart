@@ -1,3 +1,8 @@
+/*
+ * Do It Smart App – (c) 2025 Benjamin Elsner
+ * MIT License – siehe LICENSE-Datei im Root-Verzeichnis.
+ */
+
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './header/header.component';
