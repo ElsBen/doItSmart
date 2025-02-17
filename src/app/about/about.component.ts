@@ -7,15 +7,16 @@ import { Component } from '@angular/core';
   template: `
     <div
       class="d-flex align-items-center justify-content-center"
-      style="height: 100vh"
+      style="min-height: 100vh"
     >
-      <span class="mt-5" style=" max-width: 70%">
+      <div class="mt-5 p-5" style=" min-width: 60%">
         <h1>About the Do It Smart App</h1>
         <p>
           Do It Smart is my app that helps you efficiently manage your tasks and
-          deadlines. The app is open-source and uses the MIT License, which
-          means you can use, modify, and distribute the code for free. You can
-          find more details in the LICENSE file.
+          deadlines. <br />
+          The app is open-source and uses the MIT License, which means you can
+          use, modify, and distribute the code for free. <br />
+          You can find more details in the LICENSE file.
         </p>
         <h2>Upcoming Features</h2>
         <p>
@@ -44,8 +45,9 @@ import { Component } from '@angular/core';
           Task categorization with tags or colors to quickly group similar tasks
           together.
         </li>
+
         <p class="mt-4">Stay tuned to experience these exciting updates!</p>
-      </span>
+      </div>
     </div>
   `,
   styles: ``,
