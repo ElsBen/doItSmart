@@ -4,7 +4,7 @@
 >
   <form [formGroup]="form" class="align-self-center">
     <div class="mb-3">
-      <label for="exampleInputTodo1" class="form-label">Erledigung</label>
+      <label for="exampleInputTodo1" class="form-label">To-Do:</label>
       <input
         type="todo"
         class="form-control"
@@ -13,12 +13,12 @@
         formControlName="todo"
       />
       <div id="todoHelp" class="form-text">
-        Hier kannst du deine Erledigung eintragen.
+        Hier kannst du deine Aufgabe eintragen.
       </div>
     </div>
 
     <div class="mb-3">
-      <label for="datepicker" class="form-label">Tag der Erledigung</label>
+      <label for="datepicker" class="form-label">Zieldatum:</label>
       <input
         type="datetime-local"
         name="datepicker"
@@ -28,8 +28,10 @@
       />
     </div>
 
-    <div class="mb-3">
-      <label for="exampleInputSubpoint1" class="form-label">Unterpunkte</label>
+    <div class="mb-3 position-relative">
+      <label for="exampleInputSubpoint1" class="form-label"
+        >Unterpunkte (optional):</label
+      >
       <div class="input-group mb-4">
         <input
           type="text"
@@ -63,14 +65,16 @@
           </ul>
         </div>
       </div>
+      <app-notification
+        class="position-absolute"
+        style="top: 75px; left: 0"
+      ></app-notification>
     </div>
 
-    <app-notification></app-notification>
-
-    <button type="submit" (click)="onSubmit()" class="btn btn-secondary mt-4">
+    <button type="submit" (click)="onSubmit()" class="btn btn-secondary mt-5">
       Erstellen
     </button>
-    <button type="button" (click)="onClear()" class="btn btn-danger mt-4 ms-3">
+    <button type="button" (click)="onClear()" class="btn btn-danger mt-5 ms-3">
       Leeren
     </button>
   </form>

@@ -7,6 +7,13 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import {
+  animate,
+  keyframes,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
 
 import { ShareDateModule } from '../shared-modules/share-date/share-date.module';
 import { ToDoListService } from '../list-service/todoList.service';
@@ -28,6 +35,48 @@ import { NotificationService } from '../notification/notification-service/notifi
     cursor: pointer;
   }
   `,
+  animations: [
+    trigger('list', [
+      transition(
+        'void => *',
+        animate(
+          500,
+          keyframes([
+            style({
+              transform: 'translateX(-100px)',
+              opacity: 0,
+              offset: 0,
+            }),
+            style({
+              transform: 'translateX(-30px)',
+              opacity: 0.6,
+              offset: 0.3,
+            }),
+            style({
+              transform: 'translateX(-10px)',
+              opacity: 0.8,
+              offset: 0.7,
+            }),
+            style({
+              transform: 'translateX(0)',
+              opacity: 1,
+              offset: 1,
+            }),
+          ])
+        )
+      ),
+      transition('* => void', [
+        animate(
+          500,
+          style({
+            transform: 'translateX(-100%)',
+            opacity: 0,
+            offset: 1,
+          })
+        ),
+      ]),
+    ]),
+  ],
 })
 @Injectable({
   providedIn: 'root',

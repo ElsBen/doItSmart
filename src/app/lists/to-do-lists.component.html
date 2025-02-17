@@ -1,8 +1,10 @@
-<!-- <h2 class="display-5 m-3">Deine to Do's</h2> -->
-
 <div class="to-do-lists mb-2 ms-2 me-2">
   <div class="accordion accordion-flush" id="accordionFlushExample">
-    <div class="accordion-item" *ngFor="let list of toDoList; let i = index">
+    <div
+      class="accordion-item"
+      *ngFor="let list of toDoList; let i = index"
+      @list
+    >
       <div *ngIf="list">
         <h2 class="accordion-header">
           <button
@@ -15,7 +17,6 @@
           >
             <strong class="col">{{ list.name }}</strong>
             <span class="ms-2 me-2 col">
-              <!-- Publik dateService ändern und get dafür setzen -->
               <span class="badge bg-secondary">
                 <span class="bi bi-calendar-check"></span>
                 <span></span>
@@ -73,7 +74,7 @@
             <div class="col ms-2 mb-4">
               <div *ngIf="list.sublist; else noSublist">
                 <h5 class="mb-3 mt-2">Unterpunkte</h5>
-                <div *ngFor="let entry of list.sublist">
+                <div *ngFor="let entry of list.sublist" @list>
                   <p class="card-text mb-1">
                     <input
                       class="form-check-input ms-3 me-1"
@@ -90,7 +91,6 @@
             </div>
             <div class="col-12 d-flex justify-content-start border-top">
               <p class="ms-2 me-2 mb-0 mt-2">
-                <!-- schauen wie hier der Date Service implementiert werden kann -->
                 <span class="bi bi-calendar-plus"></span>
                 {{ list.creationDate | convertDate : "long" }}
               </p>
