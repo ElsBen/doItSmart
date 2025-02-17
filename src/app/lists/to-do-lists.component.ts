@@ -10,11 +10,18 @@ import {
 
 import { ShareDateModule } from '../shared-modules/share-date/share-date.module';
 import { ToDoListService } from '../list-service/todoList.service';
+import { NotificationComponent } from '../notification/notification.component';
+import { NotificationService } from '../notification/notification-service/notification.service';
 
 @Component({
   selector: 'app-to-do-lists',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, ShareDateModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    ShareDateModule,
+    NotificationComponent,
+  ],
   templateUrl: './to-do-lists.component.html',
   styles: `
   .tab-links{
@@ -34,7 +41,8 @@ export class ToDoListsComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private toDoListService: ToDoListService
+    private toDoListService: ToDoListService,
+    private notificationService: NotificationService
   ) {}
 
   getTodoLists() {
@@ -46,20 +54,20 @@ export class ToDoListsComponent implements OnInit {
     const existSublist = this.toDoList[entryIndex].sublist;
     const newSublistEntry = this.form.value.subEntry;
     if (!newSublistEntry) return;
-    const exSublist = this.toDoList.find(
-      (item) => item.sublist === newSublistEntry
-    );
-    if (existSublist.includes(newSublistEntry)) {
-      console.log('zwei gleiche Einträge');
-      // Hier kommt die logik zum filtern gleicher Einträge
-      return;
-    }
-    // prüfen ob die verneinung auch anders geht
+
     if (existSublist) {
+      if (existSublist.includes(newSublistEntry)) {
+        this.notificationService.showMessage(
+          'Der Eintrag ist schon vorhanden!',
+          'red'
+        );
+        return;
+      }
       this.toDoList[entryIndex].sublist?.push(newSublistEntry);
     } else if (!existSublist) {
       this.toDoList[entryIndex].sublist = [newSublistEntry];
     }
+
     this.toDoListService.saveEntrys();
     this.form.reset();
   }
