@@ -35,7 +35,7 @@
               <div
                 [formGroup]="form"
                 (click)="onSubmit(list)"
-                class="input-group input-group-sm mb-3 me-2"
+                class="input-group input-group-sm mb-3"
                 style="width: 400px"
               >
                 <input
@@ -57,7 +57,7 @@
                 style="right: 85px; top: 40px"
               ></app-notification>
             </div>
-            <span class="col-3 float-end d-flex justify-content-end me-2">
+            <span class="col-3 float-end d-flex justify-content-end">
               <button
                 type="button"
                 [id]="list.creationDate"
@@ -71,17 +71,18 @@
                 (click)="onDelete(list)"
               ></button>
             </span>
-            <div class="col ms-2 mb-4">
+            <div class="col mb-4">
               <div *ngIf="list.sublist; else noSublist">
                 <h5 class="mb-3 mt-2">Unterpunkte</h5>
                 <div *ngFor="let entry of list.sublist" @list>
-                  <p class="card-text mb-1">
+                  <p class="card-text ms-2 mb-1 d-flex">
                     <input
-                      class="form-check-input ms-3 me-1"
+                      class="form-check-input me-2"
                       type="checkbox"
                       value=""
                       aria-label="..."
-                    />{{ entry }}
+                    />
+                    <span class="me-1">{{ entry }}</span>
                   </p>
                 </div>
               </div>
