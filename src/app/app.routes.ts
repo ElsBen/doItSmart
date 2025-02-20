@@ -8,4 +8,5 @@ export const routes: Routes = [
   { path: 'lists', component: ToDoListsComponent },
   { path: 'create', component: AddEntryComponent },
   { path: 'about', component: AboutComponent },
+  { path: '**', redirectTo: 'lists' },
 ];
