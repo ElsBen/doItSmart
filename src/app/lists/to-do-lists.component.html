@@ -38,7 +38,6 @@
             <div class="col-12 d-flex justify-content-end position-relative">
               <div
                 [formGroup]="form"
-                (click)="onSubmit(list)"
                 class="input-group input-group-sm mb-3"
                 style="width: 400px"
               >
@@ -52,8 +51,9 @@
                 />
                 <button
                   class="btn btn-outline-secondary bi-clipboard2-plus"
-                  type="submit"
+                  type="button"
                   id="button-addon2"
+                  (click)="onSubmit(list)"
                 ></button>
               </div>
               <app-notification
