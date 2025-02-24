@@ -61,7 +61,7 @@
                 "fonts": true
               },
               "extractLicenses": true,
-              "sourceMap": false
+              "sourceMap": true
             }
           },
           "defaultConfiguration": "production"
