@@ -28,7 +28,7 @@ export class AddEntryComponent implements OnInit {
   subPoints: Array<string> = [];
 
   queryParam: number | null = null;
-  editEntry: any = '';
+  editEntry: any = null;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -40,6 +40,7 @@ export class AddEntryComponent implements OnInit {
   ) {}
 
   onSubmit() {
+    console.log(this.form.invalid);
     // Set form entrys
     const nameTodoForm: string = this.form.value.todo;
     const isEditing: boolean = this.queryParam !== null;
@@ -52,14 +53,16 @@ export class AddEntryComponent implements OnInit {
     // check existing entrys or edit entry
     const hasSubPoints: boolean = this.subPoints.length > 0;
 
-    if (this.isDuplicateOrEmptyEntry(nameTodoForm) === true && !isEditing) {
-      this.notificationService.showMessage(
-        'Eintrag ist schon vorhanden!',
-        'red'
-      );
-      return;
-    } else if (this.isDuplicateOrEmptyEntry(nameTodoForm) === 'empty') {
-      this.notificationService.showMessage('Eingabefeld ist leer!', 'red');
+    if (
+      (this.isDuplicateOrEmptyEntry(nameTodoForm) && !isEditing) ||
+      this.form.invalid
+    ) {
+      this.form.invalid
+        ? this.notificationService.showMessage('Eingabefeld ist leer!', 'red')
+        : this.notificationService.showMessage(
+            'Eintrag ist schon vorhanden!',
+            'red'
+          );
       return;
     }
 
@@ -85,12 +88,7 @@ export class AddEntryComponent implements OnInit {
   }
 
   private isDuplicateOrEmptyEntry(todo: string): any {
-    console.log(todo);
-    if (todo != '') {
-      return this.toDoListService.toDoList.some((entry) => entry.name === todo);
-    } else {
-      return 'empty';
-    }
+    return this.toDoListService.toDoList.some((entry) => entry.name === todo);
   }
 
   addSubPoint() {
@@ -148,14 +146,13 @@ export class AddEntryComponent implements OnInit {
       // set param as index and pulls 1 off so that it is the same as the index of element
       if (this.queryParam) {
         this.toDoListService.getSavedEntrys();
-        this.editEntry =
-          this.toDoListService.toDoList[this.queryParam - 1] || '';
+        this.editEntry = this.toDoListService.toDoList[this.queryParam - 1];
         this.subPoints = this.editEntry.sublist || [];
       }
     });
 
     this.form = this.formBuilder.group({
-      todo: [this.editEntry ? this.editEntry.name : '', Validators.required],
+      todo: [this.editEntry ? this.editEntry.name : null, Validators.required],
       subpoint: [null],
       completionDate: [null, Validators.required],
     });
