@@ -28,7 +28,7 @@ export class AddEntryComponent implements OnInit {
   subPoints: Array<string> = [];
 
   queryParam: number | null = null;
-  editEntry: any = null;
+  editEntry: any = '';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -52,11 +52,14 @@ export class AddEntryComponent implements OnInit {
     // check existing entrys or edit entry
     const hasSubPoints: boolean = this.subPoints.length > 0;
 
-    if (this.isDuplicateEntry(nameTodoForm) && !isEditing) {
+    if (this.isDuplicateOrEmptyEntry(nameTodoForm) === true && !isEditing) {
       this.notificationService.showMessage(
         'Eintrag ist schon vorhanden!',
         'red'
       );
+      return;
+    } else if (this.isDuplicateOrEmptyEntry(nameTodoForm) === 'empty') {
+      this.notificationService.showMessage('Eingabefeld ist leer!', 'red');
       return;
     }
 
@@ -81,8 +84,13 @@ export class AddEntryComponent implements OnInit {
     );
   }
 
-  private isDuplicateEntry(todo: string): boolean {
-    return this.toDoListService.toDoList.some((entry) => entry.name === todo);
+  private isDuplicateOrEmptyEntry(todo: string): any {
+    console.log(todo);
+    if (todo != '') {
+      return this.toDoListService.toDoList.some((entry) => entry.name === todo);
+    } else {
+      return 'empty';
+    }
   }
 
   addSubPoint() {
@@ -140,13 +148,14 @@ export class AddEntryComponent implements OnInit {
       // set param as index and pulls 1 off so that it is the same as the index of element
       if (this.queryParam) {
         this.toDoListService.getSavedEntrys();
-        this.editEntry = this.toDoListService.toDoList[this.queryParam - 1];
+        this.editEntry =
+          this.toDoListService.toDoList[this.queryParam - 1] || '';
         this.subPoints = this.editEntry.sublist || [];
       }
     });
 
     this.form = this.formBuilder.group({
-      todo: [this.editEntry ? this.editEntry.name : null, Validators.required],
+      todo: [this.editEntry ? this.editEntry.name : '', Validators.required],
       subpoint: [null],
       completionDate: [null, Validators.required],
     });
