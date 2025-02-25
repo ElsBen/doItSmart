@@ -136,6 +136,13 @@ export class ToDoListsComponent implements OnInit {
     this.toDoListService.saveEntrys();
   }
 
+  // In ngOnInit sollte der Aufruf eines neuen
+  // Service für die Farbänderung des Datumlabels stehen
+  // In dem separaten Service wird dann die Berechnung ausegeführt
+  // und das Datumlabel wird in der Methode getLabelColor
+  // zurückgegeben oder die Farbe wird direkt in der Methode
+  // berechnet und zurückgegeben
+
   ngOnInit() {
     this.toDoListService.getSavedEntrys();
     this.getTodoLists();
