@@ -40,7 +40,6 @@ export class AddEntryComponent implements OnInit {
   ) {}
 
   onSubmit() {
-    console.log(this.form.invalid);
     // Set form entrys
     const nameTodoForm: string = this.form.value.todo;
     const isEditing: boolean = this.queryParam !== null;
