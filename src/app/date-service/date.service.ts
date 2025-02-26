@@ -29,4 +29,18 @@ export class DateService {
   convertDateFullView(fullViewDate: string): string {
     return fullViewDate.slice(-20, -3).replace('-', ', ');
   }
+
+  isDeadlineCloseToCurrentDate(deadline: string): string {
+    const currentDate = new Date();
+    const selectedDate = new Date(deadline);
+    const timeDifference =
+      (selectedDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24);
+    if (timeDifference < 0) {
+      return 'bg-danger';
+    } else if (timeDifference < 2) {
+      return 'bg-warning';
+    } else {
+      return 'bg-success';
+    }
+  }
 }
