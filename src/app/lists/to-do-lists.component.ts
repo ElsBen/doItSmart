@@ -19,6 +19,7 @@ import { ShareDateModule } from '../shared-modules/share-date/share-date.module'
 import { ToDoListService } from '../list-service/todoList.service';
 import { NotificationComponent } from '../notification/notification.component';
 import { NotificationService } from '../notification/notification-service/notification.service';
+import { DateService } from '../date-service/date.service';
 
 @Component({
   selector: 'app-to-do-lists',
@@ -92,7 +93,8 @@ export class ToDoListsComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private toDoListService: ToDoListService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    public dateService: DateService
   ) {}
 
   getTodoLists() {

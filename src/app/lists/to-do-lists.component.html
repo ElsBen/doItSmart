@@ -21,7 +21,14 @@
           >
             <strong class="col">{{ list.name }}</strong>
             <span class="ms-2 me-2 col">
-              <span class="badge bg-secondary">
+              <span
+                class="badge"
+                [ngClass]="
+                  this.dateService.isDeadlineCloseToCurrentDate(
+                    list.completionDate
+                  )
+                "
+              >
                 <span class="bi bi-calendar-check"></span>
                 <span></span>
                 {{ list.completionDate | convertDate }}
