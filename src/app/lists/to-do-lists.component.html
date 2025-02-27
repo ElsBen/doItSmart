@@ -21,10 +21,12 @@
           >
             <strong class="col">{{ list.name }}</strong>
             <span class="ms-2 me-2 col">
-              <span class="badge bg-secondary">
+              <span
+                class="badge"
+                [ngClass]="list.completionDate | shareDate : 'deadline'"
+              >
                 <span class="bi bi-calendar-check"></span>
-                <span></span>
-                {{ list.completionDate | convertDate }}
+                {{ list.completionDate | shareDate }}
               </span>
             </span>
           </button>
@@ -97,11 +99,11 @@
             <div class="col-12 d-flex justify-content-start border-top">
               <p class="ms-2 me-2 mb-0 mt-2">
                 <span class="bi bi-calendar-plus"></span>
-                {{ list.creationDate | convertDate : "long" }}
+                {{ list.creationDate | shareDate : "long" }}
               </p>
               <p class="ms-2 me-2 mb-0 mt-2">
                 <span class="bi bi-calendar-check"></span>
-                {{ list.completionDate | convertDate : "long" }}
+                {{ list.completionDate | shareDate : "long" }}
               </p>
             </div>
           </div>
