@@ -119,7 +119,7 @@ export class AddEntryComponent implements OnInit {
     } else if (this.editEntry) {
       let toConvertDate = this.editEntry.completionDate;
       const convertedDate =
-        this.dateService.convertToDatepickerFormat(toConvertDate);
+        this.dateService.convertToUSDateFormat(toConvertDate);
       return getComplDate?.setValue(convertedDate);
     }
   }

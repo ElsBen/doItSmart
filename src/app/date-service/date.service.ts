@@ -10,7 +10,7 @@ export class DateService {
     return new Date().toLocaleString('sv-SE').slice(0, 16);
   }
 
-  convertToDatepickerFormat(toConvertDate: string): string {
+  convertToUSDateFormat(toConvertDate: string): string {
     const date = toConvertDate.slice(-14, -3);
     const days = toConvertDate.split('.')[0];
     const month = toConvertDate.split('.')[1];
@@ -32,12 +32,19 @@ export class DateService {
 
   isDeadlineCloseToCurrentDate(deadline: string): string {
     const currentDate = new Date();
-    const selectedDate = new Date(deadline);
-    const timeDifference =
-      (selectedDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24);
+    currentDate.setHours(0, 0, 0, 0);
+    const selectedDate = new Date(this.convertToUSDateFormat(deadline));
+    selectedDate.setHours(0, 0, 0, 0);
+
+    const timeDifference = Math.ceil(
+      (selectedDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24)
+    );
+
     if (timeDifference < 0) {
+      return 'bg-secondary';
+    } else if (timeDifference === 0) {
       return 'bg-danger';
-    } else if (timeDifference < 2) {
+    } else if (timeDifference <= 2) {
       return 'bg-warning';
     } else {
       return 'bg-success';
