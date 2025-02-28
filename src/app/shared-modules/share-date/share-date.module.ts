@@ -1,5 +1,5 @@
 import { NgModule, Pipe } from '@angular/core';
-import { DateService } from '../../date-service/date.service';
+import { DateService } from '../../services/date-service/date.service';
 
 @Pipe({
   name: 'shareDate',

@@ -16,9 +16,9 @@ import {
 } from '@angular/animations';
 
 import { ShareDateModule } from '../shared-modules/share-date/share-date.module';
-import { ToDoListService } from '../list-service/todoList.service';
+import { ToDoListService } from '../services/list-service/todoList.service';
 import { NotificationComponent } from '../notification/notification.component';
-import { NotificationService } from '../notification/notification-service/notification.service';
+import { NotificationService } from '../services/notification-service/notification.service';
 
 @Component({
   selector: 'app-to-do-lists',

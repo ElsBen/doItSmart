@@ -8,10 +8,10 @@ import {
   Validators,
 } from '@angular/forms';
 
-import { ToDoListService } from '../list-service/todoList.service';
-import { DateService } from '../date-service/date.service';
+import { ToDoListService } from '../services/list-service/todoList.service';
+import { DateService } from '../services/date-service/date.service';
 import { NotificationComponent } from '../notification/notification.component';
-import { NotificationService } from '../notification/notification-service/notification.service';
+import { NotificationService } from '../services/notification-service/notification.service';
 
 @Injectable({
   providedIn: 'root',
