@@ -15,6 +15,10 @@
       <div id="todoHelp" class="form-text">
         Hier kannst du deine Aufgabe eintragen.
       </div>
+      <button type="button" class="btn btn-secondary" (click)="getSuggestion()">
+        Hol dir einen Vorschlag!
+      </button>
+      <p *ngIf="suggestion">Vorschlag: {{ suggestion }}</p>
     </div>
 
     <div class="mb-3">

@@ -12,6 +12,7 @@ import { ToDoListService } from '../services/list-service/todoList.service';
 import { DateService } from '../services/date-service/date.service';
 import { NotificationComponent } from '../notification/notification.component';
 import { NotificationService } from '../services/notification-service/notification.service';
+import { AutocompleteService } from '../services/autocomplete-service/autocomplete.service';
 
 @Injectable({
   providedIn: 'root',
@@ -29,6 +30,7 @@ export class AddEntryComponent implements OnInit {
 
   queryParam: number | null = null;
   editEntry: any = null;
+  suggestion: string = '';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -36,7 +38,8 @@ export class AddEntryComponent implements OnInit {
     private router: Router,
     private dateService: DateService,
     private toDoListService: ToDoListService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private autoComplete: AutocompleteService
   ) {}
 
   onSubmit() {
@@ -134,6 +137,13 @@ export class AddEntryComponent implements OnInit {
       relativeTo: this.route,
       queryParams: { ['i']: null },
       queryParamsHandling: 'merge',
+    });
+  }
+
+  getSuggestion() {
+    this.autoComplete.getTodoSuggestion('Garage').subscribe((response) => {
+      this.suggestion =
+        response[0]?.generated_text.trim() || 'Keine Vorschläge gefunden.';
     });
   }
 
