@@ -141,10 +141,15 @@ export class AddEntryComponent implements OnInit {
   }
 
   getSuggestion() {
-    this.autoComplete.getTodoSuggestion('Garage').subscribe((response) => {
-      this.suggestion =
-        response[0]?.generated_text.trim() || 'Keine Vorschläge gefunden.';
-    });
+    this.autoComplete
+      .getTodoSuggestion('Auf meiner to do Liste stand Einkaufen,')
+      .then((response) => {
+        console.log(response);
+        this.suggestion = response[1] || 'Keine Vorschläge gefunden.';
+      })
+      .catch((error) => {
+        console.error('Fehler bei der AI-Anfrage:', error);
+      });
   }
 
   ngOnInit(): void {
