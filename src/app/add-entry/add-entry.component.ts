@@ -32,6 +32,8 @@ export class AddEntryComponent implements OnInit {
   editEntry: any = null;
   suggestion: string = '';
 
+  prediction: string = '';
+
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -140,6 +142,15 @@ export class AddEntryComponent implements OnInit {
     });
   }
 
+  async handleTodoInputChange(value: string) {
+    if (value.length > 2) {
+      console.log('Vorhersage: ', this.prediction);
+      this.prediction = await this.autoComplete.predict(value);
+    } else {
+      this.prediction = '';
+    }
+  }
+
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
       // Set existed param or null
@@ -161,6 +172,11 @@ export class AddEntryComponent implements OnInit {
 
     this.form.statusChanges.subscribe((entry) => {
       console.log(entry);
+    });
+
+    this.form.get('todo')?.valueChanges.subscribe((value) => {
+      console.log('Wertänderung: ', value);
+      this.handleTodoInputChange(value);
     });
 
     this.displayCurrentDate();
