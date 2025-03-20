@@ -11,6 +11,10 @@ export class AutocompleteService {
     { input: 'Put', output: 'Putzen' },
     { input: 'Eink', output: 'Einkaufen' },
     { input: 'Wäsc', output: 'Wäsche Waschen' },
+    { input: 'Koch', output: 'Kochen' },
+    { input: 'Aufr', output: 'Aufräumen' },
+    { input: 'Spü', output: 'Spülen' },
+    { input: 'Küc', output: 'Küche Putzen' },
   ];
   private encoder: any;
 
@@ -45,7 +49,7 @@ export class AutocompleteService {
     const ys = await this.encoder.embed(this.trainingData.map((d) => d.output));
 
     await this.model.fit(xs, ys, { epochs: 20 });
-    console.log('KI trainiert mit neuen Daten!');
+    console.log('KI trainiert mit neuen Daten!', this.trainingData);
   }
 
   async predict(input: string): Promise<string> {
@@ -63,14 +67,39 @@ export class AutocompleteService {
     }
   }
 
-  async closestMatch(embedding: Float32Array): Promise<string> {
-    // trainingData wurde mit Testdaten gefüllt, hierbei entsteht ein Typenfehler von tensor
-    let bestMatch = '';
-    let bestScore = -Infinity;
+  async debugPredictions(input: string) {
+    if (!this.encoder) return;
+
+    const inputEmbedding = await this.encoder.embed([input]);
+    console.log('Eingabe:', input, 'Shape:', inputEmbedding.shape);
+
+    const inputTensor = inputEmbedding.reshape([512]); // Falls nötig, in 1D umwandeln
+    console.log('Eingabe Vektor:', await inputTensor.data());
+
     for (const data of this.trainingData) {
       const outputEmbedding = await this.encoder.embed([data.output]);
-      const outputTensor = outputEmbedding.reshape([512]);
+      const outputTensor = outputEmbedding.reshape([512]); // Falls nötig, in 1D umwandeln
+      console.log(
+        `Vergleich mit "${data.output}"`,
+        'Vektor:',
+        await outputTensor.data()
+      );
+    }
+  }
+
+  async closestMatch(embedding: Float32Array): Promise<string> {
+    let bestMatch = '';
+    let bestScore = -Infinity;
+
+    for (const data of this.trainingData) {
+      const outputEmbedding = await this.encoder.embed([data.output]);
+
+      const outputTensor = outputEmbedding.reshape([512]).squeeze();
       const inputTensor = tf.tensor(embedding).reshape([512]);
+
+      // console.log('outputTensor:', outputTensor); // Debugging
+      // console.log('inputTensor:', inputTensor); // Debugging
+
       const score = tf.losses
         .cosineDistance(outputTensor, inputTensor, 0)
         .dataSync()[0];

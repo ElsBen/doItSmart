@@ -16,10 +16,9 @@
         Hier kannst du deine Aufgabe eintragen.
       </div>
       <p *ngIf="prediction">{{ prediction }}</p>
-      <!-- <button type="button" class="btn btn-secondary">
-        Hol dir einen Vorschlag!
+      <button (click)="trainData()" type="button" class="btn btn-secondary">
+        Trainieren!
       </button>
-      <p *ngIf="suggestion">Vorschlag: {{ suggestion }}</p> -->
     </div>
 
     <div class="mb-3">

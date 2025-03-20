@@ -146,9 +146,19 @@ export class AddEntryComponent implements OnInit {
     if (value.length > 2) {
       console.log('Vorhersage: ', this.prediction);
       this.prediction = await this.autoComplete.predict(value);
+      this.autoComplete.debugPredictions(value);
     } else {
       this.prediction = '';
     }
+  }
+
+  trainData() {
+    const value = this.form.value.todo;
+
+    this.autoComplete.train({
+      input: `${value.slice(0, 4)}`,
+      output: `${value}`,
+    });
   }
 
   ngOnInit(): void {
@@ -171,7 +181,7 @@ export class AddEntryComponent implements OnInit {
     });
 
     this.form.statusChanges.subscribe((entry) => {
-      console.log(entry);
+      console.log('statusChanged: ', entry);
     });
 
     this.form.get('todo')?.valueChanges.subscribe((value) => {
