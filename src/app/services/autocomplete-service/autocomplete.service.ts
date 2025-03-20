@@ -8,19 +8,19 @@ import * as use from '@tensorflow-models/universal-sentence-encoder';
 export class AutocompleteService {
   private model: tf.Sequential = tf.sequential();
   private trainingData: { input: string; output: string }[] = [
-    { input: 'Eink', output: 'Einkaufen' },
     { input: 'Put', output: 'Putzen' },
+    { input: 'Eink', output: 'Einkaufen' },
     { input: 'Wäsc', output: 'Wäsche Waschen' },
   ];
   private encoder: any;
 
   constructor() {
-    this.initModel();
     this.loadEncoder();
   }
 
   async loadEncoder() {
     this.encoder = await use.load();
+    this.initModel();
   }
 
   async initModel() {
@@ -54,20 +54,25 @@ export class AutocompleteService {
     }
 
     const inputEmbedding = await this.encoder.embed([input]);
-    const prediction = this.model.predict(inputEmbedding) as tf.Tensor;
-    const outputEmbedding = new Float32Array(await prediction.data());
-
-    return this.closestMatch(outputEmbedding);
+    const prediction = this.model.predict(inputEmbedding);
+    if (!Array.isArray(prediction)) {
+      const outputEmbedding = new Float32Array(await prediction.data());
+      return this.closestMatch(outputEmbedding);
+    } else {
+      return 'Fehler in der Vorhersage!';
+    }
   }
 
-  closestMatch(embedding: Float32Array): string {
+  async closestMatch(embedding: Float32Array): Promise<string> {
     // trainingData wurde mit Testdaten gefüllt, hierbei entsteht ein Typenfehler von tensor
     let bestMatch = '';
     let bestScore = -Infinity;
     for (const data of this.trainingData) {
-      const outputEmbedding = this.encoder.embed([data.output]);
+      const outputEmbedding = await this.encoder.embed([data.output]);
+      const outputTensor = outputEmbedding.reshape([512]);
+      const inputTensor = tf.tensor(embedding).reshape([512]);
       const score = tf.losses
-        .cosineDistance(tf.tensor(outputEmbedding), tf.tensor(embedding), 0)
+        .cosineDistance(outputTensor, inputTensor, 0)
         .dataSync()[0];
 
       if (score > bestScore) {
@@ -77,6 +82,6 @@ export class AutocompleteService {
     }
     console.log('Der Vorschlag: ', bestMatch);
     console.log('Bester Score: ', bestScore);
-    return 'bestMatch';
+    return bestMatch;
   }
 }
