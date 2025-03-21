@@ -8,13 +8,13 @@ import * as use from '@tensorflow-models/universal-sentence-encoder';
 export class AutocompleteService {
   private model: tf.Sequential = tf.sequential();
   private trainingData: { input: string; output: string }[] = [
-    { input: 'Put', output: 'Putzen' },
-    { input: 'Eink', output: 'Einkaufen' },
-    { input: 'Wäsc', output: 'Wäsche Waschen' },
-    { input: 'Koch', output: 'Kochen' },
-    { input: 'Aufr', output: 'Aufräumen' },
-    { input: 'Spü', output: 'Spülen' },
-    { input: 'Küc', output: 'Küche Putzen' },
+    { input: 'Putzen', output: 'Putzen' },
+    { input: 'Einkaufen', output: 'Einkaufen' },
+    { input: 'Wäsche', output: 'Wäsche Waschen' },
+    { input: 'Kochen', output: 'Kochen' },
+    { input: 'Aufräumen', output: 'Aufräumen' },
+    { input: 'Spülen', output: 'Spülen' },
+    { input: 'Küche', output: 'Küche Putzen' },
   ];
   private encoder: any;
 
@@ -29,11 +29,23 @@ export class AutocompleteService {
 
   async initModel() {
     this.model.add(
-      tf.layers.dense({ units: 64, inputShape: [512], activation: 'relu' })
+      tf.layers.dense({ inputShape: [512], units: 64, activation: 'relu' })
+    );
+    this.model.add(tf.layers.dropout({ rate: 0.3 }));
+    this.model.add(
+      tf.layers.dense({
+        units: this.trainingData.length,
+        activation: 'softmax',
+      })
     );
     this.model.add(tf.layers.dense({ units: 32, activation: 'relu' }));
+    this.model.add(tf.layers.dense({ units: 128, activation: 'relu' }));
     this.model.add(tf.layers.dense({ units: 512 }));
-    this.model.compile({ loss: 'meanSquaredError', optimizer: 'adam' });
+    this.model.summary(); // Debugging
+    this.model.compile({
+      loss: 'categoricalCrossentropy',
+      optimizer: 'adam',
+    });
     console.log('KI Model bereit!');
   }
 
@@ -71,7 +83,12 @@ export class AutocompleteService {
     if (!this.encoder) return;
 
     const inputEmbedding = await this.encoder.embed([input]);
-    console.log('Eingabe:', input, 'Shape:', inputEmbedding.shape);
+    console.log(
+      'Eingabe:',
+      input,
+      'Shape:',
+      inputEmbedding.reshape([512]).shape
+    );
 
     const inputTensor = inputEmbedding.reshape([512]); // Falls nötig, in 1D umwandeln
     console.log('Eingabe Vektor:', await inputTensor.data());
@@ -89,7 +106,7 @@ export class AutocompleteService {
 
   async closestMatch(embedding: Float32Array): Promise<string> {
     let bestMatch = '';
-    let bestScore = -Infinity;
+    let bestScore = Infinity;
 
     for (const data of this.trainingData) {
       const outputEmbedding = await this.encoder.embed([data.output]);
@@ -104,7 +121,7 @@ export class AutocompleteService {
         .cosineDistance(outputTensor, inputTensor, 0)
         .dataSync()[0];
 
-      if (score > bestScore) {
+      if (score < bestScore) {
         bestMatch = data.output;
         bestScore = score;
       }

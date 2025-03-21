@@ -146,7 +146,7 @@ export class AddEntryComponent implements OnInit {
     if (value.length > 2) {
       console.log('Vorhersage: ', this.prediction);
       this.prediction = await this.autoComplete.predict(value);
-      this.autoComplete.debugPredictions(value);
+      // this.autoComplete.debugPredictions(value);
     } else {
       this.prediction = '';
     }
