@@ -152,14 +152,14 @@ export class AddEntryComponent implements OnInit {
     }
   }
 
-  trainData() {
-    const value = this.form.value.todo;
+  // trainData() {
+  //   const value = this.form.value.todo;
 
-    this.autoComplete.train({
-      input: `${value.slice(0, 4)}`,
-      output: `${value}`,
-    });
-  }
+  //   this.autoComplete.train({
+  //     input: `${value.slice(0, 4)}`,
+  //     output: `${value}`,
+  //   });
+  // }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {

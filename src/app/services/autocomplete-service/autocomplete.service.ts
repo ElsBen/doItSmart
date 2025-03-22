@@ -8,13 +8,13 @@ import * as use from '@tensorflow-models/universal-sentence-encoder';
 export class AutocompleteService {
   private model: tf.Sequential = tf.sequential();
   private trainingData: { input: string; output: string }[] = [
-    { input: 'Putzen', output: 'Putzen' },
-    { input: 'Einkaufen', output: 'Einkaufen' },
-    { input: 'Wäsche', output: 'Wäsche Waschen' },
-    { input: 'Kochen', output: 'Kochen' },
-    { input: 'Aufräumen', output: 'Aufräumen' },
-    { input: 'Spülen', output: 'Spülen' },
-    { input: 'Küche', output: 'Küche Putzen' },
+    { input: 'Put', output: 'Putzen' },
+    { input: 'Ein', output: 'Einkaufen' },
+    { input: 'Wäs', output: 'Wäsche Waschen' },
+    { input: 'Koc', output: 'Kochen' },
+    { input: 'Auf', output: 'Aufräumen' },
+    { input: 'Spü', output: 'Spülen' },
+    { input: 'Küc', output: 'Küche Putzen' },
   ];
   private encoder: any;
 
@@ -25,6 +25,7 @@ export class AutocompleteService {
   async loadEncoder() {
     this.encoder = await use.load();
     this.initModel();
+    await this.trainModel();
   }
 
   async initModel() {
@@ -43,24 +44,22 @@ export class AutocompleteService {
     this.model.add(tf.layers.dense({ units: 512 }));
     this.model.summary(); // Debugging
     this.model.compile({
-      loss: 'categoricalCrossentropy',
+      loss: 'meanSquaredError',
       optimizer: 'adam',
     });
     console.log('KI Model bereit!');
   }
 
-  async train(newData: { input: string; output: string }) {
+  async trainModel() {
     if (!this.encoder) {
       console.warn('Encoder nicht geladen');
       return;
     }
 
-    this.trainingData.push(newData);
-
     const xs = await this.encoder.embed(this.trainingData.map((d) => d.input));
     const ys = await this.encoder.embed(this.trainingData.map((d) => d.output));
 
-    await this.model.fit(xs, ys, { epochs: 20 });
+    await this.model.fit(xs, ys, { epochs: 20, shuffle: true });
     console.log('KI trainiert mit neuen Daten!', this.trainingData);
   }
 
