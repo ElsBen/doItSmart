@@ -45,9 +45,9 @@ export class AutocompleteService {
     this.model.add(
       tf.layers.dense({ units: 64, inputShape: [512], activation: 'relu' })
     );
-    // this.model.add(tf.layers.dense({ units: 32, activation: 'relu' }));
+    this.model.add(tf.layers.dense({ units: 32, activation: 'relu' }));
     this.model.add(tf.layers.dense({ units: 512 }));
-    this.model.compile({ loss: 'meanSquaredError', optimizer: 'adam' });
+    this.model.compile({ loss: 'meanSquaredError', optimizer: 'adamax' });
     console.log('KI Model bereit!');
   }
 
@@ -62,7 +62,7 @@ export class AutocompleteService {
     const xs = await this.encoder.embed(this.trainingData.map((d) => d.input));
     const ys = await this.encoder.embed(this.trainingData.map((d) => d.output));
 
-    await this.model.fit(xs, ys, { epochs: 15 });
+    await this.model.fit(xs, ys, { epochs: 40 });
     console.log('KI trainiert mit neuen Daten!', this.trainingData);
   }
 
