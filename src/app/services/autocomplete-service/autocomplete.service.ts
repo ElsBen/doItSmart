@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as tf from '@tensorflow/tfjs';
-import * as use from '@tensorflow-models/universal-sentence-encoder';
+// import * as use from '@tensorflow-models/universal-sentence-encoder';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +23,7 @@ export class AutocompleteService {
   }
 
   async loadEncoder() {
-    this.encoder = await use.load();
+    // this.encoder = await use.load();
     this.initModel();
     await this.trainModel();
   }
@@ -44,8 +44,9 @@ export class AutocompleteService {
     this.model.add(tf.layers.dense({ units: 512 }));
     this.model.summary(); // Debugging
     this.model.compile({
-      loss: 'meanSquaredError',
+      loss: 'categoricalCrossentropy',
       optimizer: 'adam',
+      metrics: ['accuracy'],
     });
     console.log('KI Model bereit!');
   }
