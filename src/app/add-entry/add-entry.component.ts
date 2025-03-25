@@ -142,24 +142,14 @@ export class AddEntryComponent implements OnInit {
     });
   }
 
-  async handleTodoInputChange(value: string) {
+  handleTodoInputChange(value: string) {
     if (value.length > 2) {
       console.log('Vorhersage: ', this.prediction);
-      this.prediction = await this.autoComplete.predict(value);
-      // this.autoComplete.debugPredictions(value);
+      this.prediction = this.autoComplete.getClosestMatch(value);
     } else {
       this.prediction = '';
     }
   }
-
-  // trainData() {
-  //   const value = this.form.value.todo;
-
-  //   this.autoComplete.train({
-  //     input: `${value.slice(0, 4)}`,
-  //     output: `${value}`,
-  //   });
-  // }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {

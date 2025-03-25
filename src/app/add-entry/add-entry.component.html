@@ -12,11 +12,20 @@
         aria-describedby="todoHelp"
         formControlName="todo"
       />
+      <div
+        class="list-group"
+        style="position: absolute; z-index: 5"
+        *ngIf="prediction"
+      >
+        <a
+          href="#"
+          class="list-group-item list-group-item-action list-group-item-success"
+          >{{ prediction }}</a
+        >
+      </div>
       <div id="todoHelp" class="form-text">
         Hier kannst du deine Aufgabe eintragen.
       </div>
-      <p *ngIf="prediction">{{ prediction }}</p>
-      <button type="button" class="btn btn-secondary">Trainieren!</button>
     </div>
 
     <div class="mb-3">
