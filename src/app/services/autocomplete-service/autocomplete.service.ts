@@ -6,24 +6,25 @@ import levenshtein from 'fast-levenshtein';
 })
 export class AutocompleteService {
   private trainingData: { input: string; output: string }[] = [
-    { input: 'Put', output: 'Putzen' },
-    { input: 'Eink', output: 'Einkaufen' },
-    { input: 'Wäsche W', output: 'Wäsche Waschen' },
-    { input: 'Koch', output: 'Kochen' },
-    { input: 'Aufr', output: 'Aufräumen' },
-    { input: 'Spü', output: 'Spülen' },
-    { input: 'Küche P', output: 'Küche Putzen' },
-    { input: 'Bad P', output: 'Bad Putzen' },
-    { input: 'Staubs', output: 'Staubsaugen' },
-    { input: 'Bett b', output: 'Bett beziehen' },
-    { input: 'Fenster P', output: 'Fenster Putzen' },
-    { input: 'Büg', output: 'Bügeln' },
-    { input: 'Bad W', output: 'Bad Wischen' },
+    { input: 'Putzen', output: 'Putzen' },
+    { input: 'Einkaufen', output: 'Einkaufen' },
+    { input: 'Wäsche', output: 'Wäsche' },
+    { input: 'Kochen', output: 'Kochen' },
+    { input: 'Aufräumen', output: 'Aufräumen' },
+    { input: 'Spülen', output: 'Spülen' },
+    { input: 'Küche', output: 'Küche' },
+    { input: 'Bad', output: 'Bad' },
+    { input: 'Staubsaugen', output: 'Staubsaugen' },
+    { input: 'Bett', output: 'Bett' },
+    { input: 'Fenster', output: 'Fenster' },
+    { input: 'Bügeln', output: 'Bügeln' },
+    { input: 'Unkraut', output: 'Unkraut' },
   ];
 
   constructor() {}
 
   preprocess(text: string): string {
+    console.log(text.split(/\s+/g));
     return text
       .toLowerCase() // Kleinbuchstaben
       .replace(/\s+/g, '') // Alle Leerzeichen entfernen
@@ -38,13 +39,24 @@ export class AutocompleteService {
     const preprocessedInput = this.preprocess(input);
 
     for (const data of this.trainingData) {
-      const preprocessedData = this.preprocess(data.input);
-      const distance = levenshtein.get(preprocessedInput, preprocessedData);
+      let preprocessedData = this.preprocess(data.input);
+      let distance = levenshtein.get(preprocessedInput, preprocessedData);
+
+      if (distance > 2) {
+        preprocessedData = preprocessedData.substring(0, 4);
+        distance = levenshtein.get(
+          preprocessedInput.substring(0, 4),
+          preprocessedData
+        );
+      }
+
       if (distance < bestDistance) {
         bestMatch = data.output;
         bestDistance = distance;
+        console.log('Distance: ', bestDistance);
       }
     }
-    return bestMatch || 'Keine Übereinstimmung gefunden';
+
+    return bestDistance <= 2 ? bestMatch : 'Keine Übereinstimmung gefunden';
   }
 }
