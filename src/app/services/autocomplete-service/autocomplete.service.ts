@@ -23,16 +23,23 @@ export class AutocompleteService {
 
   constructor() {}
 
+  preprocess(text: string): string {
+    return text
+      .toLowerCase() // Kleinbuchstaben
+      .replace(/\s+/g, '') // Alle Leerzeichen entfernen
+      .normalize('NFD') // Umlaute zerlegen (ä → a + ̈)
+      .replace(/[\u0300-\u036f]/g, ''); // Diakritische Zeichen entfernen
+  }
+
   // Function to get the closest match from the list of strings
   getClosestMatch(input: string): string {
     let bestMatch = '';
     let bestDistance = Infinity;
+    const preprocessedInput = this.preprocess(input);
 
     for (const data of this.trainingData) {
-      const distance = levenshtein.get(
-        input.toLowerCase(),
-        data.input.toLowerCase()
-      );
+      const preprocessedData = this.preprocess(data.input);
+      const distance = levenshtein.get(preprocessedInput, preprocessedData);
       if (distance < bestDistance) {
         bestMatch = data.output;
         bestDistance = distance;
