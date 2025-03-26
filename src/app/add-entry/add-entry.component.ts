@@ -30,7 +30,6 @@ export class AddEntryComponent implements OnInit {
 
   queryParam: number | null = null;
   editEntry: any = null;
-  suggestion: string = '';
 
   prediction: string = '';
 
@@ -149,6 +148,11 @@ export class AddEntryComponent implements OnInit {
     } else {
       this.prediction = '';
     }
+  }
+
+  applyPrediction() {
+    this.form.get('todo')?.setValue(this.prediction);
+    this.prediction = '';
   }
 
   ngOnInit(): void {

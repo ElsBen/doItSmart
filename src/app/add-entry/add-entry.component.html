@@ -18,8 +18,8 @@
         *ngIf="prediction"
       >
         <a
-          href="#"
           class="list-group-item list-group-item-action list-group-item-success"
+          (click)="applyPrediction()"
           >{{ prediction }}</a
         >
       </div>
