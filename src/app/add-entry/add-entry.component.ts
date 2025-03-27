@@ -152,9 +152,7 @@ export class AddEntryComponent implements OnInit {
 
   applyPrediction() {
     const todoInput = this.form.get('todo');
-    todoInput?.setValue(
-      todoInput.value ? todoInput.value : '' + this.prediction
-    );
+    todoInput?.setValue(this.prediction);
     this.prediction = '';
   }
 

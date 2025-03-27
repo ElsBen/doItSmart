@@ -1,30 +1,34 @@
 import { Injectable } from '@angular/core';
 import levenshtein from 'fast-levenshtein';
+import { ToDoListService } from '../list-service/todoList.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AutocompleteService {
+  constructor(private todoListService: ToDoListService) {
+    // Sollte bei Wertänderungen aufgerufen werden
+    this.getTodoName();
+  }
+
   private trainingData: { input: string; output: string }[] = [
-    { input: 'Putzen', output: 'Putzen' },
-    { input: 'Einkaufen', output: 'Einkaufen' },
-    { input: 'Wäsche', output: 'Wäsche' },
-    { input: 'Kochen', output: 'Kochen' },
-    { input: 'Aufräumen', output: 'Aufräumen' },
-    { input: 'Spülen', output: 'Spülen' },
-    { input: 'Küche', output: 'Küche' },
-    { input: 'Bad', output: 'Bad' },
-    { input: 'Staubsaugen', output: 'Staubsaugen' },
-    { input: 'Bett', output: 'Bett' },
-    { input: 'Fenster', output: 'Fenster' },
-    { input: 'Bügeln', output: 'Bügeln' },
-    { input: 'Unkraut', output: 'Unkraut' },
+    // { input: 'Putzen', output: 'Putzen' },
+    // { input: 'Einkaufen', output: 'Einkaufen' },
+    // { input: 'Wäsche', output: 'Wäsche' },
+    // { input: 'Kochen', output: 'Kochen' },
+    // { input: 'Aufräumen', output: 'Aufräumen' },
+    // { input: 'Spülen', output: 'Spülen' },
+    // { input: 'Küche', output: 'Küche' },
+    // { input: 'Bad', output: 'Bad' },
+    // { input: 'Staubsaugen', output: 'Staubsaugen' },
+    // { input: 'Bett', output: 'Bett' },
+    // { input: 'Fenster', output: 'Fenster' },
+    // { input: 'Bügeln', output: 'Bügeln' },
+    // { input: 'Unkraut', output: 'Unkraut' },
   ];
 
-  constructor() {}
-
   preprocess(text: string): string {
-    console.log(text.split(/\s+/g));
+    // Hier auf das Letzte Wort im Input Prüfen und dann nur das Letzte Wort zurückgeben
     return text
       .toLowerCase() // Kleinbuchstaben
       .replace(/\s+/g, '') // Alle Leerzeichen entfernen
@@ -58,5 +62,13 @@ export class AutocompleteService {
     }
 
     return bestDistance <= 2 ? bestMatch : 'Keine Übereinstimmung gefunden';
+  }
+
+  getTodoName() {
+    this.todoListService.getSavedEntrys();
+    console.log(this.todoListService.toDoList);
+    this.todoListService.toDoList.forEach((element) => {
+      this.trainingData.push({ input: element.name, output: element.name });
+    });
   }
 }
