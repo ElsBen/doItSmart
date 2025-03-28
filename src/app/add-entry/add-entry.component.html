@@ -15,12 +15,12 @@
       <div
         class="list-group"
         style="position: absolute; z-index: 5"
-        *ngIf="prediction"
+        *ngIf="predictionTodo"
       >
         <a
           class="list-group-item list-group-item-action list-group-item-success"
           (click)="applyPrediction()"
-          >{{ prediction }}</a
+          >{{ predictionTodo }}</a
         >
       </div>
       <div id="todoHelp" class="form-text">

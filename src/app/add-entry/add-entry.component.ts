@@ -31,7 +31,7 @@ export class AddEntryComponent implements OnInit {
   queryParam: number | null = null;
   editEntry: any = null;
 
-  prediction: string = '';
+  predictionTodo: string = '';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -145,16 +145,16 @@ export class AddEntryComponent implements OnInit {
 
   handleTodoInputChange(value: string) {
     if (value.length > 2) {
-      this.prediction = this.autoComplete.getClosestMatch(value);
+      this.predictionTodo = this.autoComplete.getClosestMatch(value);
     } else {
-      this.prediction = '';
+      this.predictionTodo = '';
     }
   }
 
   applyPrediction() {
     const todoInput = this.form.get('todo');
-    todoInput?.setValue(this.prediction);
-    this.prediction = '';
+    todoInput?.setValue(this.predictionTodo);
+    this.predictionTodo = '';
   }
 
   ngOnInit(): void {
