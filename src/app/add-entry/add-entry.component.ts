@@ -83,6 +83,7 @@ export class AddEntryComponent implements OnInit {
     }
 
     this.toDoListService.saveEntrys();
+    this.autoComplete.trainDataset(nameTodoForm);
     this.onClear();
     this.notificationService.showMessage(
       'Ihr Eintrag wurde gesichert!',
@@ -106,6 +107,7 @@ export class AddEntryComponent implements OnInit {
           'Der Eintrag ist schon vorhanden!',
           'red'
         );
+
     this.form.get('subpoint')!.reset();
   }
 
@@ -143,7 +145,6 @@ export class AddEntryComponent implements OnInit {
 
   handleTodoInputChange(value: string) {
     if (value.length > 2) {
-      console.log('Vorhersage: ', this.prediction);
       this.prediction = this.autoComplete.getClosestMatch(value);
     } else {
       this.prediction = '';
