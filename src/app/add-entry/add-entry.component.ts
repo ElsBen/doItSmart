@@ -144,6 +144,11 @@ export class AddEntryComponent implements OnInit {
   }
 
   handleTodoInputChange(value: string) {
+    if (value === null) {
+      this.predictionTodo = '';
+      return;
+    }
+
     if (value.length > 2) {
       this.predictionTodo = this.autoComplete.getClosestMatch(value);
     } else {
