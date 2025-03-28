@@ -52,6 +52,9 @@ export class AutocompleteService {
   }
 
   trainDataset(data: string) {
+    if (this.trainingData.some((entry) => entry.input === data)) {
+      return;
+    }
     this.trainingData.push({ input: data, output: data });
     localStorage.setItem('trainingData', JSON.stringify(this.trainingData));
   }
