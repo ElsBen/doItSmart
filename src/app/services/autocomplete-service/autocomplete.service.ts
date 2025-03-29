@@ -12,9 +12,16 @@ export class AutocompleteService {
       : this.trainingData;
   }
 
-  private trainingData: { input: string; output: string }[] = [
-    // { input: 'test', output: 'test' },
-  ];
+  private trainingData: {
+    todos: {
+      input: string;
+      output: string;
+    }[];
+    subpoints: {
+      input: string;
+      output: string;
+    }[];
+  } = { todos: [], subpoints: [] };
 
   preprocess(text: string): string {
     return text
@@ -25,12 +32,16 @@ export class AutocompleteService {
   }
 
   // Function to get the closest match from the list of strings
-  getClosestMatch(input: string): string {
+  getClosestMatch(input: string, isTodo: boolean): string {
     let bestMatch = '';
     let bestDistance = Infinity;
     const preprocessedInput = this.preprocess(input);
+    const dataset = isTodo
+      ? this.trainingData.todos
+      : this.trainingData.subpoints;
 
-    for (const data of this.trainingData) {
+    // Hier den jeweiligen point mit einem Schalter auswählen
+    for (const data of dataset) {
       let preprocessedData = this.preprocess(data.input);
       let distance = levenshtein.get(preprocessedInput, preprocessedData);
 
@@ -51,11 +62,15 @@ export class AutocompleteService {
     return bestDistance <= 2 ? bestMatch : 'Keine Übereinstimmung gefunden';
   }
 
-  trainDataset(data: string) {
-    if (this.trainingData.some((entry) => entry.input === data)) {
+  trainDataset(data: string, isTodo: boolean) {
+    const dataset = isTodo
+      ? this.trainingData.todos
+      : this.trainingData.subpoints;
+    if (dataset.some((entry) => entry.input === data)) {
       return;
     }
-    this.trainingData.push({ input: data, output: data });
+
+    dataset.push({ input: data, output: data });
     localStorage.setItem('trainingData', JSON.stringify(this.trainingData));
   }
 }
