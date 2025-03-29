@@ -32,6 +32,7 @@ export class AddEntryComponent implements OnInit {
   editEntry: any = null;
 
   predictionTodo: string = '';
+  predictionSubpoint: string = '';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -143,16 +144,18 @@ export class AddEntryComponent implements OnInit {
     });
   }
 
-  handleTodoInputChange(value: string) {
+  handleTodoInputChange(value: string, isTodo: boolean) {
     if (value === null) {
-      this.predictionTodo = '';
+      isTodo ? (this.predictionTodo = '') : (this.predictionSubpoint = '');
       return;
     }
 
     if (value.length > 2) {
-      this.predictionTodo = this.autoComplete.getClosestMatch(value);
+      isTodo
+        ? (this.predictionTodo = this.autoComplete.getClosestMatch(value))
+        : (this.predictionSubpoint = this.autoComplete.getClosestMatch(value)); // hier noch den Boolean durchgeben
     } else {
-      this.predictionTodo = '';
+      isTodo ? (this.predictionTodo = '') : (this.predictionSubpoint = '');
     }
   }
 
@@ -185,10 +188,14 @@ export class AddEntryComponent implements OnInit {
       console.log('statusChanged: ', entry);
     });
 
-    this.form.get('todo')?.valueChanges.subscribe((value) => {
-      console.log('Wertänderung: ', value);
-      this.handleTodoInputChange(value);
+    this.form.valueChanges.subscribe((entry) => {
+      this.handleTodoInputChange(entry.todo, true);
+      this.handleTodoInputChange(entry.subpoint, false);
     });
+
+    // this.form.get('todo')?.valueChanges.subscribe((value) => {
+    //   this.handleTodoInputChange(value);
+    // });
 
     this.displayCurrentDate();
   }
