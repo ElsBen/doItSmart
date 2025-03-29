@@ -173,6 +173,7 @@ export class AddEntryComponent implements OnInit {
     const currentInput = this.isTodo
       ? this.form.get('todo')
       : this.form.get('subpoint');
+    console.log('Inputswitch: ', this.isTodo);
     currentInput?.setValue(
       this.isTodo ? this.predictionTodo : this.predictionSubpoint
     );
@@ -203,7 +204,11 @@ export class AddEntryComponent implements OnInit {
       console.log('statusChanged: ', entry);
     });
 
+    // Wahrscheinlich ist hier für jedes Input eine valueChanges Subscription nötig
+    // Da sich der boolean Wert von isTodo bei applyPrediction auf false ändert
     this.form.valueChanges.subscribe((entry) => {
+      console.log(entry);
+
       this.handleInputPrediction(entry.todo, true);
       this.handleInputPrediction(entry.subpoint, false);
     });

@@ -43,7 +43,7 @@
       <label for="exampleInputSubpoint1" class="form-label"
         >Unterpunkte (optional):</label
       >
-      <div class="input-group">
+      <div class="input-group" style="position: relative">
         <input
           type="text"
           class="form-control"
@@ -59,17 +59,17 @@
           id="button-addon1"
           (click)="addSubPoint()"
         ></button>
-      </div>
-      <div
-        class="list-group"
-        style="position: absolute; z-index: 5; bottom: 0"
-        *ngIf="predictionSubpoint"
-      >
-        <a
-          class="list-group-item list-group-item-action list-group-item-success"
-          (click)="applyPrediction()"
-          >{{ predictionSubpoint }}</a
+        <div
+          class="list-group"
+          style="position: absolute; z-index: 5; top: 40px"
+          *ngIf="predictionSubpoint"
         >
+          <a
+            class="list-group-item list-group-item-action list-group-item-success"
+            (click)="applyPrediction()"
+            >{{ predictionSubpoint }}</a
+          >
+        </div>
       </div>
       <div class="mt-4" *ngFor="let subpoint of subPoints">
         <div *ngIf="subpoint != undefined">
