@@ -33,6 +33,7 @@ export class AddEntryComponent implements OnInit {
 
   predictionTodo: string = '';
   predictionSubpoint: string = '';
+  isTodo: boolean = true;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -144,7 +145,9 @@ export class AddEntryComponent implements OnInit {
     });
   }
 
-  handleTodoInputChange(value: string, isTodo: boolean) {
+  handleInputPrediction(value: string, isTodo: boolean) {
+    this.isTodo = isTodo;
+
     if (value === null) {
       isTodo ? (this.predictionTodo = '') : (this.predictionSubpoint = '');
       return;
@@ -160,9 +163,16 @@ export class AddEntryComponent implements OnInit {
   }
 
   applyPrediction() {
-    const todoInput = this.form.get('todo');
-    todoInput?.setValue(this.predictionTodo);
-    this.predictionTodo = '';
+    if (this.isTodo) {
+      const todoInput = this.form.get('todo');
+      todoInput?.setValue(this.predictionTodo);
+      this.predictionTodo = '';
+    } else if (!this.isTodo) {
+      const subpointInput = this.form.get('subpoint');
+      subpointInput?.setValue(this.predictionSubpoint);
+      this.predictionSubpoint = '';
+      this.isTodo = true;
+    }
   }
 
   ngOnInit(): void {
@@ -189,12 +199,12 @@ export class AddEntryComponent implements OnInit {
     });
 
     this.form.valueChanges.subscribe((entry) => {
-      this.handleTodoInputChange(entry.todo, true);
-      this.handleTodoInputChange(entry.subpoint, false);
+      this.handleInputPrediction(entry.todo, true);
+      this.handleInputPrediction(entry.subpoint, false);
     });
 
     // this.form.get('todo')?.valueChanges.subscribe((value) => {
-    //   this.handleTodoInputChange(value);
+    //   this.handleInputPrediction(value);
     // });
 
     this.displayCurrentDate();
