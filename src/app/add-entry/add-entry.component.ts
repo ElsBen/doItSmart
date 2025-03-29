@@ -85,7 +85,7 @@ export class AddEntryComponent implements OnInit {
     }
 
     this.toDoListService.saveEntrys();
-    this.autoComplete.trainDataset(nameTodoForm);
+    this.autoComplete.trainDataset(nameTodoForm, this.isTodo);
     this.onClear();
     this.notificationService.showMessage(
       'Ihr Eintrag wurde gesichert!',
@@ -109,8 +109,9 @@ export class AddEntryComponent implements OnInit {
           'Der Eintrag ist schon vorhanden!',
           'red'
         );
-
+    this.autoComplete.trainDataset(subPointValue, this.isTodo);
     this.form.get('subpoint')!.reset();
+    this.isTodo = true;
   }
 
   deleteSubpoint(subpoint: string) {
@@ -155,24 +156,28 @@ export class AddEntryComponent implements OnInit {
 
     if (value.length > 2) {
       isTodo
-        ? (this.predictionTodo = this.autoComplete.getClosestMatch(value))
-        : (this.predictionSubpoint = this.autoComplete.getClosestMatch(value)); // hier noch den Boolean durchgeben
+        ? (this.predictionTodo = this.autoComplete.getClosestMatch(
+            value,
+            isTodo
+          ))
+        : (this.predictionSubpoint = this.autoComplete.getClosestMatch(
+            value,
+            isTodo
+          )); // hier noch den Boolean durchgeben
     } else {
       isTodo ? (this.predictionTodo = '') : (this.predictionSubpoint = '');
     }
   }
 
   applyPrediction() {
-    if (this.isTodo) {
-      const todoInput = this.form.get('todo');
-      todoInput?.setValue(this.predictionTodo);
-      this.predictionTodo = '';
-    } else if (!this.isTodo) {
-      const subpointInput = this.form.get('subpoint');
-      subpointInput?.setValue(this.predictionSubpoint);
-      this.predictionSubpoint = '';
-      this.isTodo = true;
-    }
+    const currentInput = this.isTodo
+      ? this.form.get('todo')
+      : this.form.get('subpoint');
+    currentInput?.setValue(
+      this.isTodo ? this.predictionTodo : this.predictionSubpoint
+    );
+    this.predictionSubpoint = this.predictionTodo = '';
+    this.isTodo = true;
   }
 
   ngOnInit(): void {
@@ -202,10 +207,6 @@ export class AddEntryComponent implements OnInit {
       this.handleInputPrediction(entry.todo, true);
       this.handleInputPrediction(entry.subpoint, false);
     });
-
-    // this.form.get('todo')?.valueChanges.subscribe((value) => {
-    //   this.handleInputPrediction(value);
-    // });
 
     this.displayCurrentDate();
   }
