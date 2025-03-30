@@ -40,7 +40,6 @@ export class AutocompleteService {
       ? this.trainingData.todos
       : this.trainingData.subpoints;
 
-    // Hier den jeweiligen point mit einem Schalter auswählen
     for (const data of dataset) {
       let preprocessedData = this.preprocess(data.input);
       let distance = levenshtein.get(preprocessedInput, preprocessedData);
