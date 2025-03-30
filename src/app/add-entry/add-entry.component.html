@@ -43,7 +43,7 @@
       <label for="exampleInputSubpoint1" class="form-label"
         >Unterpunkte (optional):</label
       >
-      <div class="input-group" style="position: relative">
+      <div class="input-group mb-4" style="position: relative">
         <input
           type="text"
           class="form-control"
@@ -71,7 +71,7 @@
           >
         </div>
       </div>
-      <div class="mt-4" *ngFor="let subpoint of subPoints">
+      <div *ngFor="let subpoint of subPoints">
         <div *ngIf="subpoint != undefined">
           <ul class="list-group">
             <li
