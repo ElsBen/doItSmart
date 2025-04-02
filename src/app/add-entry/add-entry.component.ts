@@ -33,7 +33,6 @@ export class AddEntryComponent implements OnInit {
 
   predictionTodo: string = '';
   predictionSubpoint: string = '';
-  isTodo: boolean = true;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -85,7 +84,7 @@ export class AddEntryComponent implements OnInit {
     }
 
     this.toDoListService.saveEntrys();
-    this.autoComplete.trainDataset(nameTodoForm, this.isTodo);
+    this.autoComplete.trainDataset(nameTodoForm, this.autoComplete.isTodo);
     this.onClear();
     this.notificationService.showMessage(
       'Ihr Eintrag wurde gesichert!',
@@ -109,9 +108,10 @@ export class AddEntryComponent implements OnInit {
           'Der Eintrag ist schon vorhanden!',
           'red'
         );
-    this.autoComplete.trainDataset(subPointValue, this.isTodo);
+    this.autoComplete.trainDataset(subPointValue, this.autoComplete.isTodo);
     this.form.get('subpoint')!.reset();
-    this.isTodo = true;
+    this.predictionSubpoint = this.predictionTodo = '';
+    this.autoComplete.isTodo = true;
   }
 
   deleteSubpoint(subpoint: string) {
@@ -146,44 +146,12 @@ export class AddEntryComponent implements OnInit {
     });
   }
 
-  handleInputPrediction(value: string, isTodo: boolean) {
-    this.isTodo = isTodo;
-
-    if (value === null) {
-      isTodo ? (this.predictionTodo = '') : (this.predictionSubpoint = '');
-      return;
-    }
-
-    if (value.length > 2) {
-      isTodo
-        ? (this.predictionTodo = this.autoComplete.getClosestMatch(
-            value,
-            isTodo
-          ))
-        : (this.predictionSubpoint = this.autoComplete.getClosestMatch(
-            value,
-            isTodo
-          )); // hier noch den Boolean durchgeben
-    } else {
-      isTodo ? (this.predictionTodo = '') : (this.predictionSubpoint = '');
-    }
-  }
-
-  applyPrediction() {
-    const currentInput = this.isTodo
+  getApplyPrediction() {
+    const currentInput = this.autoComplete.isTodo
       ? this.form.get('todo')
       : this.form.get('subpoint');
 
-    if (currentInput === null) {
-      return;
-    }
-
-    currentInput?.setValue(
-      this.isTodo ? this.predictionTodo : this.predictionSubpoint
-    );
-
-    this.predictionSubpoint = this.predictionTodo = '';
-    this.isTodo = true;
+    this.autoComplete.applyPrediction(currentInput);
   }
 
   ngOnInit(): void {
@@ -212,11 +180,13 @@ export class AddEntryComponent implements OnInit {
     // The boolean in the handleInputPrediction function is used to determine whether the input is a todo or a subpoint.
     this.form.get('todo')?.valueChanges.subscribe((entry) => {
       this.predictionSubpoint = '';
-      this.handleInputPrediction(entry, true);
+      this.predictionTodo = this.autoComplete.predictionTodo;
+      this.autoComplete.handleInputPrediction(entry, true);
     });
     this.form.get('subpoint')?.valueChanges.subscribe((entry) => {
       this.predictionTodo = '';
-      this.handleInputPrediction(entry, false);
+      this.predictionSubpoint = this.autoComplete.predictionSubpoint;
+      this.autoComplete.handleInputPrediction(entry, false);
     });
 
     this.displayCurrentDate();

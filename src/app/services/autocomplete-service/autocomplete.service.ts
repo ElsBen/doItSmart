@@ -5,6 +5,10 @@ import levenshtein from 'fast-levenshtein';
   providedIn: 'root',
 })
 export class AutocompleteService {
+  isTodo: boolean = true;
+  predictionTodo: string = '';
+  predictionSubpoint: string = '';
+
   constructor() {
     const savedDatasets = localStorage.getItem('trainingData');
     this.trainingData = savedDatasets
@@ -71,5 +75,35 @@ export class AutocompleteService {
 
     dataset.push({ input: data, output: data });
     localStorage.setItem('trainingData', JSON.stringify(this.trainingData));
+  }
+
+  handleInputPrediction(value: string, isTodo: boolean) {
+    this.isTodo = isTodo;
+
+    if (value === null) {
+      isTodo ? (this.predictionTodo = '') : (this.predictionSubpoint = '');
+      return;
+    }
+
+    if (value.length > 2) {
+      isTodo
+        ? (this.predictionTodo = this.getClosestMatch(value, isTodo))
+        : (this.predictionSubpoint = this.getClosestMatch(value, isTodo)); // hier noch den Boolean durchgeben
+    } else {
+      isTodo ? (this.predictionTodo = '') : (this.predictionSubpoint = '');
+    }
+  }
+
+  applyPrediction(currentInput: any) {
+    if (currentInput === null) {
+      return;
+    }
+
+    currentInput?.setValue(
+      this.isTodo ? this.predictionTodo : this.predictionSubpoint
+    );
+
+    this.predictionSubpoint = this.predictionTodo = '';
+    this.isTodo = true;
   }
 }
