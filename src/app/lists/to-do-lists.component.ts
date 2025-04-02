@@ -19,6 +19,7 @@ import { ShareDateModule } from '../shared-modules/share-date/share-date.module'
 import { ToDoListService } from '../services/list-service/todoList.service';
 import { NotificationComponent } from '../notification/notification.component';
 import { NotificationService } from '../services/notification-service/notification.service';
+import { AutocompleteService } from '../services/autocomplete-service/autocomplete.service';
 
 @Component({
   selector: 'app-to-do-lists',
@@ -88,11 +89,14 @@ export class ToDoListsComponent implements OnInit {
 
   form: FormGroup = new FormGroup({});
 
+  predictionSubpoint: string = '';
+
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private toDoListService: ToDoListService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private autoComplete: AutocompleteService
   ) {}
 
   getTodoLists() {
@@ -136,6 +140,13 @@ export class ToDoListsComponent implements OnInit {
     this.toDoListService.saveEntrys();
   }
 
+  getApplyPrediction() {
+    const currentInput = this.form.get('subEntry');
+    this.autoComplete.applyPrediction(currentInput);
+    // Warum wird der Wert nicht im service automatisch gesetzt (selber Fehler liegt im form vor)?
+    this.predictionSubpoint = '';
+  }
+
   ngOnInit() {
     this.toDoListService.getSavedEntrys();
     this.getTodoLists();
@@ -143,8 +154,9 @@ export class ToDoListsComponent implements OnInit {
       subEntry: this.formBuilder.control(null, [Validators.required]),
     });
 
-    this.form.statusChanges.subscribe((entry) => {
-      console.log(entry);
+    this.form.get('subEntry')?.valueChanges.subscribe((entry) => {
+      this.predictionSubpoint = this.autoComplete.predictionSubpoint;
+      this.autoComplete.handleInputPrediction(entry, false);
     });
   }
 }
