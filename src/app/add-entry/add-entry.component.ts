@@ -150,8 +150,8 @@ export class AddEntryComponent implements OnInit {
     const currentInput = this.autoComplete.isTodo
       ? this.form.get('todo')
       : this.form.get('subpoint');
-
     this.autoComplete.applyPrediction(currentInput);
+    this.predictionTodo = this.predictionSubpoint = '';
   }
 
   ngOnInit(): void {
