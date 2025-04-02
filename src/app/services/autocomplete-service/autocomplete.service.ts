@@ -88,7 +88,7 @@ export class AutocompleteService {
     if (value.length > 2) {
       isTodo
         ? (this.predictionTodo = this.getClosestMatch(value, isTodo))
-        : (this.predictionSubpoint = this.getClosestMatch(value, isTodo)); // hier noch den Boolean durchgeben
+        : (this.predictionSubpoint = this.getClosestMatch(value, isTodo));
     } else {
       isTodo ? (this.predictionTodo = '') : (this.predictionSubpoint = '');
     }
