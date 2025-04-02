@@ -209,10 +209,13 @@ export class AddEntryComponent implements OnInit {
       console.log('statusChanged: ', entry);
     });
 
+    // The boolean in the handleInputPrediction function is used to determine whether the input is a todo or a subpoint.
     this.form.get('todo')?.valueChanges.subscribe((entry) => {
+      this.predictionSubpoint = '';
       this.handleInputPrediction(entry, true);
     });
     this.form.get('subpoint')?.valueChanges.subscribe((entry) => {
+      this.predictionTodo = '';
       this.handleInputPrediction(entry, false);
     });
 
