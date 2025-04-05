@@ -58,7 +58,15 @@
                   (click)="onSubmit(list)"
                 ></button>
               </div>
-              <div class="position-absolute" style="width: 400px; top: 40px">
+              <app-notification
+                class="position-absolute"
+                style="right: 85px; top: 40px"
+              ></app-notification>
+            </div>
+            <span
+              class="col-3 float-end d-flex justify-content-end position-relative"
+            >
+              <span class="position-absolute" style="top: -10px; right: 100px">
                 <div
                   class="list-group"
                   style="width: max-content; cursor: pointer"
@@ -70,13 +78,7 @@
                     >{{ predictionSubpoint }}</a
                   >
                 </div>
-              </div>
-              <app-notification
-                class="position-absolute"
-                style="right: 85px; top: 40px"
-              ></app-notification>
-            </div>
-            <span class="col-3 float-end d-flex justify-content-end">
+              </span>
               <button
                 type="button"
                 [id]="list.creationDate"
