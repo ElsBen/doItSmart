@@ -41,7 +41,7 @@
               <div
                 [formGroup]="form"
                 class="input-group input-group-sm mb-3"
-                style="width: 400px; position: relative"
+                style="width: 400px"
               >
                 <input
                   type="text"
@@ -57,10 +57,11 @@
                   id="button-addon2"
                   (click)="onSubmit(list)"
                 ></button>
-
+              </div>
+              <div class="position-absolute" style="width: 400px; top: 40px">
                 <div
                   class="list-group"
-                  style="position: absolute; z-index: 5; top: 40px"
+                  style="width: max-content; cursor: pointer"
                   *ngIf="predictionSubpoint"
                 >
                   <a
