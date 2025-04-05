@@ -104,6 +104,9 @@ export class ToDoListsComponent implements OnInit {
   }
 
   onSubmit(list: any) {
+    // beim absenden wird predictionSubpoint nicht zurückgesetzt
+    // und die prediction bleibt auch nach dem absenden stehen?
+    this.predictionSubpoint = '';
     const entryIndex = this.toDoList.indexOf(list);
     const existSublist = this.toDoList[entryIndex].sublist;
     const newSublistEntry = this.form.value.subEntry;
@@ -117,6 +120,7 @@ export class ToDoListsComponent implements OnInit {
         );
         return;
       }
+
       this.toDoList[entryIndex].sublist?.push(newSublistEntry);
     } else if (!existSublist) {
       this.toDoList[entryIndex].sublist = [newSublistEntry];
