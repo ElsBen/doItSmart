@@ -14,7 +14,7 @@
       />
       <div
         class="list-group"
-        style="position: absolute; z-index: 5"
+        style="position: absolute; z-index: 5; cursor: pointer"
         *ngIf="predictionTodo"
       >
         <a
@@ -59,17 +59,17 @@
           id="button-addon1"
           (click)="addSubPoint()"
         ></button>
-        <div
-          class="list-group"
-          style="position: absolute; z-index: 5; top: 40px"
-          *ngIf="predictionSubpoint"
+      </div>
+      <div
+        class="list-group"
+        style="position: absolute; z-index: 5; top: 80px; cursor: pointer"
+        *ngIf="predictionSubpoint"
+      >
+        <a
+          class="list-group-item list-group-item-action list-group-item-success"
+          (click)="getApplyPrediction()"
+          >{{ predictionSubpoint }}</a
         >
-          <a
-            class="list-group-item list-group-item-action list-group-item-success"
-            (click)="getApplyPrediction()"
-            >{{ predictionSubpoint }}</a
-          >
-        </div>
       </div>
       <div *ngFor="let subpoint of subPoints">
         <div *ngIf="subpoint != undefined">
