@@ -19,6 +19,7 @@ export class PredictionComponent {
 
   @Output() predictionSelected: EventEmitter<string> =
     new EventEmitter<string>();
+
   selectPrediction() {
     this.predictionSelected.emit();
   }
