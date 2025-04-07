@@ -18,17 +18,7 @@
         [prediction]="predictionTodo"
         (predictionSelected)="getApplyPrediction()"
       ></app-prediction>
-      <!-- <div
-        class="list-group"
-        style="position: absolute; z-index: 5; cursor: pointer"
-        *ngIf="predictionTodo"
-      >
-        <a
-          class="list-group-item list-group-item-action list-group-item-success"
-          (click)="getApplyPrediction()"
-          >{{ predictionTodo }}</a
-        >
-      </div> -->
+
       <div id="todoHelp" class="form-text">
         Hier kannst du deine Aufgabe eintragen.
       </div>
@@ -72,17 +62,7 @@
         [prediction]="predictionSubpoint"
         (predictionSelected)="getApplyPrediction()"
       ></app-prediction>
-      <!-- <div
-        class="list-group"
-        style="position: absolute; z-index: 5; top: 80px; cursor: pointer"
-        *ngIf="predictionSubpoint"
-      >
-        <a
-          class="list-group-item list-group-item-action list-group-item-success"
-          (click)="getApplyPrediction()"
-          >{{ predictionSubpoint }}</a
-        >
-      </div> -->
+
       <div *ngFor="let subpoint of subPoints">
         <div *ngIf="subpoint != undefined">
           <ul class="list-group">
