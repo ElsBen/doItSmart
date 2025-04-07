@@ -157,7 +157,6 @@ export class ToDoListsComponent implements OnInit {
     });
 
     this.form.get('subEntry')?.valueChanges.subscribe((entry) => {
-      this.predictionSubpoint = '';
       this.predictionSubpoint = this.autoComplete.predictionSubpoint;
       this.autoComplete.handleInputPrediction(entry, false);
     });
