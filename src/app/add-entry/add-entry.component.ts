@@ -13,6 +13,7 @@ import { DateService } from '../services/date-service/date.service';
 import { NotificationComponent } from '../notification/notification.component';
 import { NotificationService } from '../services/notification-service/notification.service';
 import { AutocompleteService } from '../services/autocomplete-service/autocomplete.service';
+import { PredictionComponent } from '../prediction/prediction.component';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +21,12 @@ import { AutocompleteService } from '../services/autocomplete-service/autocomple
 @Component({
   selector: 'app-add-entry',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, NotificationComponent],
+  imports: [
+    ReactiveFormsModule,
+    CommonModule,
+    NotificationComponent,
+    PredictionComponent,
+  ],
   templateUrl: './add-entry.component.html',
   styles: ``,
 })

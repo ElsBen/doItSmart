@@ -20,6 +20,7 @@ import { ToDoListService } from '../services/list-service/todoList.service';
 import { NotificationComponent } from '../notification/notification.component';
 import { NotificationService } from '../services/notification-service/notification.service';
 import { AutocompleteService } from '../services/autocomplete-service/autocomplete.service';
+import { PredictionComponent } from '../prediction/prediction.component';
 
 @Component({
   selector: 'app-to-do-lists',
@@ -30,6 +31,7 @@ import { AutocompleteService } from '../services/autocomplete-service/autocomple
     ShareDateModule,
     NotificationComponent,
     RouterLink,
+    PredictionComponent,
   ],
   templateUrl: './to-do-lists.component.html',
   styles: `

@@ -66,7 +66,14 @@
             <span
               class="col-3 float-end d-flex justify-content-end position-relative"
             >
-              <span class="position-absolute" style="top: -10px; right: 100px">
+              <app-prediction
+                class="position-absolute"
+                style="top: -10px; right: 100px"
+                *ngIf="predictionSubpoint"
+                [prediction]="predictionSubpoint"
+                (predictionSelected)="getApplyPrediction()"
+              ></app-prediction>
+              <!-- <span class="position-absolute" style="top: -10px; right: 100px">
                 <div
                   class="list-group"
                   style="width: max-content; cursor: pointer"
@@ -78,7 +85,7 @@
                     >{{ predictionSubpoint }}</a
                   >
                 </div>
-              </span>
+              </span> -->
               <button
                 type="button"
                 [id]="list.creationDate"
