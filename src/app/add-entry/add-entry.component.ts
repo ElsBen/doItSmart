@@ -60,54 +60,57 @@ export class AddEntryComponent implements OnInit {
   ) {}
 
   onSubmit() {
-    // Set form entrys
-    const nameTodoForm: string = this.form.value.todo;
-    const isEditing: boolean = this.queryParam !== null;
-    const toDoList: Array<any> = this.toDoListService.toDoList;
-    const completionDate = this.dateService.convertDateToLocalDate(
-      this.form.value.completionDate
-    );
+    if (this.isFormInvalid()) return;
 
-    const creationTime = this.dateService.convertDateToLocalDate();
-    // check existing entrys or edit entry
-    const hasSubPoints: boolean = this.subPoints.length > 0;
-
-    if (
-      (this.isDuplicateOrEmptyEntry(nameTodoForm) && !isEditing) ||
-      this.form.invalid
-    ) {
-      this.form.invalid
-        ? this.notificationService.showMessage(
-            'Eingabefeld ist leer!',
-            this.COLOR_RED
-          )
-        : this.notificationService.showMessage(
-            'Eintrag ist schon vorhanden!',
-            this.COLOR_RED
-          );
-      return;
-    }
-
-    const newEntry: Object = this.toDoListService.createObject(
-      nameTodoForm,
-      completionDate,
-      creationTime,
-      hasSubPoints ? this.subPoints : undefined
-    );
-
-    if (isEditing && this.queryParam) {
-      toDoList[this.queryParam - 1] = newEntry;
-    } else {
-      toDoList.push(newEntry);
-    }
-
-    this.toDoListService.saveEntrys();
-    this.autoComplete.trainDataset(nameTodoForm, this.autoComplete.isTodo);
+    const newEntry = this.createNewEntry();
+    this.saveEntry(newEntry);
     this.onClear();
     this.notificationService.showMessage(
       'Ihr Eintrag wurde gesichert!',
       this.COLOR_GREEN
     );
+  }
+
+  private isFormInvalid(): boolean {
+    if (
+      this.form.invalid ||
+      this.isDuplicateOrEmptyEntry(this.form.value.todo)
+    ) {
+      const message = this.form.invalid
+        ? 'Eingabefeld ist leer!'
+        : 'Eintrag ist schon vorhanden!';
+      this.notificationService.showMessage(message, this.COLOR_RED);
+      return true;
+    }
+    return false;
+  }
+
+  private createNewEntry(): any {
+    const nameTodoForm: string = this.form.value.todo;
+    const completionDate = this.dateService.convertDateToLocalDate(
+      this.form.value.completionDate
+    );
+
+    const creationTime = this.dateService.convertDateToLocalDate();
+    const hasSubPoints: boolean = this.subPoints.length > 0;
+
+    return this.toDoListService.createObject(
+      nameTodoForm,
+      completionDate,
+      creationTime,
+      hasSubPoints ? this.subPoints : undefined
+    );
+  }
+
+  private saveEntry(newEntry: any): void {
+    const toDoList: Array<any> = this.toDoListService.toDoList;
+    if (this.queryParam !== null) {
+      toDoList[this.queryParam - 1] = newEntry;
+    } else {
+      toDoList.push(newEntry);
+    }
+    this.toDoListService.saveEntrys();
+    this.autoComplete.trainDataset(newEntry.name, this.autoComplete.isTodo);
   }
 
   private isDuplicateOrEmptyEntry(todo: string): any {
