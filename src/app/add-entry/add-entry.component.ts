@@ -35,7 +35,11 @@ export class AddEntryComponent implements OnInit {
   subPoints: Array<string> = [];
 
   queryParam: number | null = null;
-  editEntry: any = null;
+  editEntry: {
+    name: string;
+    completionDate: string;
+    sublist?: string[];
+  } | null = null;
 
   predictionTodo: string = '';
   predictionSubpoint: string = '';
@@ -190,7 +194,7 @@ export class AddEntryComponent implements OnInit {
           console.error('Fehler beim Laden der Einträge: ', error);
         }
         this.editEntry = this.toDoListService.toDoList[this.queryParam - 1];
-        this.subPoints = this.editEntry.sublist || [];
+        this.subPoints = this.editEntry?.sublist || [];
       }
     });
 
