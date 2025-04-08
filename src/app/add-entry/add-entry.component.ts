@@ -169,7 +169,11 @@ export class AddEntryComponent implements OnInit {
         this.predictionTodo = '';
         this.predictionSubpoint = this.autoComplete.predictionSubpoint;
       }
-      this.autoComplete.handleInputPrediction(entry, isTodo);
+      try {
+        this.autoComplete.handleInputPrediction(entry, isTodo);
+      } catch (error) {
+        console.error('Fehler bei der Vorhersage: ', error);
+      }
     });
   }
 
@@ -180,7 +184,11 @@ export class AddEntryComponent implements OnInit {
 
       // set param as index and pulls 1 off so that it is the same as the index of element
       if (this.queryParam) {
-        this.toDoListService.getSavedEntrys();
+        try {
+          this.toDoListService.getSavedEntrys();
+        } catch (error) {
+          console.error('Fehler beim Laden der Einträge: ', error);
+        }
         this.editEntry = this.toDoListService.toDoList[this.queryParam - 1];
         this.subPoints = this.editEntry.sublist || [];
       }
