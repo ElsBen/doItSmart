@@ -160,6 +160,19 @@ export class AddEntryComponent implements OnInit {
     this.predictionTodo = this.predictionSubpoint = '';
   }
 
+  private handleValueChanges(input: string, isTodo: boolean) {
+    this.form.get(input)?.valueChanges.subscribe((entry) => {
+      if (isTodo) {
+        this.predictionSubpoint = '';
+        this.predictionTodo = this.autoComplete.predictionTodo;
+      } else {
+        this.predictionTodo = '';
+        this.predictionSubpoint = this.autoComplete.predictionSubpoint;
+      }
+      this.autoComplete.handleInputPrediction(entry, isTodo);
+    });
+  }
+
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
       // Set existed param or null
@@ -183,18 +196,8 @@ export class AddEntryComponent implements OnInit {
       console.log('statusChanged: ', entry);
     });
 
-    // The boolean in the handleInputPrediction function is used to determine whether the input is a todo or a subpoint.
-    this.form.get('todo')?.valueChanges.subscribe((entry) => {
-      this.predictionSubpoint = '';
-      this.predictionTodo = this.autoComplete.predictionTodo;
-      this.autoComplete.handleInputPrediction(entry, true);
-    });
-    this.form.get('subpoint')?.valueChanges.subscribe((entry) => {
-      this.predictionTodo = '';
-      this.predictionSubpoint = this.autoComplete.predictionSubpoint;
-      this.autoComplete.handleInputPrediction(entry, false);
-    });
-
+    this.handleValueChanges('todo', true);
+    this.handleValueChanges('subpoint', false);
     this.displayCurrentDate();
   }
 }
