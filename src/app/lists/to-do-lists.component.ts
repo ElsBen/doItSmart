@@ -136,10 +136,19 @@ export class ToDoListsComponent implements OnInit {
   }
 
   getApplyPrediction() {
-    const currentInput = this.form.get(this.notificationService.FIELD_SUBPOINT);
-    this.autoComplete.applyPrediction(currentInput);
-    // Warum wird der Wert nicht im service automatisch gesetzt (selber Fehler liegt im form vor)?
-    this.predictionSubpoint = '';
+    try {
+      const currentInput = this.form.get(
+        this.notificationService.FIELD_SUBPOINT
+      );
+      this.autoComplete.applyPrediction(currentInput);
+      this.predictionSubpoint = '';
+    } catch (error) {
+      console.error('Fehler bei der Vorhersage: ', error);
+      this.notificationService.showMessage(
+        'Fehler bei der Vorhersage',
+        this.notificationService.COLOR_RED
+      );
+    }
   }
 
   ngOnInit() {
