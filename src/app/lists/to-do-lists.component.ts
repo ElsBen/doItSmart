@@ -106,26 +106,16 @@ export class ToDoListsComponent implements OnInit {
   }
 
   onSubmit(list: any) {
-    const entryIndex = this.toDoList.indexOf(list);
-    const existSublist = this.toDoList[entryIndex].sublist;
     const newSublistEntry = this.form.value.subEntry;
-    if (!newSublistEntry) return;
 
-    if (existSublist) {
-      if (existSublist.includes(newSublistEntry)) {
-        this.notificationService.showMessage(
-          'Der Eintrag ist schon vorhanden!',
-          'red'
-        );
-        return;
-      }
-
-      this.toDoList[entryIndex].sublist?.push(newSublistEntry);
-    } else if (!existSublist) {
-      this.toDoList[entryIndex].sublist = [newSublistEntry];
+    if (!this.toDoListService.addSubEntry(list, newSublistEntry)) {
+      this.notificationService.showMessage(
+        'Der Eintrag ist schon vorhanden!',
+        this.notificationService.COLOR_RED
+      );
+      return;
     }
 
-    this.toDoListService.saveEntrys();
     this.autoComplete.trainDataset(newSublistEntry, this.autoComplete.isTodo);
     this.form.reset();
     this.predictionSubpoint = '';
@@ -146,7 +136,7 @@ export class ToDoListsComponent implements OnInit {
   }
 
   getApplyPrediction() {
-    const currentInput = this.form.get('subEntry');
+    const currentInput = this.form.get(this.notificationService.FIELD_SUBPOINT);
     this.autoComplete.applyPrediction(currentInput);
     // Warum wird der Wert nicht im service automatisch gesetzt (selber Fehler liegt im form vor)?
     this.predictionSubpoint = '';
@@ -159,9 +149,11 @@ export class ToDoListsComponent implements OnInit {
       subEntry: this.formBuilder.control(null, [Validators.required]),
     });
 
-    this.form.get('subEntry')?.valueChanges.subscribe((entry) => {
-      this.predictionSubpoint = this.autoComplete.predictionSubpoint;
-      this.autoComplete.handleInputPrediction(entry, false);
-    });
+    this.form
+      .get(this.notificationService.FIELD_SUBPOINT)
+      ?.valueChanges.subscribe((entry) => {
+        this.predictionSubpoint = this.autoComplete.predictionSubpoint;
+        this.autoComplete.handleInputPrediction(entry, false);
+      });
   }
 }
