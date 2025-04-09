@@ -9,6 +9,11 @@ export class NotificationService {
   messageSource = new BehaviorSubject<Array<string>>([]);
   currentMessage = this.messageSource.asObservable();
 
+  FIELD_TODO = 'todo';
+  FIELD_SUBPOINT = 'subpoint';
+  COLOR_RED = 'red';
+  COLOR_GREEN = 'green';
+
   showMessage(message: string, messageColor: string) {
     this.messageSource.next([message, messageColor]);
 

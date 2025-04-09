@@ -44,11 +44,6 @@ export class AddEntryComponent implements OnInit {
   predictionTodo: string = '';
   predictionSubpoint: string = '';
 
-  FIELD_TODO = 'todo';
-  FIELD_SUBPOINT = 'subpoint';
-  COLOR_RED = 'red';
-  COLOR_GREEN = 'green';
-
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -67,7 +62,7 @@ export class AddEntryComponent implements OnInit {
     this.onClear();
     this.notificationService.showMessage(
       'Ihr Eintrag wurde gesichert!',
-      this.COLOR_GREEN
+      this.notificationService.COLOR_GREEN
     );
   }
 
@@ -79,7 +74,10 @@ export class AddEntryComponent implements OnInit {
       const message = this.form.invalid
         ? 'Eingabefeld ist leer!'
         : 'Eintrag ist schon vorhanden!';
-      this.notificationService.showMessage(message, this.COLOR_RED);
+      this.notificationService.showMessage(
+        message,
+        this.notificationService.COLOR_RED
+      );
       return true;
     }
     return false;
@@ -127,7 +125,7 @@ export class AddEntryComponent implements OnInit {
       ? this.subPoints.push(subPointValue)
       : this.notificationService.showMessage(
           'Der Eintrag ist schon vorhanden!',
-          this.COLOR_RED
+          this.notificationService.COLOR_RED
         );
     this.autoComplete.trainDataset(subPointValue, this.autoComplete.isTodo);
     this.form.get('subpoint')!.reset();
@@ -169,8 +167,8 @@ export class AddEntryComponent implements OnInit {
 
   getApplyPrediction() {
     const currentInput = this.autoComplete.isTodo
-      ? this.form.get(this.FIELD_TODO)
-      : this.form.get(this.FIELD_SUBPOINT);
+      ? this.form.get(this.notificationService.FIELD_TODO)
+      : this.form.get(this.notificationService.FIELD_SUBPOINT);
     this.autoComplete.applyPrediction(currentInput);
     this.predictionTodo = this.predictionSubpoint = '';
   }
@@ -219,8 +217,8 @@ export class AddEntryComponent implements OnInit {
       console.log('statusChanged: ', entry);
     });
 
-    this.handleValueChanges(this.FIELD_TODO, true);
-    this.handleValueChanges(this.FIELD_SUBPOINT, false);
+    this.handleValueChanges(this.notificationService.FIELD_TODO, true);
+    this.handleValueChanges(this.notificationService.FIELD_SUBPOINT, false);
     this.displayCurrentDate();
   }
 }
