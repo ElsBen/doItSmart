@@ -126,6 +126,7 @@ export class ToDoListsComponent implements OnInit {
     }
 
     this.toDoListService.saveEntrys();
+    this.autoComplete.trainDataset(newSublistEntry, this.autoComplete.isTodo);
     this.form.reset();
     this.predictionSubpoint = '';
   }
