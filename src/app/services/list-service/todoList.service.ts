@@ -22,6 +22,10 @@ export class ToDoListService implements OnChanges {
 
   toDoList: Array<any> = [];
 
+
+  FIELD_TODO = 'todo';
+  FIELD_SUBPOINT = 'subpoint';
+
   saveEntrys() {
     localStorage.setItem('toDoList', JSON.stringify(this.toDoList));
   }
