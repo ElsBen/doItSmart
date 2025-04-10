@@ -167,8 +167,8 @@ export class AddEntryComponent implements OnInit {
 
   getApplyPrediction() {
     const currentInput = this.autoComplete.isTodo
-      ? this.form.get(this.notificationService.FIELD_TODO)
-      : this.form.get(this.notificationService.FIELD_SUBPOINT);
+      ? this.form.get(this.toDoListService.FIELD_TODO)
+      : this.form.get(this.toDoListService.FIELD_SUBPOINT);
     this.autoComplete.applyPrediction(currentInput);
     this.predictionTodo = this.predictionSubpoint = '';
   }
@@ -217,8 +217,8 @@ export class AddEntryComponent implements OnInit {
       console.log('statusChanged: ', entry);
     });
 
-    this.handleValueChanges(this.notificationService.FIELD_TODO, true);
-    this.handleValueChanges(this.notificationService.FIELD_SUBPOINT, false);
+    this.handleValueChanges(this.toDoListService.FIELD_TODO, true);
+    this.handleValueChanges(this.toDoListService.FIELD_SUBPOINT, false);
     this.displayCurrentDate();
   }
 }

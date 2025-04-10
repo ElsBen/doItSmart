@@ -1,4 +1,4 @@
-import { Component, Injectable, OnInit } from '@angular/core';
+import { Component, Injectable, OnInit, TemplateRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import {
@@ -106,7 +106,7 @@ export class ToDoListsComponent implements OnInit {
   }
 
   onSubmit(list: any) {
-    const newSublistEntry = this.form.value.subEntry;
+    const newSublistEntry = this.form.value.subpoint;
 
     if (!this.toDoListService.addSubEntry(list, newSublistEntry)) {
       this.notificationService.showMessage(
@@ -137,9 +137,7 @@ export class ToDoListsComponent implements OnInit {
 
   getApplyPrediction() {
     try {
-      const currentInput = this.form.get(
-        this.notificationService.FIELD_SUBPOINT
-      );
+      const currentInput = this.form.get(this.toDoListService.FIELD_SUBPOINT);
       this.autoComplete.applyPrediction(currentInput);
       this.predictionSubpoint = '';
     } catch (error) {
@@ -155,11 +153,11 @@ export class ToDoListsComponent implements OnInit {
     this.toDoListService.getSavedEntrys();
     this.getTodoLists();
     this.form = this.formBuilder.group({
-      subEntry: this.formBuilder.control(null, [Validators.required]),
+      subpoint: this.formBuilder.control(null, [Validators.required]),
     });
 
     this.form
-      .get(this.notificationService.FIELD_SUBPOINT)
+      .get(this.toDoListService.FIELD_SUBPOINT)
       ?.valueChanges.subscribe((entry) => {
         this.predictionSubpoint = this.autoComplete.predictionSubpoint;
         this.autoComplete.handleInputPrediction(entry, false);
