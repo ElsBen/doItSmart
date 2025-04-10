@@ -61,7 +61,7 @@ export class AddEntryComponent implements OnInit {
     this.saveEntry(newEntry);
     this.onClear();
     this.notificationService.showMessage(
-      'Ihr Eintrag wurde gesichert!',
+      this.notificationService.MESSAGE_SUCCESS,
       this.notificationService.COLOR_GREEN
     );
   }
@@ -71,9 +71,10 @@ export class AddEntryComponent implements OnInit {
       this.form.invalid ||
       this.isDuplicateOrEmptyEntry(this.form.value.todo)
     ) {
-      const message = this.form.invalid
-        ? 'Eingabefeld ist leer!'
-        : 'Eintrag ist schon vorhanden!';
+      const message = this.notificationService.checkInvalidOrExistMessage(
+        this.form.invalid
+      );
+
       this.notificationService.showMessage(
         message,
         this.notificationService.COLOR_RED
@@ -124,7 +125,7 @@ export class AddEntryComponent implements OnInit {
     !isSubPoint && subPointValue
       ? this.subPoints.push(subPointValue)
       : this.notificationService.showMessage(
-          'Der Eintrag ist schon vorhanden!',
+          this.notificationService.MESSAGE_EXIST,
           this.notificationService.COLOR_RED
         );
     this.autoComplete.trainDataset(subPointValue, this.autoComplete.isTodo);

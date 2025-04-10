@@ -109,8 +109,12 @@ export class ToDoListsComponent implements OnInit {
     const newSublistEntry = this.form.value.subpoint;
 
     if (!this.toDoListService.addSubEntry(list, newSublistEntry)) {
+      const message = this.notificationService.checkInvalidOrExistMessage(
+        this.form.get('subpoint')?.invalid
+      );
+
       this.notificationService.showMessage(
-        'Der Eintrag ist schon vorhanden!',
+        message,
         this.notificationService.COLOR_RED
       );
       return;
