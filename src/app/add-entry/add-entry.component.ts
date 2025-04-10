@@ -40,6 +40,7 @@ export class AddEntryComponent implements OnInit {
     completionDate: string;
     sublist?: string[];
   } | null = null;
+  contentSubmitBtn: string = '';
 
   predictionTodo: string = '';
   predictionSubpoint: string = '';
@@ -193,8 +194,9 @@ export class AddEntryComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
-      // Set existed param or null
+      // Set existed param or null and set submit button text
       this.queryParam = Number(params['i']) || null;
+      this.contentSubmitBtn = this.queryParam ? 'Ändern' : 'Hinzufügen';
 
       // set param as index and pulls 1 off so that it is the same as the index of element
       if (this.queryParam) {
