@@ -14,6 +14,7 @@ export class NotificationService {
   MESSAGE_EXIST = 'Der Eintrag ist schon vorhanden!';
   MESSAGE_EMPTY = 'Eingabefeld ist leer!';
   MESSAGE_ERROR = 'Ein Fehler ist aufgetreten!';
+  MESSAGE_PREDICTION_ERROR = 'Fehler bei der Vorhersage!';
 
   // Colors for the message
   COLOR_RED = 'red';

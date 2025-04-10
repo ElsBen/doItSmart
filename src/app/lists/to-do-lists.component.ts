@@ -145,9 +145,9 @@ export class ToDoListsComponent implements OnInit {
       this.autoComplete.applyPrediction(currentInput);
       this.predictionSubpoint = '';
     } catch (error) {
-      console.error('Fehler bei der Vorhersage: ', error);
+      console.error(this.notificationService.MESSAGE_PREDICTION_ERROR, error);
       this.notificationService.showMessage(
-        'Fehler bei der Vorhersage',
+        this.notificationService.MESSAGE_PREDICTION_ERROR,
         this.notificationService.COLOR_RED
       );
     }

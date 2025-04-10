@@ -187,7 +187,7 @@ export class AddEntryComponent implements OnInit {
       try {
         this.autoComplete.handleInputPrediction(entry, isTodo);
       } catch (error) {
-        console.error('Fehler bei der Vorhersage: ', error);
+        console.error(this.notificationService.MESSAGE_PREDICTION_ERROR, error);
       }
     });
   }
