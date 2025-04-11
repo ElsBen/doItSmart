@@ -68,9 +68,10 @@ export class AddEntryComponent implements OnInit {
   }
 
   private isFormInvalid(): boolean {
+    // Check if form is invalid or if the entry already exists or is empty
     if (
       this.form.invalid ||
-      this.isDuplicateOrEmptyEntry(this.form.value.todo)
+      (this.isDuplicateOrEmptyEntry(this.form.value.todo) && !this.editEntry)
     ) {
       const message = this.notificationService.checkInvalidOrExistMessage(
         this.form.invalid
