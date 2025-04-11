@@ -114,12 +114,12 @@ export class AddEntryComponent implements OnInit {
     this.autoComplete.trainDataset(newEntry.name, this.autoComplete.isTodo);
   }
 
-  private isDuplicateOrEmptyEntry(todo: string): any {
+  private isDuplicateOrEmptyEntry(todo: string): boolean {
     return this.toDoListService.toDoList.some((entry) => entry.name === todo);
   }
 
   addSubPoint() {
-    const subPointValue: any = this.form.value.subpoint;
+    const subPointValue: string = this.form.value.subpoint;
     const isSubPoint: boolean = this.subPoints.some(
       (todoSubp) => todoSubp === subPointValue
     );

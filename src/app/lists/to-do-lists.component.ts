@@ -105,7 +105,7 @@ export class ToDoListsComponent implements OnInit {
     this.toDoList = this.toDoListService.toDoList;
   }
 
-  onSubmit(list: any) {
+  onSubmit(list: object) {
     const newSublistEntry = this.form.value.subpoint;
 
     if (!this.toDoListService.addSubEntry(list, newSublistEntry)) {

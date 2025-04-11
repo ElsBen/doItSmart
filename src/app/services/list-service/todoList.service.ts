@@ -8,8 +8,8 @@ export class ToDoListService implements OnChanges {
 
   createObject(
     name: string,
-    completionDate: any,
-    creationDate: any,
+    completionDate: string,
+    creationDate: string,
     sublist?: any
   ) {
     return {
@@ -21,7 +21,6 @@ export class ToDoListService implements OnChanges {
   }
 
   toDoList: Array<any> = [];
-
 
   FIELD_TODO = 'todo';
   FIELD_SUBPOINT = 'subpoint';
@@ -37,7 +36,7 @@ export class ToDoListService implements OnChanges {
     }
   }
 
-  addSubEntry(list: any, newSublistEntry: string): boolean {
+  addSubEntry(list: object, newSublistEntry: string): boolean {
     const entryIndex = this.toDoList.indexOf(list);
     const existSublist = this.toDoList[entryIndex].sublist;
 
