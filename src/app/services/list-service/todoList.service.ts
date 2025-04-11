@@ -1,4 +1,5 @@
 import { Injectable, OnChanges, SimpleChanges } from '@angular/core';
+import { Entry, SubEntry } from '../../models/entry.model';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +21,7 @@ export class ToDoListService implements OnChanges {
     };
   }
 
-  toDoList: Array<any> = [];
+  toDoList: Entry[] = [];
 
   FIELD_TODO = 'todo';
   FIELD_SUBPOINT = 'subpoint';
@@ -36,7 +37,7 @@ export class ToDoListService implements OnChanges {
     }
   }
 
-  addSubEntry(list: object, newSublistEntry: string): boolean {
+  addSubEntry(list: Entry, newSublistEntry: SubEntry): boolean {
     const entryIndex = this.toDoList.indexOf(list);
     const existSublist = this.toDoList[entryIndex].sublist;
 

@@ -14,6 +14,7 @@ import { NotificationComponent } from '../notification/notification.component';
 import { NotificationService } from '../services/notification-service/notification.service';
 import { AutocompleteService } from '../services/autocomplete-service/autocomplete.service';
 import { PredictionComponent } from '../prediction/prediction.component';
+import { Entry, SubEntry } from '../models/entry.model';
 
 @Injectable({
   providedIn: 'root',
@@ -32,14 +33,10 @@ import { PredictionComponent } from '../prediction/prediction.component';
 })
 export class AddEntryComponent implements OnInit {
   form: FormGroup = new FormGroup({});
-  subPoints: Array<string> = [];
+  subPoints: SubEntry[] = [];
 
   queryParam: number | null = null;
-  editEntry: {
-    name: string;
-    completionDate: string;
-    sublist?: string[];
-  } | null = null;
+  editEntry: Entry | null = null;
   contentSubmitBtn: string = '';
 
   predictionTodo: string = '';
@@ -121,11 +118,12 @@ export class AddEntryComponent implements OnInit {
   addSubPoint() {
     const subPointValue: string = this.form.value.subpoint;
     const isSubPoint: boolean = this.subPoints.some(
-      (todoSubp) => todoSubp === subPointValue
+      (todoSubp) => todoSubp.name === subPointValue
     );
+    const newSubPoint: SubEntry = { name: subPointValue };
 
     !isSubPoint && subPointValue
-      ? this.subPoints.push(subPointValue)
+      ? this.subPoints.push(newSubPoint)
       : this.notificationService.showMessage(
           this.notificationService.MESSAGE_EXIST,
           this.notificationService.COLOR_RED
@@ -136,7 +134,7 @@ export class AddEntryComponent implements OnInit {
     this.autoComplete.isTodo = true;
   }
 
-  deleteSubpoint(subpoint: string) {
+  deleteSubpoint(subpoint: SubEntry) {
     const findEntry = this.subPoints.indexOf(subpoint);
     this.subPoints.splice(findEntry, 1);
   }

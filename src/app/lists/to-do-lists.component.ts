@@ -21,6 +21,7 @@ import { NotificationComponent } from '../notification/notification.component';
 import { NotificationService } from '../services/notification-service/notification.service';
 import { AutocompleteService } from '../services/autocomplete-service/autocomplete.service';
 import { PredictionComponent } from '../prediction/prediction.component';
+import { Entry, SubEntry } from '../models/entry.model';
 
 @Component({
   selector: 'app-to-do-lists',
@@ -105,7 +106,7 @@ export class ToDoListsComponent implements OnInit {
     this.toDoList = this.toDoListService.toDoList;
   }
 
-  onSubmit(list: object) {
+  onSubmit(list: Entry) {
     const newSublistEntry = this.form.value.subpoint;
 
     if (!this.toDoListService.addSubEntry(list, newSublistEntry)) {
