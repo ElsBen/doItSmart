@@ -41,6 +41,10 @@ import { Entry, SubEntry } from '../models/entry.model';
   .tab-links{
     cursor: pointer;
   }
+
+  .checked{
+    text-decoration: line-through;
+  }
   `,
   animations: [
     trigger('list', [
