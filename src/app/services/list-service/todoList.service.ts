@@ -11,7 +11,7 @@ export class ToDoListService implements OnChanges {
     name: string,
     completionDate: string,
     creationDate: string,
-    sublist?: any
+    sublist?: SubEntry[]
   ) {
     return {
       name: name,
@@ -37,23 +37,38 @@ export class ToDoListService implements OnChanges {
     }
   }
 
-  addSubEntry(list: Entry, newSublistEntry: SubEntry): boolean {
+  addSubEntry(list: Entry, newSublistEntry: string): boolean {
+    const newEntry: SubEntry = { name: newSublistEntry, done: false };
     const entryIndex = this.toDoList.indexOf(list);
     const existSublist = this.toDoList[entryIndex].sublist;
 
     if (!newSublistEntry) return false;
 
     if (existSublist) {
-      if (existSublist.includes(newSublistEntry)) {
+      if (existSublist.includes(newEntry)) {
         return false; // Sub-Entry existiert bereits
       }
-      this.toDoList[entryIndex].sublist?.push(newSublistEntry);
+      this.toDoList[entryIndex].sublist?.push(newEntry);
     } else {
-      this.toDoList[entryIndex].sublist = [newSublistEntry];
+      this.toDoList[entryIndex].sublist = [newEntry];
     }
 
     this.saveEntrys();
     return true;
+  }
+
+  changeSubEntryStatus(entry: SubEntry, list: Entry) {
+    const entryIndex = this.toDoList.indexOf(list);
+    const sublist = this.toDoList[entryIndex].sublist;
+    if (sublist) {
+      const subEntryIndex = sublist.indexOf(entry);
+      sublist[subEntryIndex].done
+        ? (sublist[subEntryIndex].done = true)
+        : (sublist[subEntryIndex].done = false);
+      this.saveEntrys();
+    } else {
+      console.error('Keine Unterpunkte gefunden.');
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
