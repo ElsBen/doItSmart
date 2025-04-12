@@ -7,4 +7,5 @@ export interface Entry {
 
 export interface SubEntry {
   name: string;
+  done: boolean;
 }
