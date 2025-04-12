@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import {
   FormBuilder,
   FormGroup,
+  FormsModule,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
@@ -28,6 +29,7 @@ import { Entry, SubEntry } from '../models/entry.model';
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
     ReactiveFormsModule,
     ShareDateModule,
     NotificationComponent,
@@ -126,13 +128,17 @@ export class ToDoListsComponent implements OnInit {
     this.predictionSubpoint = '';
   }
 
-  onEdit(list: any) {
+  onEdit(list: Entry) {
     //multiplying with 1 avoids problems with null or undefined in add-entry
     const entryIndex = this.toDoListService.toDoList.indexOf(list);
     this.router.navigate(['create'], { queryParams: { i: entryIndex + 1 } });
   }
 
-  onDelete(list: any) {
+  onCheckBoxChange(entry: SubEntry, list: Entry) {
+    this.toDoListService.changeSubEntryStatus(entry, list);
+  }
+
+  onDelete(list: Entry) {
     const entryObject = this.toDoListService.toDoList;
     const entryIndex = entryObject.indexOf(list);
 

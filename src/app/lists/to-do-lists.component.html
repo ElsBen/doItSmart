@@ -96,6 +96,8 @@
                       type="checkbox"
                       value=""
                       aria-label="..."
+                      [(ngModel)]="entry.done"
+                      (change)="onCheckBoxChange(entry, list)"
                     />
                     <span class="me-1">{{ entry.name }}</span>
                   </p>

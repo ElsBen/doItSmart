@@ -120,7 +120,7 @@ export class AddEntryComponent implements OnInit {
     const isSubPoint: boolean = this.subPoints.some(
       (todoSubp) => todoSubp.name === subPointValue
     );
-    const newSubPoint: SubEntry = { name: subPointValue };
+    const newSubPoint: SubEntry = { name: subPointValue, done: false };
 
     !isSubPoint && subPointValue
       ? this.subPoints.push(newSubPoint)
