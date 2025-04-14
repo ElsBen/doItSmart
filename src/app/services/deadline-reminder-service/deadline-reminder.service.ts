@@ -1,15 +1,18 @@
 import { Injectable } from '@angular/core';
+import { DateService } from '../date-service/date.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DeadlineReminderService {
-  constructor() {}
+  constructor(private dateService: DateService) {}
 
   isDeadlineCloseToCurrentDate(deadline: string): string {
     const currentDate = new Date();
     currentDate.setHours(0, 0, 0, 0);
-    const selectedDate = new Date(this.convertToUSDateFormat(deadline));
+    const selectedDate = new Date(
+      this.dateService.convertToUSDateFormat(deadline)
+    );
     selectedDate.setHours(0, 0, 0, 0);
 
     const timeDifference = Math.ceil(
