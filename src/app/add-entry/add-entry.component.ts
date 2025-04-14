@@ -8,13 +8,14 @@ import {
   Validators,
 } from '@angular/forms';
 
+import { Entry, SubEntry } from '../models/entry.model';
 import { ToDoListService } from '../services/list-service/todoList.service';
-import { DateService } from '../services/date-service/date.service';
-import { NotificationComponent } from '../notification/notification.component';
 import { NotificationService } from '../services/notification-service/notification.service';
 import { AutocompleteService } from '../services/autocomplete-service/autocomplete.service';
+import { DateService } from '../services/date-service/date.service';
+
+import { NotificationComponent } from '../notification/notification.component';
 import { PredictionComponent } from '../prediction/prediction.component';
-import { Entry, SubEntry } from '../models/entry.model';
 
 @Injectable({
   providedIn: 'root',
