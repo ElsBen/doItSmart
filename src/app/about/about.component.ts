@@ -9,7 +9,7 @@ import { Component } from '@angular/core';
       class="d-flex align-items-center justify-content-center"
       style="min-height: 100vh"
     >
-      <div class="mt-5 p-5" style=" min-width: 60%">
+      <div class="p-5" style=" min-width: 300px">
         <h1>About the Do It Smart App</h1>
         <p>
           Do It Smart is my app that helps you efficiently manage your tasks and
