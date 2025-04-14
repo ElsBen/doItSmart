@@ -12,7 +12,7 @@ export class ToDoListService implements OnChanges {
     completionDate: string,
     creationDate: string,
     sublist?: SubEntry[]
-  ) {
+  ): Entry {
     return {
       name: name,
       sublist: sublist,

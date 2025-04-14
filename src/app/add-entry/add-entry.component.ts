@@ -55,7 +55,7 @@ export class AddEntryComponent implements OnInit {
   onSubmit() {
     if (this.isFormInvalid()) return;
 
-    const newEntry = this.createNewEntry();
+    const newEntry: Entry = this.createNewEntry();
     this.saveEntry(newEntry);
     this.onClear();
     this.notificationService.showMessage(
@@ -83,7 +83,7 @@ export class AddEntryComponent implements OnInit {
     return false;
   }
 
-  private createNewEntry(): any {
+  private createNewEntry(): Entry {
     const nameTodoForm: string = this.form.value.todo;
     const completionDate = this.dateService.convertDateToLocalDate(
       this.form.value.completionDate
@@ -100,8 +100,8 @@ export class AddEntryComponent implements OnInit {
     );
   }
 
-  private saveEntry(newEntry: any): void {
-    const toDoList: Array<any> = this.toDoListService.toDoList;
+  private saveEntry(newEntry: Entry): void {
+    const toDoList: Array<Entry> = this.toDoListService.toDoList;
     if (this.queryParam !== null) {
       toDoList[this.queryParam - 1] = newEntry;
     } else {
