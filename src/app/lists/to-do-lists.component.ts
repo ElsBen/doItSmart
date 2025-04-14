@@ -93,7 +93,7 @@ import { Entry, SubEntry } from '../models/entry.model';
   providedIn: 'root',
 })
 export class ToDoListsComponent implements OnInit {
-  toDoList: Array<any> = [];
+  toDoList: Array<Entry> = [];
   activeTab: string = 'active';
 
   form: FormGroup = new FormGroup({});
