@@ -8,16 +8,12 @@ export class DeadlineReminderService {
   constructor(private dateService: DateService) {}
 
   isDeadlineCloseToCurrentDate(deadline: string): string {
-    const currentDate = new Date();
+    const currentDate = this.getCurrentDate();
+    const selectedDate = this.convertToUSFormat(deadline);
     currentDate.setHours(0, 0, 0, 0);
-    const selectedDate = new Date(
-      this.dateService.convertToUSDateFormat(deadline)
-    );
     selectedDate.setHours(0, 0, 0, 0);
 
-    const timeDifference = Math.ceil(
-      (selectedDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24)
-    );
+    const timeDifference = this.calcTimeDifference(currentDate, selectedDate);
 
     if (timeDifference < 0) {
       return 'bg-secondary';
@@ -28,5 +24,19 @@ export class DeadlineReminderService {
     } else {
       return 'bg-success';
     }
+  }
+
+  private getCurrentDate(): Date {
+    return new Date();
+  }
+
+  private convertToUSFormat(date: string): Date {
+    return new Date(this.dateService.convertToUSDateFormat(date));
+  }
+
+  private calcTimeDifference(currentDate: Date, selectedDate: Date): number {
+    return Math.ceil(
+      (selectedDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24)
+    );
   }
 }
