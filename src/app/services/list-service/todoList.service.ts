@@ -45,7 +45,7 @@ export class ToDoListService implements OnChanges {
     if (!newSublistEntry) return false;
 
     if (existSublist) {
-      if (existSublist.includes(newEntry)) {
+      if (existSublist.find((subEntry) => subEntry.name === newSublistEntry)) {
         return false; // Sub-Entry existiert bereits
       }
       this.toDoList[entryIndex].sublist?.push(newEntry);

@@ -113,7 +113,7 @@ export class ToDoListsComponent implements OnInit {
   }
 
   onSubmit(list: Entry) {
-    const newSublistEntry = this.form.value.subpoint;
+    const newSublistEntry: string = this.form.value.subpoint;
 
     if (!this.toDoListService.addSubEntry(list, newSublistEntry)) {
       const message = this.notificationService.checkInvalidOrExistMessage(
