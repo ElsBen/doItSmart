@@ -30,6 +30,7 @@ export class DateService {
     return fullViewDate.slice(-20, -3).replace('-', ', ');
   }
 
+  // Sollte im deadline-reminder service angegeben werden
   isDeadlineCloseToCurrentDate(deadline: string): string {
     const currentDate = new Date();
     currentDate.setHours(0, 0, 0, 0);
