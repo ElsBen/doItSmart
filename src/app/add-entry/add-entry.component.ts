@@ -207,6 +207,8 @@ export class AddEntryComponent implements OnInit {
         }
         this.editEntry = this.toDoListService.toDoList[this.queryParam - 1];
         this.subPoints = this.editEntry?.sublist || [];
+      } else {
+        this.onClear();
       }
     });
 
