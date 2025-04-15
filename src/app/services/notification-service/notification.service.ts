@@ -40,4 +40,18 @@ export class NotificationService {
       return this.MESSAGE_ERROR;
     }
   }
+
+  requestNotificationPermission(): void {
+    if ('Notification' in window) {
+      Notification.requestPermission().then((permission) => {
+        console.log('Notification permission:', permission);
+      });
+    }
+  }
+
+  displayNotification(title: string, body: string) {
+    if (Notification.permission === 'granted') {
+      new Notification(title, { body });
+    }
+  }
 }
