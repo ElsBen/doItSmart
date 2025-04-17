@@ -23,7 +23,9 @@
             <span class="ms-2 me-2 col">
               <span
                 class="badge"
-                [ngClass]="list.completionDate | shareDate : 'deadline'"
+                [ngClass]="
+                  list.completionDate | shareDate : 'deadline' : list.name
+                "
               >
                 <span class="bi bi-calendar-check"></span>
                 {{ list.completionDate | shareDate }}

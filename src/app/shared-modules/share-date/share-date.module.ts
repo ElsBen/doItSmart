@@ -13,12 +13,16 @@ export class ShareDateModule {
 
   transform(
     date: string,
-    format: 'short' | 'long' | 'deadline' = 'short'
+    format: 'short' | 'long' | 'deadline' = 'short',
+    entryName: string = ''
   ): string {
     if (!date) return '';
 
     if (format === 'deadline')
-      return this.deadlineReminder.isDeadlineCloseToCurrentDate(date);
+      return this.deadlineReminder.isDeadlineCloseToCurrentDate(
+        date,
+        entryName
+      );
 
     return format === 'short'
       ? this.dateService.convertCompletionDateShortView(date)

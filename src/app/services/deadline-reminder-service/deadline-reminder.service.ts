@@ -11,14 +11,14 @@ export class DeadlineReminderService {
     private notificationService: NotificationService
   ) {}
 
-  isDeadlineCloseToCurrentDate(deadline: string): string {
+  isDeadlineCloseToCurrentDate(deadline: string, entryName: string): string {
     const currentDate = this.getCurrentDate();
     const selectedDate = this.convertToUSFormat(deadline);
     currentDate.setHours(0, 0, 0, 0);
     selectedDate.setHours(0, 0, 0, 0);
 
     const timeDifference = this.calcTimeDifference(currentDate, selectedDate);
-    this.remindIfDeadlineApproaching(deadline, timeDifference);
+    this.remindIfDeadlineApproaching(deadline, timeDifference, entryName);
 
     if (timeDifference < 0) {
       return 'bg-secondary';
@@ -45,14 +45,18 @@ export class DeadlineReminderService {
     );
   }
 
-  remindIfDeadlineApproaching(deadline: string, difference: number) {
+  remindIfDeadlineApproaching(
+    deadline: string,
+    difference: number,
+    entryName: string
+  ) {
     if (difference <= 2 && difference >= 0) {
       this.getDisplayNotificationMessage(
-        `Der Termin "${deadline}" rückt näher!`
+        `Der Termin für den Eintrag "${entryName}" rückt näher!`
       );
     } else if (difference < 0) {
       this.getDisplayNotificationMessage(
-        `Der Termin "${deadline}" ist abgelaufen!`
+        `Der Termin "${entryName}" ist am "${deadline}" abgelaufen!`
       );
     }
   }
