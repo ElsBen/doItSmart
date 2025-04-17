@@ -73,7 +73,6 @@ export class DeadlineReminderService {
     const difference = this.calcTimeDifferenceDays(currentDate, selectedDate);
 
     const isRemindedEntry = this.checkForExistingEntry(deadline, entryName);
-    console.log('is Reminded Entry: ', isRemindedEntry);
     if (difference <= 2 && difference >= 0 && !isRemindedEntry) {
       this.getDisplayNotificationMessage(
         `Der Termin für den Eintrag "${entryName}" rückt näher!`
@@ -95,7 +94,7 @@ export class DeadlineReminderService {
       );
     }
     if (!isRemindedEntry) {
-      this.addEntry(deadline, entryName);
+      this.addEntry(deadline, entryName, isRemindedEntry);
     }
   }
 
@@ -108,12 +107,23 @@ export class DeadlineReminderService {
     });
   }
 
-  private addEntry(deadline: string, entryName: string) {
-    this.remindedEntries.push({
-      nameEntry: entryName,
-      deadline: deadline,
-      isReminded: false,
-    });
+  private addEntry(
+    deadline: string,
+    entryName: string,
+    isRemindedEntry: RemindedEntry | undefined
+  ) {
+    // const isExistingEntry = this.checkForExistingEntry(deadline, entryName);
+    console.log('Entry: ', isRemindedEntry);
+    // Hier prüfen die Anweisung funktioniert nicht richtig (Wert ist immer undefined)
+    if (isRemindedEntry?.nameEntry !== entryName) {
+      this.remindedEntries.push({
+        nameEntry: entryName,
+        deadline: deadline,
+        isReminded: false,
+      });
+    } else if (isRemindedEntry.nameEntry === entryName) {
+      isRemindedEntry.deadline = deadline;
+    }
     this.saveEntries();
   }
 
@@ -134,5 +144,11 @@ export class DeadlineReminderService {
   private getDisplayNotificationMessage(message: string) {
     this.notificationService.requestNotificationPermission();
     this.notificationService.displayNotification('Deadline Reminder', message);
+  }
+
+  reminderCycle() {
+    this.remindedEntries.forEach((entry) => {
+      this.remindIfDeadlineApproaching(entry.deadline, entry.nameEntry);
+    });
   }
 }
