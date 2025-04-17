@@ -167,6 +167,12 @@ export class ToDoListsComponent implements OnInit {
     }
   }
 
+  startReminderCycle() {
+    setInterval(() => {
+      this.deadlineReminder.reminderCycle();
+    }, 2 * 2 * 1000);
+  }
+
   ngOnInit() {
     this.toDoListService.getSavedEntrys();
     this.getTodoLists();
@@ -181,5 +187,7 @@ export class ToDoListsComponent implements OnInit {
         this.predictionSubpoint = this.autoComplete.predictionSubpoint;
         this.autoComplete.handleInputPrediction(entry, false);
       });
+
+    this.startReminderCycle();
   }
 }
