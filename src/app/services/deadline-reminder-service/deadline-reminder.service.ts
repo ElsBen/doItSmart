@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import { DateService } from '../date-service/date.service';
 import { NotificationService } from '../notification-service/notification.service';
+import { RemindedEntry } from '../../models/reminded-entry.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DeadlineReminderService {
+  private remindedEntries: RemindedEntry[] = [];
+
   constructor(
     private dateService: DateService,
     private notificationService: NotificationService
@@ -17,8 +20,11 @@ export class DeadlineReminderService {
     currentDate.setHours(0, 0, 0, 0);
     selectedDate.setHours(0, 0, 0, 0);
 
-    const timeDifference = this.calcTimeDifference(currentDate, selectedDate);
-    this.remindIfDeadlineApproaching(deadline, timeDifference, entryName);
+    const timeDifference = this.calcTimeDifferenceDays(
+      currentDate,
+      selectedDate
+    );
+    this.remindIfDeadlineApproaching(deadline, entryName);
 
     if (timeDifference < 0) {
       return 'bg-secondary';
@@ -39,26 +45,74 @@ export class DeadlineReminderService {
     return new Date(this.dateService.convertToUSDateFormat(date));
   }
 
-  private calcTimeDifference(currentDate: Date, selectedDate: Date): number {
+  private calcTimeDifferenceDays(
+    currentDate: Date,
+    selectedDate: Date
+  ): number {
     return Math.ceil(
       (selectedDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24)
     );
   }
 
-  remindIfDeadlineApproaching(
-    deadline: string,
-    difference: number,
-    entryName: string
-  ) {
-    if (difference <= 2 && difference >= 0) {
+  private calcTimeDifferenceMinutes(
+    currentDate: Date,
+    selectedDate: Date
+  ): number {
+    const diffMs = selectedDate.getTime() - currentDate.getTime();
+    return diffMs / 1000 / 60;
+  }
+
+  remindIfDeadlineApproaching(deadline: string, entryName: string) {
+    const currentDate = this.getCurrentDate();
+    const selectedDate = this.convertToUSFormat(deadline);
+
+    const diffMinutes = this.calcTimeDifferenceMinutes(
+      currentDate,
+      selectedDate
+    );
+    const difference = this.calcTimeDifferenceDays(currentDate, selectedDate);
+
+    const isRemindedEntry = this.checkForExistingEntry(deadline, entryName);
+    console.log('is Reminded Entry: ', isRemindedEntry);
+    if (difference <= 2 && difference >= 0 && !isRemindedEntry) {
       this.getDisplayNotificationMessage(
         `Der Termin für den Eintrag "${entryName}" rückt näher!`
       );
-    } else if (difference < 0) {
+    } else if (
+      diffMinutes <= 120 &&
+      diffMinutes >= 0 &&
+      !isRemindedEntry?.isReminded &&
+      isRemindedEntry
+    ) {
+      isRemindedEntry.isReminded = true;
+      this.getDisplayNotificationMessage(
+        `Es sind nur noch 2 Stunden für "${entryName}" übrig!`
+      );
+    } else if (difference < 0 && isRemindedEntry?.isReminded) {
       this.getDisplayNotificationMessage(
         `Der Termin "${entryName}" ist am "${deadline}" abgelaufen!`
       );
     }
+    if (!isRemindedEntry) {
+      this.addEntry(deadline, entryName);
+    }
+  }
+
+  private checkForExistingEntry(
+    deadline: string,
+    entryName: string
+  ): RemindedEntry | undefined {
+    return this.remindedEntries.find((e) => {
+      return e.nameEntry === entryName && e.deadline === deadline;
+    });
+  }
+
+  private addEntry(deadline: string, entryName: string) {
+    this.remindedEntries.push({
+      nameEntry: entryName,
+      deadline: deadline,
+      isReminded: false,
+    });
   }
 
   private getDisplayNotificationMessage(message: string) {
