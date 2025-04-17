@@ -88,6 +88,7 @@ export class DeadlineReminderService {
       this.getDisplayNotificationMessage(
         `Es sind nur noch 2 Stunden für "${entryName}" übrig!`
       );
+      this.saveEntries();
     } else if (difference < 0 && isRemindedEntry?.isReminded) {
       this.getDisplayNotificationMessage(
         `Der Termin "${entryName}" ist am "${deadline}" abgelaufen!`
@@ -113,6 +114,21 @@ export class DeadlineReminderService {
       deadline: deadline,
       isReminded: false,
     });
+    this.saveEntries();
+  }
+
+  private saveEntries() {
+    localStorage.setItem(
+      'remindedEntries',
+      JSON.stringify(this.remindedEntries)
+    );
+  }
+
+  getSavedEntries() {
+    const savedEntries = localStorage.getItem('remindedEntries');
+    if (savedEntries) {
+      this.remindedEntries = JSON.parse(savedEntries);
+    }
   }
 
   private getDisplayNotificationMessage(message: string) {
