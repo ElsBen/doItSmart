@@ -24,6 +24,7 @@ import { NotificationService } from '../services/notification-service/notificati
 import { ShareDateModule } from '../shared-modules/share-date/share-date.module';
 import { NotificationComponent } from '../notification/notification.component';
 import { PredictionComponent } from '../prediction/prediction.component';
+import { DeadlineReminderService } from '../services/deadline-reminder-service/deadline-reminder.service';
 
 @Component({
   selector: 'app-to-do-lists',
@@ -106,6 +107,7 @@ export class ToDoListsComponent implements OnInit {
     private router: Router,
     private toDoListService: ToDoListService,
     private notificationService: NotificationService,
+    private deadlineReminder: DeadlineReminderService,
     private autoComplete: AutocompleteService
   ) {}
 
@@ -168,6 +170,7 @@ export class ToDoListsComponent implements OnInit {
   ngOnInit() {
     this.toDoListService.getSavedEntrys();
     this.getTodoLists();
+    this.deadlineReminder.getSavedEntries();
     this.form = this.formBuilder.group({
       subpoint: this.formBuilder.control(null, [Validators.required]),
     });
