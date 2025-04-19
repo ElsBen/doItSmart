@@ -16,6 +16,7 @@ import { DateService } from '../services/date-service/date.service';
 
 import { NotificationComponent } from '../notification/notification.component';
 import { PredictionComponent } from '../prediction/prediction.component';
+import { DeadlineReminderService } from '../services/deadline-reminder-service/deadline-reminder.service';
 
 @Injectable({
   providedIn: 'root',
@@ -50,7 +51,8 @@ export class AddEntryComponent implements OnInit {
     private dateService: DateService,
     private toDoListService: ToDoListService,
     private notificationService: NotificationService,
-    private autoComplete: AutocompleteService
+    private autoComplete: AutocompleteService,
+    private deadlineReminderService: DeadlineReminderService
   ) {}
 
   onSubmit() {
@@ -104,7 +106,10 @@ export class AddEntryComponent implements OnInit {
   private saveEntry(newEntry: Entry): void {
     const toDoList: Array<Entry> = this.toDoListService.toDoList;
     if (this.queryParam !== null) {
+      const oldEntry = toDoList[this.queryParam - 1];
       toDoList[this.queryParam - 1] = newEntry;
+      this.deadlineReminderService.changeRemindedEntry(oldEntry, newEntry);
+      // hier für die reminder Einträge auch einen change ausführen
     } else {
       toDoList.push(newEntry);
     }
