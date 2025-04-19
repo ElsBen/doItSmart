@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { DateService } from '../date-service/date.service';
 import { NotificationService } from '../notification-service/notification.service';
 import { RemindedEntry } from '../../models/reminded-entry.model';
+import { Entry } from '../../models/entry.model';
 
 @Injectable({
   providedIn: 'root',
@@ -153,5 +154,23 @@ export class DeadlineReminderService {
     this.remindedEntries.forEach((entry) => {
       this.remindIfDeadlineApproaching(entry.deadline, entry.nameEntry);
     });
+  }
+
+  removeRemindedEntry(listName: string) {
+    this.remindedEntries = this.remindedEntries.filter(
+      (entry) => entry.nameEntry !== listName
+    );
+    this.saveEntries();
+  }
+
+  changeRemindedEntry(oldEntry: Entry, newEntry: Entry) {
+    const deadline = oldEntry.completionDate;
+    const entryName = oldEntry.name;
+    const remindedEntry = this.checkForExistingEntry(deadline, entryName);
+    if (remindedEntry) {
+      remindedEntry.deadline = newEntry.completionDate;
+      remindedEntry.nameEntry = newEntry.name;
+    }
+    this.saveEntries();
   }
 }
