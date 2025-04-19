@@ -70,9 +70,10 @@ export class DeadlineReminderService {
       currentDate,
       selectedDate
     );
-    const difference = this.calcTimeDifferenceDays(currentDate, selectedDate);
 
+    const difference = this.calcTimeDifferenceDays(currentDate, selectedDate);
     const isRemindedEntry = this.checkForExistingEntry(deadline, entryName);
+
     if (difference <= 2 && difference >= 0 && !isRemindedEntry) {
       this.getDisplayNotificationMessage(
         `Der Termin für den Eintrag "${entryName}" rückt näher!`
@@ -80,15 +81,19 @@ export class DeadlineReminderService {
     } else if (
       diffMinutes <= 120 &&
       diffMinutes >= 0 &&
-      !isRemindedEntry?.isReminded &&
-      isRemindedEntry
+      isRemindedEntry &&
+      !isRemindedEntry.hasOwnProperty('isReminded')
+    ) {
+      isRemindedEntry.isReminded = false;
+      this.getDisplayNotificationMessage(
+        `Es sind weniger als 2 Stunden für "${entryName}" übrig!`
+      );
+    } else if (
+      difference < 0 &&
+      isRemindedEntry &&
+      !isRemindedEntry.isReminded
     ) {
       isRemindedEntry.isReminded = true;
-      this.getDisplayNotificationMessage(
-        `Es sind nur noch 2 Stunden für "${entryName}" übrig!`
-      );
-      this.saveEntries();
-    } else if (difference < 0 && isRemindedEntry?.isReminded) {
       this.getDisplayNotificationMessage(
         `Der Termin "${entryName}" ist am "${deadline}" abgelaufen!`
       );
@@ -96,6 +101,7 @@ export class DeadlineReminderService {
     if (!isRemindedEntry) {
       this.addEntry(deadline, entryName, isRemindedEntry);
     }
+    this.saveEntries();
   }
 
   private checkForExistingEntry(
@@ -112,14 +118,11 @@ export class DeadlineReminderService {
     entryName: string,
     isRemindedEntry: RemindedEntry | undefined
   ) {
-    // const isExistingEntry = this.checkForExistingEntry(deadline, entryName);
-    console.log('Entry: ', isRemindedEntry);
     // Hier prüfen die Anweisung funktioniert nicht richtig (Wert ist immer undefined)
     if (isRemindedEntry?.nameEntry !== entryName) {
       this.remindedEntries.push({
         nameEntry: entryName,
         deadline: deadline,
-        isReminded: false,
       });
     } else if (isRemindedEntry.nameEntry === entryName) {
       isRemindedEntry.deadline = deadline;
