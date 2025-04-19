@@ -151,6 +151,8 @@ export class ToDoListsComponent implements OnInit {
 
     entryObject.splice(entryIndex, 1);
     this.toDoListService.saveEntrys();
+
+    this.deadlineReminder.removeRemindedEntry(list.name);
   }
 
   getApplyPrediction() {
