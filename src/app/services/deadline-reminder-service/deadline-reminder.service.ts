@@ -119,7 +119,6 @@ export class DeadlineReminderService {
     entryName: string,
     isRemindedEntry: RemindedEntry | undefined
   ) {
-    // Hier prüfen die Anweisung funktioniert nicht richtig (Wert ist immer undefined)
     if (isRemindedEntry?.nameEntry !== entryName) {
       this.remindedEntries.push({
         nameEntry: entryName,
@@ -132,16 +131,24 @@ export class DeadlineReminderService {
   }
 
   private saveEntries() {
-    localStorage.setItem(
-      'remindedEntries',
-      JSON.stringify(this.remindedEntries)
-    );
+    try {
+      localStorage.setItem(
+        'remindedEntries',
+        JSON.stringify(this.remindedEntries)
+      );
+    } catch (error) {
+      console.error('Error saving reminded entries to localStorage:', error);
+    }
   }
 
   getSavedEntries() {
-    const savedEntries = localStorage.getItem('remindedEntries');
-    if (savedEntries) {
-      this.remindedEntries = JSON.parse(savedEntries);
+    try {
+      const savedEntries = localStorage.getItem('remindedEntries');
+      if (savedEntries) {
+        this.remindedEntries = JSON.parse(savedEntries);
+      }
+    } catch (error) {
+      console.error('Error parsing reminded entries from localStorage:', error);
     }
   }
 
