@@ -75,28 +75,14 @@ export class DeadlineReminderService {
     const difference = this.calcTimeDifferenceDays(currentDate, selectedDate);
     const isRemindedEntry = this.checkForExistingEntry(deadline, entryName);
 
-    if (difference <= 2 && difference >= 0 && !isRemindedEntry) {
-      this.getDisplayNotificationMessage(
-        `Der Termin für den Eintrag "${entryName}" rückt näher!`
-      );
-    } else if (
-      diffMinutes <= 120 &&
-      diffMinutes >= 0 &&
-      isRemindedEntry &&
-      !isRemindedEntry.hasOwnProperty('isReminded')
-    ) {
-      isRemindedEntry.isReminded = false;
-      this.getDisplayNotificationMessage(
-        `Es sind weniger als 2 Stunden für "${entryName}" übrig!`
-      );
-    } else if (
-      difference < 0 &&
-      isRemindedEntry &&
-      !isRemindedEntry.isReminded
-    ) {
-      isRemindedEntry.isReminded = true;
-      this.getDisplayNotificationMessage(
-        `Der Termin "${entryName}" ist am "${deadline}" abgelaufen!`
+    this.handleDeadlineApproaching(difference, entryName, isRemindedEntry);
+    if (isRemindedEntry) {
+      this.handleShortTimeRemaining(diffMinutes, entryName, isRemindedEntry);
+      this.handleDeadlineExpired(
+        difference,
+        deadline,
+        entryName,
+        isRemindedEntry
       );
     }
     if (!isRemindedEntry) {
@@ -112,6 +98,50 @@ export class DeadlineReminderService {
     return this.remindedEntries.find((e) => {
       return e.nameEntry === entryName && e.deadline === deadline;
     });
+  }
+
+  private handleDeadlineApproaching(
+    difference: number,
+    entryName: string,
+    isRemindedEntry: RemindedEntry | undefined
+  ) {
+    if (difference <= 2 && difference >= 0 && !isRemindedEntry) {
+      this.getDisplayNotificationMessage(
+        `Der Termin für den Eintrag "${entryName}" rückt näher!`
+      );
+    }
+  }
+
+  private handleShortTimeRemaining(
+    diffMinutes: number,
+    entryName: string,
+    isRemindedEntry: RemindedEntry
+  ) {
+    if (
+      diffMinutes <= 120 &&
+      diffMinutes >= 0 &&
+      !isRemindedEntry.isReminded &&
+      !isRemindedEntry.hasOwnProperty('isReminded')
+    ) {
+      isRemindedEntry.isReminded = false;
+      this.getDisplayNotificationMessage(
+        `Es sind weniger als 2 Stunden für "${entryName}" übrig!`
+      );
+    }
+  }
+
+  private handleDeadlineExpired(
+    difference: number,
+    deadline: string,
+    entryName: string,
+    isRemindedEntry: RemindedEntry
+  ) {
+    if (difference < 0 && !isRemindedEntry.isReminded) {
+      isRemindedEntry.isReminded = true;
+      this.getDisplayNotificationMessage(
+        `Der Termin "${entryName}" ist am "${deadline}" abgelaufen!`
+      );
+    }
   }
 
   private addEntry(
