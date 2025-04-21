@@ -8,6 +8,15 @@ import { Entry } from '../../models/entry.model';
   providedIn: 'root',
 })
 export class DeadlineReminderService {
+  LOCAL_STORAGE_KEY = 'remindedEntries';
+  NOTIFICATION_TITLE = 'Deadline Reminder';
+  BG_CLASSES = {
+    secondary: 'bg-secondary',
+    danger: 'bg-danger',
+    warning: 'bg-warning',
+    success: 'bg-success',
+  };
+
   private remindedEntries: RemindedEntry[] = [];
 
   constructor(
@@ -28,13 +37,13 @@ export class DeadlineReminderService {
     this.remindIfDeadlineApproaching(deadline, entryName);
 
     if (timeDifference < 0) {
-      return 'bg-secondary';
+      return this.BG_CLASSES.secondary;
     } else if (timeDifference === 0) {
-      return 'bg-danger';
+      return this.BG_CLASSES.danger;
     } else if (timeDifference <= 2) {
-      return 'bg-warning';
+      return this.BG_CLASSES.warning;
     } else {
-      return 'bg-success';
+      return this.BG_CLASSES.success;
     }
   }
 
@@ -163,7 +172,7 @@ export class DeadlineReminderService {
   private saveEntries() {
     try {
       localStorage.setItem(
-        'remindedEntries',
+        this.LOCAL_STORAGE_KEY,
         JSON.stringify(this.remindedEntries)
       );
     } catch (error) {
@@ -173,7 +182,7 @@ export class DeadlineReminderService {
 
   getSavedEntries() {
     try {
-      const savedEntries = localStorage.getItem('remindedEntries');
+      const savedEntries = localStorage.getItem(this.LOCAL_STORAGE_KEY);
       if (savedEntries) {
         this.remindedEntries = JSON.parse(savedEntries);
       }
@@ -184,7 +193,10 @@ export class DeadlineReminderService {
 
   private getDisplayNotificationMessage(message: string) {
     this.notificationService.requestNotificationPermission();
-    this.notificationService.displayNotification('Deadline Reminder', message);
+    this.notificationService.displayNotification(
+      this.NOTIFICATION_TITLE,
+      message
+    );
   }
 
   reminderCycle() {
