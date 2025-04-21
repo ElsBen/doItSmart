@@ -219,6 +219,7 @@ export class DeadlineReminderService {
     if (remindedEntry) {
       remindedEntry.deadline = newEntry.completionDate;
       remindedEntry.nameEntry = newEntry.name;
+      delete remindedEntry.isReminded;
     }
     this.saveEntries();
   }
