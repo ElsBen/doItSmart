@@ -129,7 +129,6 @@ export class DeadlineReminderService {
     if (
       diffMinutes <= 120 &&
       diffMinutes >= 0 &&
-      !isRemindedEntry.isReminded &&
       !isRemindedEntry.hasOwnProperty('isReminded')
     ) {
       isRemindedEntry.isReminded = false;
@@ -145,7 +144,7 @@ export class DeadlineReminderService {
     entryName: string,
     isRemindedEntry: RemindedEntry
   ) {
-    if (difference < 0 && !isRemindedEntry.isReminded) {
+    if (difference <= 0 && isRemindedEntry && !isRemindedEntry.isReminded) {
       isRemindedEntry.isReminded = true;
       this.getDisplayNotificationMessage(
         `Der Termin "${entryName}" ist am "${deadline}" abgelaufen!`
