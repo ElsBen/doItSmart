@@ -1,10 +1,23 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent],
+      providers: [
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            paramMap: of({}),
+            snapshot: {
+              data: {},
+            },
+          },
+        },
+      ],
     }).compileComponents();
   });
 
@@ -17,13 +30,13 @@ describe('AppComponent', () => {
   it(`should have the 'main-dir' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('main-dir');
+    expect(app.title).toEqual('Do It Smart App');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, main-dir');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Do It!');
   });
 });
