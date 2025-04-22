@@ -27,20 +27,27 @@ export class DeadlineReminderService {
   isDeadlineCloseToCurrentDate(deadline: string, entryName: string): string {
     const currentDate = this.getCurrentDate();
     const selectedDate = this.convertToUSFormat(deadline);
-    currentDate.setHours(0, 0, 0, 0);
-    selectedDate.setHours(0, 0, 0, 0);
 
-    const timeDifference = this.calcTimeDifferenceDays(
+    const differenceMinutes = this.calcTimeDifferenceMinutes(
       currentDate,
       selectedDate
     );
+
+    currentDate.setHours(0, 0, 0, 0);
+    selectedDate.setHours(0, 0, 0, 0);
+
+    const differenceDays = this.calcTimeDifferenceDays(
+      currentDate,
+      selectedDate
+    );
+
     this.remindIfDeadlineApproaching(deadline, entryName);
 
-    if (timeDifference < 0) {
+    if (differenceMinutes < 0) {
       return this.BG_CLASSES.secondary;
-    } else if (timeDifference === 0) {
+    } else if (differenceMinutes < 24 * 60) {
       return this.BG_CLASSES.danger;
-    } else if (timeDifference <= 2) {
+    } else if (differenceDays <= 2) {
       return this.BG_CLASSES.warning;
     } else {
       return this.BG_CLASSES.success;
@@ -81,14 +88,17 @@ export class DeadlineReminderService {
       selectedDate
     );
 
-    const difference = this.calcTimeDifferenceDays(currentDate, selectedDate);
+    const differenceDays = this.calcTimeDifferenceDays(
+      currentDate,
+      selectedDate
+    );
     const isRemindedEntry = this.checkForExistingEntry(deadline, entryName);
 
-    this.handleDeadlineApproaching(difference, entryName, isRemindedEntry);
+    this.handleDeadlineApproaching(differenceDays, entryName, isRemindedEntry);
     if (isRemindedEntry) {
       this.handleShortTimeRemaining(diffMinutes, entryName, isRemindedEntry);
       this.handleDeadlineExpired(
-        difference,
+        differenceDays,
         deadline,
         entryName,
         isRemindedEntry
