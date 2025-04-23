@@ -47,11 +47,39 @@ export class NotificationService {
         console.log('Notification permission:', permission);
       });
     }
+    this.registerServiceWorker();
+  }
+
+  registerServiceWorker(): void {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker
+        .register('ngsw-worker.js')
+        .then((registration) => {
+          console.log('Service Worker registriert:', registration);
+        })
+        .catch((error) => {
+          console.error('Service Worker Registrierung fehlgeschlagen:', error);
+        });
+    } else {
+      console.warn('Service Worker wird nicht unterstützt.');
+    }
   }
 
   displayNotification(title: string, body: string) {
     if (Notification.permission === 'granted') {
-      new Notification(title, { body });
+      // new Notification(title, { body });
+      navigator.serviceWorker.getRegistration().then((registration) => {
+        if (registration) {
+          registration.showNotification(title, {
+            body: body,
+            icon: 'assets/icons/icon-192x192.png',
+          });
+        } else {
+          console.error('Kein Service worker registriert.');
+        }
+      });
+    } else {
+      console.warn('Benachrichtigungen sind nicht erlaubt.');
     }
   }
 }
