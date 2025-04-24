@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "main-dir": {
+    "do-it-smart": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -71,10 +71,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "main-dir:build:production"
+              "buildTarget": "do-it-smart:build:production"
             },
             "development": {
-              "buildTarget": "main-dir:build:development"
+              "buildTarget": "do-it-smart:build:development"
             }
           },
           "defaultConfiguration": "development"
