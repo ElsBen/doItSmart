@@ -30,6 +30,9 @@ import { RouterLink } from '@angular/router';
               </li>
               <li><a class="dropdown-item" routerLink="lists">Liste</a></li>
               <li><a class="dropdown-item" routerLink="about">Über</a></li>
+              <li>
+                <a class="dropdown-item" routerLink="calendar">Kalender</a>
+              </li>
               <!-- <li><a class="dropdown-item" href="#">Something else here</a></li> -->
             </ul>
           </div>
