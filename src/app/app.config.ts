@@ -10,8 +10,6 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { routes } from './app.routes';
 import { HttpClientModule } from '@angular/common/http';
 import { provideServiceWorker } from '@angular/service-worker';
-import { CalendarModule, DateAdapter } from 'angular-calendar';
-import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -23,11 +21,5 @@ export const appConfig: ApplicationConfig = {
       enabled: !isDevMode(),
       registrationStrategy: 'registerWhenStable:30000',
     }),
-    importProvidersFrom(
-      CalendarModule.forRoot({
-        provide: DateAdapter,
-        useFactory: adapterFactory,
-      })
-    ),
   ],
 };
