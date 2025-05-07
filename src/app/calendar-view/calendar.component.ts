@@ -9,6 +9,7 @@ import {
   Section,
 } from 'ngx-resource-timeline';
 import moment from 'moment';
+import 'moment/locale/de';
 
 @Component({
   selector: 'app-calendar',
@@ -16,8 +17,10 @@ import moment from 'moment';
   encapsulation: ViewEncapsulation.None,
   imports: [CommonModule, NgxResourceTimelineModule],
   template: `
-    <div class="calendar-container mt-5">
+    <div class="calendar-container mt-5 p-md-5 p-sm-1 overflow-auto">
       <ngx-rt
+        locale="de"
+        headerFormat="DD.MM.YYYY"
         [items]="items"
         [periods]="periods"
         [sections]="sections"
@@ -40,24 +43,25 @@ export class CalendarComponent {
   constructor(private service: NgxResourceTimelineService) {}
 
   ngOnInit() {
+    moment.locale('de');
     this.periods = [
       {
         name: '1 Tag',
         timeFramePeriod: 60 * 6,
-        timeFrameOverall: 60 * 24 * 3,
+        timeFrameOverall: 60 * 24,
         classes: 'periods ',
         timeFrameHeaders: ['dd', 'HH'],
       },
       {
-        name: '1 week',
-        timeFrameHeaders: ['MMM YYYY', 'DD(ddd)'],
+        name: '1 Woche',
+        timeFrameHeaders: ['MMMM YYYY', 'D'],
         classes: 'periods',
         timeFrameOverall: 1440 * 7,
         timeFramePeriod: 1440,
       },
       {
-        name: '2 week',
-        timeFrameHeaders: ['MMM YYYY', 'DD(ddd)'],
+        name: '2 Woche',
+        timeFrameHeaders: ['MMMM YYYY', 'D'],
         classes: 'periods',
         timeFrameOverall: 1440 * 14,
         timeFramePeriod: 1440,
