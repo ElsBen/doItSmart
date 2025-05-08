@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import {
   Events,
   Item,
@@ -9,7 +9,6 @@ import {
   Section,
 } from 'ngx-resource-timeline';
 import moment from 'moment';
-import 'moment/locale/de';
 
 @Component({
   selector: 'app-calendar',
@@ -20,7 +19,8 @@ import 'moment/locale/de';
     <div class="calendar-container mt-5 p-md-5 p-sm-1 overflow-auto">
       <ngx-rt
         locale="de"
-        headerFormat="DD.MM.YYYY"
+        headerFormat="DD.MMM"
+        [showHeaderTitle]="true"
         [items]="items"
         [periods]="periods"
         [sections]="sections"
@@ -34,7 +34,7 @@ import 'moment/locale/de';
 
   styleUrl: 'calendar.component.css',
 })
-export class CalendarComponent {
+export class CalendarComponent implements OnInit {
   events: Events = new Events();
   periods: Period[] = [];
   sections: Section[] = [];
@@ -42,33 +42,60 @@ export class CalendarComponent {
 
   constructor(private service: NgxResourceTimelineService) {}
 
+  highlightActivePeriod() {
+    const btns = document.querySelectorAll('.periods');
+
+    // Add active class to the first button as starting point
+    btns[0].classList.add('active-period');
+
+    btns.forEach((e) => {
+      e.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = e.target as HTMLElement;
+        const parent = target.parentElement as HTMLElement;
+
+        // Remove active class from all buttons and add to the clicked button
+        parent.querySelectorAll('.periods').forEach((el) => {
+          el.classList.remove('active-period');
+        });
+        target.classList.add('active-period');
+      });
+    });
+  }
+
   ngOnInit() {
-    moment.locale('de');
     this.periods = [
       {
-        name: '1 Tag',
+        name: 'Tg.',
         timeFramePeriod: 60 * 6,
         timeFrameOverall: 60 * 24,
-        classes: 'periods ',
+        classes: 'periods day',
         timeFrameHeaders: ['dd', 'HH'],
       },
       {
-        name: '1 Woche',
+        name: '1 W.',
         timeFrameHeaders: ['MMMM YYYY', 'D'],
-        classes: 'periods',
+        classes: 'periods one-week',
         timeFrameOverall: 1440 * 7,
         timeFramePeriod: 1440,
       },
       {
-        name: '2 Woche',
+        name: '2 W.',
         timeFrameHeaders: ['MMMM YYYY', 'D'],
-        classes: 'periods',
+        classes: 'periods two-weeks',
         timeFrameOverall: 1440 * 14,
         timeFramePeriod: 1440,
       },
     ];
 
-    this.sections = [{ id: 1, name: 'nicht Zugewiesen' }];
+    this.sections = [
+      { id: 1, name: 'nicht Zugewiesen' },
+      { id: 2, name: 'Nicht wichtig' },
+      { id: 3, name: 'Nicht sehr wichtig' },
+      { id: 4, name: 'Wichtig' },
+      { id: 5, name: 'sehr wichtig' },
+      { id: 6, name: 'extrem wichtig' },
+    ];
 
     this.items = [
       {
@@ -104,5 +131,9 @@ export class CalendarComponent {
         classes: 'item-1',
       },
     ];
+  }
+
+  ngAfterViewInit() {
+    this.highlightActivePeriod();
   }
 }
