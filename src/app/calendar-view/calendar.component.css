@@ -1,22 +1,100 @@
 ngx-rt {
   font-family: "Inter", sans-serif;
 
+  * {
+    --color-bg: #adb5bd;
+    --color-btn: #6c757d;
+
+    --color-font-primary: #d3d8dd;
+    --color-font-secondary: #ffffff;
+
+    /* Prioritization colors */
+    --color-task-priority-not-assigned: #9e9e9e;
+    --color-hover-task-priority-not-assigned: #7e7e7e;
+
+    --color-task-priority-lowest: #00bcd4;
+    --color-hover-task-priority-lowest: #029cb1;
+
+    --color-task-priority-low: #4caf50;
+    --color-hover-task-priority-low: #388e3c;
+
+    --color-task-priority-medium: #ffb300;
+    --color-hover-task-priority-medium: #ffa000;
+
+    --color-task-priority-high: #f44336;
+    --color-hover-task-priority-high: #d32f2f;
+
+    --color-task-priority-critical: #d32f2f;
+    --color-hover-task-priority-critical: #b71c1c;
+  }
+
+  .time-sch-wrapper {
+    height: 90% !important;
+    border-radius: 6px;
+  }
+
+  .time-sch-header-wrapper {
+    width: 100% !important;
+    background-color: black !important;
+    padding: 0px 5px !important;
+    border-radius: 6px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 10px !important;
+  }
+
+  .time-sch-time-container {
+    order: 3;
+  }
+
   h3.text-center {
-    color: green !important;
+    color: var(--color-font-primary) !important;
+    order: 2;
   }
 
   .periods {
-    background-color: #282c34 !important;
+    order: 1;
+  }
+
+  .btn {
+    background-color: var(--color-btn) !important;
     height: 40px !important;
-    color: white !important;
+    color: var(--color-font-secondary) !important;
     font-size: 0.875rem !important;
     font-weight: bold !important;
+    border-radius: 6px !important;
+    border: none !important;
+  }
+
+  .active-period {
+    background: green !important;
+  }
+
+  .btn:hover {
+    background-color: #5c636a !important;
+  }
+
+  td.text-center {
+    background-color: var(--color-bg) !important;
+    border-radius: 6px;
+    border-right: none !important;
+  }
+
+  td.time-sch-section {
+    width: 20% !important;
+    /* background-color: var(--color-task-priority-lowest) !important; */
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    border-left: none !important;
+    border-right: none !important;
   }
 
   .item-1 {
     border-radius: 6px !important;
-    background-color: #00bcd4 !important;
-    color: black !important;
+    background-color: var(--color-task-priority-not-assigned) !important;
+    /* color: black !important; */
     font-size: 0.875rem;
     padding: 2px 6px;
     transition: transform 0.2s ease !important;
@@ -24,18 +102,10 @@ ngx-rt {
 
   .item-1:hover {
     transform: scale(1.05);
-    background-color: #008fa1;
-  }
-
-  .rt-section {
-    background-color: #f8f8f8;
+    background-color: var(--color-hover-task-priority-not-assigned) !important;
   }
 
   .cdk-drop-list {
     /* background-color: #ececec; */
-  }
-  .ngx-rt-timeline {
-    /* background-color: #f9f9f9; */
-    border: 1px solid #ddd;
   }
 }
