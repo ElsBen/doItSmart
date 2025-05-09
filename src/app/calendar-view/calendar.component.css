@@ -67,12 +67,16 @@ ngx-rt {
     border: none !important;
   }
 
+  .btn:hover {
+    background-color: #5c636a !important;
+  }
+
   .active-period {
     background: green !important;
   }
 
-  .btn:hover {
-    background-color: #5c636a !important;
+  .active-period:hover {
+    background: rgb(0, 105, 0) !important;
   }
 
   td.text-center {
