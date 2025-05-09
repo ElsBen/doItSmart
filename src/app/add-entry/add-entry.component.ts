@@ -99,6 +99,7 @@ export class AddEntryComponent implements OnInit {
       nameTodoForm,
       completionDate,
       creationTime,
+      1,
       hasSubPoints ? this.subPoints : undefined
     );
   }

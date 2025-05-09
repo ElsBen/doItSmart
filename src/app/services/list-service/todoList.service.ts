@@ -11,6 +11,7 @@ export class ToDoListService implements OnChanges {
     name: string,
     completionDate: string,
     creationDate: string,
+    sectionID: number,
     sublist?: SubEntry[]
   ): Entry {
     return {
@@ -18,6 +19,7 @@ export class ToDoListService implements OnChanges {
       sublist: sublist,
       completionDate: completionDate,
       creationDate: creationDate,
+      sectionID: sectionID,
     };
   }
 
@@ -27,6 +29,11 @@ export class ToDoListService implements OnChanges {
   FIELD_SUBPOINT = 'subpoint';
 
   saveEntrys() {
+    let idItem = 1;
+    this.toDoList.forEach((entry) => {
+      entry.itemID = idItem;
+      idItem++;
+    });
     localStorage.setItem('toDoList', JSON.stringify(this.toDoList));
   }
 
