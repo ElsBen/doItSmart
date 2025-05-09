@@ -95,6 +95,10 @@ ngx-rt {
     border-right: none !important;
   }
 
+  .time-sch-current-time {
+    background-color: rgb(245, 61, 61) !important;
+  }
+
   .item-1 {
     border-radius: 6px !important;
     background-color: var(--color-task-priority-not-assigned) !important;
