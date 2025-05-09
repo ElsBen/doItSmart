@@ -9,6 +9,7 @@ import {
   Section,
 } from 'ngx-resource-timeline';
 import moment from 'moment';
+import { ToDoListService } from '../services/list-service/todoList.service';
 
 @Component({
   selector: 'app-calendar',
@@ -40,7 +41,10 @@ export class CalendarComponent implements OnInit {
   sections: Section[] = [];
   items: Item[] = [];
 
-  constructor(private service: NgxResourceTimelineService) {}
+  constructor(
+    private timelineService: NgxResourceTimelineService,
+    private toDoListService: ToDoListService
+  ) {}
 
   highlightActivePeriod() {
     const btns = document.querySelectorAll('.periods');
@@ -63,7 +67,36 @@ export class CalendarComponent implements OnInit {
     });
   }
 
+  addItem() {
+    this.toDoListService.getSavedEntrys();
+
+    const dateFormat = 'D.M.YYYY, HH:mm:ss';
+
+    this.toDoListService.toDoList.forEach((entry) => {
+      const completionDate = entry.completionDate;
+      const creationDate = entry.creationDate;
+      const itemID = entry.itemID || 0;
+
+      this.timelineService.itemPush({
+        id: itemID,
+        sectionID: entry.sectionID,
+        name: entry.name,
+        start: moment(creationDate, dateFormat),
+        end: moment(completionDate, dateFormat),
+        classes: 'item-1',
+      });
+    });
+    console.log(this.items);
+  }
+
   ngOnInit() {
+    this.events.SectionClickEvent = (section) =>
+      console.log('Section clicked:', section);
+    this.events.ItemClicked = (item) => console.log('Item clicked:', item);
+    this.events.ItemDropped = (item) => {
+      console.log('Item dropped:', item);
+    };
+
     this.periods = [
       {
         name: 'Tg.',
@@ -97,43 +130,13 @@ export class CalendarComponent implements OnInit {
       { id: 6, name: 'extrem wichtig' },
     ];
 
-    this.items = [
-      {
-        id: 1,
-        sectionID: 1,
-        name: 'Aufgabe 1',
-        start: moment(),
-        end: moment().add(1, 'days'),
-        classes: 'item-1',
-      },
-      {
-        id: 2,
-        sectionID: 1,
-        name: 'Aufgabe 2',
-        start: moment(),
-        end: moment().add(3, 'days'),
-        classes: 'item-1',
-      },
-      {
-        id: 3,
-        sectionID: 1,
-        name: 'Aufgabe 3',
-        start: moment().add(1, 'days'),
-        end: moment().add(6, 'days'),
-        classes: 'item-1',
-      },
-      {
-        id: 4,
-        sectionID: 1,
-        name: 'Aufgabe 4',
-        start: moment().add(2, 'days'),
-        end: moment().add(5, 'days'),
-        classes: 'item-1',
-      },
-    ];
+    this.items = [];
   }
 
   ngAfterViewInit() {
     this.highlightActivePeriod();
+    setTimeout(() => {
+      this.addItem();
+    }, 50);
   }
 }
