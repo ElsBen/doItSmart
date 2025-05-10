@@ -10,6 +10,7 @@ import {
 } from 'ngx-resource-timeline';
 import moment from 'moment';
 import { ToDoListService } from '../services/list-service/todoList.service';
+import { Entry } from '../models/entry.model';
 
 @Component({
   selector: 'app-calendar',
@@ -83,16 +84,32 @@ export class CalendarComponent implements OnInit {
         name: entry.name,
         start: moment(creationDate, dateFormat),
         end: moment(completionDate, dateFormat),
-        classes: 'item-1',
+        classes: `item-1 category-${entry.sectionID}`,
       });
     });
   }
 
   categorizeItem(item: Item) {
+    let entrySuitable = null;
     this.toDoListService.toDoList.forEach((entry) => {
       if (entry.itemID === item.id) {
         entry.sectionID = item.sectionID;
+        entrySuitable = entry;
+        console.log('Entry:', entry, 'Item:', item);
         this.toDoListService.saveEntrys();
+        this.changeClassCategory(item, entrySuitable);
+      }
+    });
+  }
+
+  changeClassCategory(item: Item, entry: Entry) {
+    const oldClassName = item.classes.split(' ')[1];
+    const newClassName = `category-${item.sectionID}`;
+
+    this.items.forEach((i) => {
+      if (i.id === item.id) {
+        i.classes = i.classes.replace(oldClassName, newClassName);
+        console.log('Item:', i, 'Entry:', entry);
       }
     });
   }
