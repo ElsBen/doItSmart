@@ -12,20 +12,20 @@ ngx-rt {
     --color-task-priority-not-assigned: #9e9e9e;
     --color-hover-task-priority-not-assigned: #7e7e7e;
 
-    --color-task-priority-lowest: #00bcd4;
-    --color-hover-task-priority-lowest: #029cb1;
+    --color-task-priority-lowest: #a3e7ef;
+    --color-hover-task-priority-lowest: #8fd2da;
 
-    --color-task-priority-low: #4caf50;
-    --color-hover-task-priority-low: #388e3c;
+    --color-task-priority-low: #a8e6a1;
+    --color-hover-task-priority-low: #93d78c;
 
-    --color-task-priority-medium: #ffb300;
-    --color-hover-task-priority-medium: #ffa000;
+    --color-task-priority-medium: #ffe08a;
+    --color-hover-task-priority-medium: #ffd25e;
 
-    --color-task-priority-high: #f44336;
-    --color-hover-task-priority-high: #d32f2f;
+    --color-task-priority-high: #f6a1a1;
+    --color-hover-task-priority-high: #e98888;
 
-    --color-task-priority-critical: #d32f2f;
-    --color-hover-task-priority-critical: #b71c1c;
+    --color-task-priority-critical: #e98888;
+    --color-hover-task-priority-critical: #d96b6b;
   }
 
   .time-sch-wrapper {
@@ -95,6 +95,9 @@ ngx-rt {
     border-right: none !important;
   }
 
+  .time-sch-content-wrap tr:nth-of-type(1) .time-sch-section {
+    background: var(--color-task-priority-not-assigned) !important;
+  }
   .time-sch-table > tr:nth-of-type(2) .time-sch-section {
     background: var(--color-task-priority-lowest) !important;
   }
