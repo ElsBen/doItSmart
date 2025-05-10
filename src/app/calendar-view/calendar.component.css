@@ -120,8 +120,6 @@ ngx-rt {
 
   .item-1 {
     border-radius: 6px !important;
-    background-color: var(--color-task-priority-not-assigned) !important;
-    /* color: black !important; */
     font-size: 0.875rem;
     padding: 2px 6px;
     transition: transform 0.2s ease !important;
@@ -129,7 +127,43 @@ ngx-rt {
 
   .item-1:hover {
     transform: scale(1.05);
+  }
+
+  .category-1 {
+    background-color: var(--color-task-priority-not-assigned) !important;
+  }
+  .category-1:hover {
     background-color: var(--color-hover-task-priority-not-assigned) !important;
+  }
+  .category-2 {
+    background-color: var(--color-task-priority-lowest) !important;
+  }
+  .category-2:hover {
+    background-color: var(--color-hover-task-priority-lowest) !important;
+  }
+  .category-3 {
+    background-color: var(--color-task-priority-low) !important;
+  }
+  .category-3:hover {
+    background-color: var(--color-hover-task-priority-low) !important;
+  }
+  .category-4 {
+    background-color: var(--color-task-priority-medium) !important;
+  }
+  .category-4:hover {
+    background-color: var(--color-hover-task-priority-medium) !important;
+  }
+  .category-5 {
+    background-color: var(--color-task-priority-high) !important;
+  }
+  .category-5:hover {
+    background-color: var(--color-hover-task-priority-high) !important;
+  }
+  .category-6 {
+    background-color: var(--color-task-priority-critical) !important;
+  }
+  .category-6:hover {
+    background-color: var(--color-hover-task-priority-critical) !important;
   }
 
   /* .cdk-drop-list {
