@@ -95,6 +95,22 @@ ngx-rt {
     border-right: none !important;
   }
 
+  .time-sch-table > tr:nth-of-type(2) .time-sch-section {
+    background: var(--color-task-priority-lowest) !important;
+  }
+  .time-sch-table > tr:nth-of-type(3) .time-sch-section {
+    background: var(--color-task-priority-low) !important;
+  }
+  .time-sch-table > tr:nth-of-type(4) .time-sch-section {
+    background: var(--color-task-priority-medium) !important;
+  }
+  .time-sch-table > tr:nth-of-type(5) .time-sch-section {
+    background: var(--color-task-priority-high) !important;
+  }
+  .time-sch-table > tr:nth-of-type(6) .time-sch-section {
+    background: var(--color-task-priority-critical) !important;
+  }
+
   .time-sch-current-time {
     background-color: rgb(245, 61, 61) !important;
   }
