@@ -132,7 +132,7 @@ ngx-rt {
     background-color: var(--color-hover-task-priority-not-assigned) !important;
   }
 
-  .cdk-drop-list {
-    /* background-color: #ececec; */
-  }
+  /* .cdk-drop-list {
+    background-color: #ececec;
+  } */
 }

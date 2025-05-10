@@ -86,7 +86,15 @@ export class CalendarComponent implements OnInit {
         classes: 'item-1',
       });
     });
-    console.log(this.items);
+  }
+
+  categorizeItem(item: Item) {
+    this.toDoListService.toDoList.forEach((entry) => {
+      if (entry.itemID === item.id) {
+        entry.sectionID = item.sectionID;
+        this.toDoListService.saveEntrys();
+      }
+    });
   }
 
   ngOnInit() {
@@ -95,12 +103,7 @@ export class CalendarComponent implements OnInit {
     this.events.ItemClicked = (item) => console.log('Item clicked:', item);
     this.events.ItemDropped = (item) => {
       console.log('Item dropped:', item);
-      this.toDoListService.toDoList.forEach((entry) => {
-        if (entry.itemID === item.id) {
-          entry.sectionID = item.sectionID;
-          this.toDoListService.saveEntrys();
-        }
-      });
+      this.categorizeItem(item);
     };
 
     this.periods = [
