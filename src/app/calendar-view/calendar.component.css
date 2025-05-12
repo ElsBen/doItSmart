@@ -48,6 +48,10 @@ ngx-rt {
     order: 3;
   }
 
+  .time-sch-content-wrap {
+    overflow: hidden !important;
+  }
+
   h3.text-center {
     color: var(--color-font-primary) !important;
     order: 2;
@@ -127,6 +131,10 @@ ngx-rt {
 
   .item-1:hover {
     transform: scale(1.05);
+  }
+
+  div.time-sch-section-container {
+    overflow: visible !important;
   }
 
   .category-1 {
