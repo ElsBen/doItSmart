@@ -48,6 +48,28 @@ ngx-rt {
     order: 3;
   }
 
+  @media (max-width: 680px) {
+    .time-sch-time-container {
+      order: 2;
+    }
+
+    .time-sch-time-container button:nth-of-type(1) {
+      display: none !important;
+    }
+
+    h3.text-center {
+      order: 3;
+    }
+
+    .periods {
+      order: 1;
+    }
+
+    .time-sch-header-wrapper {
+      display: inline-block !important;
+    }
+  }
+
   .time-sch-content-wrap {
     overflow: hidden !important;
   }
