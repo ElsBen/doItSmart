@@ -113,7 +113,6 @@ ngx-rt {
 
   td.time-sch-section {
     width: 20% !important;
-    /* background-color: var(--color-task-priority-lowest) !important; */
     overflow: hidden !important;
     text-overflow: ellipsis !important;
     white-space: nowrap !important;
@@ -195,8 +194,4 @@ ngx-rt {
   .category-6:hover {
     background-color: var(--color-hover-task-priority-critical) !important;
   }
-
-  /* .cdk-drop-list {
-    background-color: #ececec;
-  } */
 }
