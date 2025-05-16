@@ -66,8 +66,8 @@ ngx-rt {
     }
 
     h3.text-center {
-      order: 1;
       width: 100% !important;
+      padding-bottom: 10px !important;
     }
 
     .time-sch-period-container {

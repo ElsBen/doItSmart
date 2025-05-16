@@ -18,7 +18,7 @@ import { Entry } from '../models/entry.model';
   encapsulation: ViewEncapsulation.None,
   imports: [CommonModule, NgxResourceTimelineModule],
   template: `
-    <div class="calendar-container mt-5 p-md-5 p-sm-1 overflow-auto">
+    <div class="calendar-container mt-5 p-md-5 p-1 overflow-auto">
       <ngx-rt
         locale="de"
         headerFormat="DD.MMM"
