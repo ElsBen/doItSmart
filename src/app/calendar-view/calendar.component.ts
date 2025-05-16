@@ -95,7 +95,6 @@ export class CalendarComponent implements OnInit {
       if (entry.itemID === item.id) {
         entry.sectionID = item.sectionID;
         entrySuitable = entry;
-        console.log('Entry:', entry, 'Item:', item);
         this.toDoListService.saveEntrys();
         this.changeClassCategory(item, entrySuitable);
       }
@@ -109,9 +108,37 @@ export class CalendarComponent implements OnInit {
     this.items.forEach((i) => {
       if (i.id === item.id) {
         i.classes = i.classes.replace(oldClassName, newClassName);
-        console.log('Item:', i, 'Entry:', entry);
       }
     });
+  }
+
+  swipePreviousAndNext() {
+    const calendar = document.querySelector('.calendar-container');
+    const timeBtnElement = document.getElementsByClassName(
+      'time-sch-time-container'
+    );
+    const previousBtn = timeBtnElement[0].children[2] as HTMLElement;
+    const nextBtn = timeBtnElement[0].children[3] as HTMLElement;
+
+    let startX: number = 0;
+    let endX: number = 0;
+
+    calendar?.addEventListener('touchstart', onTouchStart, { passive: true });
+    calendar?.addEventListener('touchend', onTouchEnd, { passive: true });
+
+    function onTouchStart(e: Event) {
+      const touch = e as TouchEvent;
+      startX = touch.changedTouches[0].clientX;
+    }
+
+    function onTouchEnd(e: Event) {
+      const touch = e as TouchEvent;
+      endX = touch.changedTouches[0].clientX;
+      const diff = endX - startX;
+
+      if (diff > 0) previousBtn.click();
+      if (diff < 0) nextBtn.click();
+    }
   }
 
   ngOnInit() {
@@ -164,5 +191,7 @@ export class CalendarComponent implements OnInit {
     setTimeout(() => {
       this.addItem();
     }, 50);
+
+    this.swipePreviousAndNext();
   }
 }
