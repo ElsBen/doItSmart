@@ -11,6 +11,7 @@ import {
 import moment from 'moment';
 import { ToDoListService } from '../services/list-service/todoList.service';
 import { Entry } from '../models/entry.model';
+import { DateService } from '../services/date-service/date.service';
 
 @Component({
   selector: 'app-calendar',
@@ -44,7 +45,8 @@ export class CalendarComponent implements OnInit {
 
   constructor(
     private timelineService: NgxResourceTimelineService,
-    private toDoListService: ToDoListService
+    private toDoListService: ToDoListService,
+    private dateService: DateService
   ) {}
 
   highlightActivePeriod() {
@@ -141,6 +143,27 @@ export class CalendarComponent implements OnInit {
     }
   }
 
+  displayCurrentDate() {
+    const currentDate = this.dateService.createCurrentDate().slice(0, 10);
+
+    // Get the date button element
+    const dateBtn = document.getElementsByClassName(
+      'time-sch-time-container'
+    )[0].children[0];
+
+    dateBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      // Wait for the goto-modal to open
+      setTimeout(() => {
+        const input =
+          (document.querySelector('input[type="date"]') as HTMLInputElement) ||
+          null;
+        if (!input) return;
+        if (input.value !== currentDate) input.value = currentDate;
+      }, 5);
+    });
+  }
+
   ngOnInit() {
     this.events.SectionClickEvent = (section) =>
       console.log('Section clicked:', section);
@@ -193,5 +216,6 @@ export class CalendarComponent implements OnInit {
     }, 50);
 
     this.swipePreviousAndNext();
+    this.displayCurrentDate();
   }
 }
