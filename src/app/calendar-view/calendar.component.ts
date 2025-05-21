@@ -43,6 +43,8 @@ export class CalendarComponent implements OnInit {
   sections: Section[] = [];
   items: Item[] = [];
 
+  listenerAttached: boolean = false;
+
   constructor(
     private timelineService: NgxResourceTimelineService,
     private toDoListService: ToDoListService,
@@ -51,6 +53,7 @@ export class CalendarComponent implements OnInit {
 
   highlightActivePeriod() {
     const btns = document.querySelectorAll('.periods');
+    if (this.listenerAttached || btns.length === 0) return;
 
     // Add active class to the first button as starting point
     btns[0].classList.add('active-period');
@@ -68,6 +71,7 @@ export class CalendarComponent implements OnInit {
         target.classList.add('active-period');
       });
     });
+    this.listenerAttached = true;
   }
 
   addItem() {
