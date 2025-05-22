@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CalendarComponent } from './calendar.component';
 import { ToDoListService } from '../services/list-service/todoList.service';
 import { NgxResourceTimelineService } from 'ngx-resource-timeline';
+import moment from 'moment';
 
 describe('CalendarComponent', () => {
   let component: CalendarComponent;
@@ -69,8 +70,8 @@ describe('CalendarComponent', () => {
     for (let i = 0; i < 3; i++) {
       let entry = toDoListService.createObject(
         `Test Item ${i}`,
-        '2023-10-01, 12:00:00',
-        '2023-10-01, 12:00:00',
+        '2024-10-01, 12:00:00',
+        '2024-10-01, 12:00:00',
         1
       );
 
@@ -94,6 +95,30 @@ describe('CalendarComponent', () => {
         })
       );
     });
+  });
+
+  it('shoould categorize item correctly', () => {
+    const item = {
+      id: 1,
+      sectionID: 2,
+      name: 'Test Item',
+      start: moment(),
+      end: moment(),
+      classes: 'item-1 category-2',
+    };
+
+    toDoListService.toDoList.push({
+      itemID: 1,
+      sectionID: 1,
+      name: 'Test Item',
+      completionDate: '2024-10-01, 12:00:00',
+      creationDate: '2024-10-01, 12:00:00',
+    });
+
+    component.categorizeItem(item);
+
+    expect(toDoListService.toDoList[0].sectionID).toBe(2);
+    expect(item.classes).toContain('category-2');
   });
 
   afterEach(() => {
