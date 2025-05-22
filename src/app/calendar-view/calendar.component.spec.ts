@@ -1,19 +1,25 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CalendarComponent } from './calendar.component';
+import { ToDoListService } from '../services/list-service/todoList.service';
+import { NgxResourceTimelineService } from 'ngx-resource-timeline';
 
 describe('CalendarComponent', () => {
   let component: CalendarComponent;
   let fixture: ComponentFixture<CalendarComponent>;
+  let toDoListService: ToDoListService;
+  let timelineService: NgxResourceTimelineService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [CalendarComponent],
-      providers: [],
+      providers: [ToDoListService, NgxResourceTimelineService],
     }).compileComponents();
 
     fixture = TestBed.createComponent(CalendarComponent);
     component = fixture.componentInstance;
+    toDoListService = TestBed.inject(ToDoListService);
+    timelineService = TestBed.inject(NgxResourceTimelineService);
     fixture.detectChanges();
   });
 
@@ -54,5 +60,44 @@ describe('CalendarComponent', () => {
 
     expect(activeCount).toBe(1);
     expect(spy).toHaveBeenCalledTimes(2);
+  });
+
+  it('should correctly add all valid to-do items to the timeline', () => {
+    const initialLength = component.items.length;
+    const spy = spyOn(timelineService, 'itemPush').and.callThrough();
+
+    for (let i = 0; i < 3; i++) {
+      let entry = toDoListService.createObject(
+        `Test Item ${i}`,
+        '2023-10-01, 12:00:00',
+        '2023-10-01, 12:00:00',
+        1
+      );
+
+      toDoListService.toDoList.push(entry);
+    }
+    toDoListService.saveEntrys();
+
+    component.addItem();
+
+    expect(spy).toHaveBeenCalledTimes(toDoListService.toDoList.length);
+    expect(component.items.length).toBeGreaterThan(initialLength);
+    toDoListService.toDoList.forEach((entry, i) => {
+      expect(spy.calls.argsFor(i)[0]).toEqual(
+        jasmine.objectContaining({
+          id: entry.itemID,
+          sectionID: entry.sectionID,
+          name: entry.name,
+          start: jasmine.any(Object),
+          end: jasmine.any(Object),
+          classes: jasmine.stringMatching(/item-\d+ category-1/),
+        })
+      );
+    });
+  });
+
+  afterEach(() => {
+    toDoListService.toDoList = [];
+    toDoListService.saveEntrys();
   });
 });
