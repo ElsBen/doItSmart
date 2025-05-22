@@ -10,7 +10,6 @@ import {
 } from 'ngx-resource-timeline';
 import moment from 'moment';
 import { ToDoListService } from '../services/list-service/todoList.service';
-import { Entry } from '../models/entry.model';
 import { DateService } from '../services/date-service/date.service';
 
 @Component({
@@ -102,12 +101,12 @@ export class CalendarComponent implements OnInit {
         entry.sectionID = item.sectionID;
         entrySuitable = entry;
         this.toDoListService.saveEntrys();
-        this.changeClassCategory(item, entrySuitable);
+        this.changeClassCategory(item);
       }
     });
   }
 
-  changeClassCategory(item: Item, entry: Entry) {
+  changeClassCategory(item: Item) {
     const oldClassName = item.classes.split(' ')[1];
     const newClassName = `category-${item.sectionID}`;
 
