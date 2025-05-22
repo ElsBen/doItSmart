@@ -95,11 +95,9 @@ export class CalendarComponent implements OnInit {
   }
 
   categorizeItem(item: Item) {
-    let entrySuitable = null;
     this.toDoListService.toDoList.forEach((entry) => {
       if (entry.itemID === item.id) {
         entry.sectionID = item.sectionID;
-        entrySuitable = entry;
         this.toDoListService.saveEntrys();
         this.changeClassCategory(item);
       }
