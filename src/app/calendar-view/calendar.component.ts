@@ -99,7 +99,8 @@ export class CalendarComponent implements OnInit {
       if (entry.itemID === item.id) {
         entry.sectionID = item.sectionID;
         this.toDoListService.saveEntrys();
-        this.changeClassCategory(item);
+        // überpüfen ob die unten stehende Funktion benötigt wird!!!
+        // this.changeClassCategory(item);
       }
     });
   }
@@ -113,6 +114,7 @@ export class CalendarComponent implements OnInit {
         i.classes = i.classes.replace(oldClassName, newClassName);
       }
     });
+    console.log('Updated item classes:', item);
   }
 
   swipePreviousAndNext() {
