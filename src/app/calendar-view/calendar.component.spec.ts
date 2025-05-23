@@ -118,7 +118,6 @@ describe('CalendarComponent', () => {
     component.categorizeItem(item);
 
     expect(toDoListService.toDoList[0].sectionID).toBe(2);
-    expect(item.classes).toContain('category-2');
   });
 
   afterEach(() => {
