@@ -147,6 +147,16 @@ describe('CalendarComponent', () => {
     });
   });
 
+  // describe('swipePreviousAndNext', () => {
+  //   it('should attach touchstart and touchend listeners', () => {});
+  // });
+
+  // describe('displayCurrentDate', () => {
+  //   it('should format the current date correctly', () => {});
+  //   it('should get correctly to the input value', () => {});
+  //   it('should display the current date in the header', () => {});
+  // });
+
   afterEach(() => {
     toDoListService.toDoList = [];
     component.items = [];
