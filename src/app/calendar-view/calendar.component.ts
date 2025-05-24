@@ -95,7 +95,8 @@ export class CalendarComponent implements OnInit {
   }
 
   categorizeItem(item: Item) {
-    const oldClassName = item.classes.split(' ')[1];
+    const oldClassName =
+      item.classes.split(' ').find((c) => c.startsWith('category-')) || '';
     const newClassName = `category-${item.sectionID}`;
 
     this.toDoListService.toDoList.forEach((entry) => {
