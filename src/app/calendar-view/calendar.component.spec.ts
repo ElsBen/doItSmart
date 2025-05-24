@@ -11,6 +11,9 @@ describe('CalendarComponent', () => {
   let toDoListService: ToDoListService;
   let timelineService: NgxResourceTimelineService;
 
+  const mockDateMoment = moment('2024-10-01T12:00:00');
+  const mockDateString = mockDateMoment.format('YYYY-MM-DD, HH:mm:ss');
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [CalendarComponent],
@@ -22,6 +25,23 @@ describe('CalendarComponent', () => {
     toDoListService = TestBed.inject(ToDoListService);
     timelineService = TestBed.inject(NgxResourceTimelineService);
     fixture.detectChanges();
+
+    component.items.push({
+      id: 1,
+      sectionID: 1,
+      name: 'Test Item',
+      start: mockDateMoment,
+      end: mockDateMoment,
+      classes: 'item-1 category-1',
+    });
+
+    toDoListService.toDoList.push({
+      itemID: 1,
+      sectionID: 1,
+      name: 'Test Item',
+      completionDate: mockDateString,
+      creationDate: mockDateString,
+    });
   });
 
   it('should create the component', () => {
@@ -54,6 +74,7 @@ describe('CalendarComponent', () => {
     const buttons = fixture.nativeElement.querySelectorAll('button.periods');
     buttons[1].click();
     buttons[1].click();
+    fixture.detectChanges();
 
     const activeCount = Array.from(buttons).filter((b) => {
       return (b as HTMLElement).classList.contains('active-period');
@@ -70,8 +91,8 @@ describe('CalendarComponent', () => {
     for (let i = 0; i < 3; i++) {
       let entry = toDoListService.createObject(
         `Test Item ${i}`,
-        '2024-10-01, 12:00:00',
-        '2024-10-01, 12:00:00',
+        mockDateString,
+        mockDateString,
         1
       );
 
@@ -97,31 +118,32 @@ describe('CalendarComponent', () => {
     });
   });
 
-  it('shoould categorize item correctly', () => {
-    const item = {
-      id: 1,
-      sectionID: 2,
-      name: 'Test Item',
-      start: moment(),
-      end: moment(),
-      classes: 'item-1 category-2',
-    };
-
-    toDoListService.toDoList.push({
-      itemID: 1,
-      sectionID: 1,
-      name: 'Test Item',
-      completionDate: '2024-10-01, 12:00:00',
-      creationDate: '2024-10-01, 12:00:00',
-    });
-
+  it('should set initial category correctly', () => {
+    const spy = spyOn(toDoListService, 'saveEntrys').and.callThrough();
+    const item = component.items[0];
     component.categorizeItem(item);
 
+    expect(spy).toHaveBeenCalled();
+    expect(item.classes.split(' ')).toContain('category-1');
+    expect(item.sectionID).toBe(1);
+    expect(toDoListService.toDoList[0].sectionID).toBe(1);
+  });
+
+  it('should update category on section change', () => {
+    const spy = spyOn(toDoListService, 'saveEntrys').and.callThrough();
+    const item = component.items[0];
+    item.sectionID = 2;
+    component.categorizeItem(item);
+
+    expect(spy).toHaveBeenCalled();
+    expect(item.classes.split(' ')).toContain('category-2');
+    expect(item.sectionID).toBe(2);
     expect(toDoListService.toDoList[0].sectionID).toBe(2);
   });
 
   afterEach(() => {
     toDoListService.toDoList = [];
+    component.items = [];
     toDoListService.saveEntrys();
   });
 });
