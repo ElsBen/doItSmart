@@ -48,97 +48,103 @@ describe('CalendarComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should add active-period class to the clicked button', () => {
-    fixture.detectChanges();
+  describe('highlightActivePeriod', () => {
+    it('should add active-period class to the clicked button', () => {
+      fixture.detectChanges();
 
-    const buttons = fixture.nativeElement.querySelectorAll('button.periods');
+      const buttons = fixture.nativeElement.querySelectorAll('button.periods');
 
-    expect(buttons[0].classList.contains('active-period')).toBeTruthy();
-    expect(buttons[1].classList.contains('active-period')).toBeFalsy();
-    expect(buttons[2].classList.contains('active-period')).toBeFalsy();
+      expect(buttons[0].classList.contains('active-period')).toBeTruthy();
+      expect(buttons[1].classList.contains('active-period')).toBeFalsy();
+      expect(buttons[2].classList.contains('active-period')).toBeFalsy();
 
-    buttons[1].click();
+      buttons[1].click();
 
-    expect(buttons[0].classList.contains('active-period')).toBeFalsy();
-    expect(buttons[1].classList.contains('active-period')).toBeTruthy();
-    expect(buttons[2].classList.contains('active-period')).toBeFalsy();
-  });
+      expect(buttons[0].classList.contains('active-period')).toBeFalsy();
+      expect(buttons[1].classList.contains('active-period')).toBeTruthy();
+      expect(buttons[2].classList.contains('active-period')).toBeFalsy();
+    });
 
-  it('should attach event listener only once', () => {
-    const spy = spyOn(component, 'highlightActivePeriod').and.callThrough();
+    it('should attach event listener only once', () => {
+      const spy = spyOn(component, 'highlightActivePeriod').and.callThrough();
 
-    component.highlightActivePeriod();
-    component.highlightActivePeriod();
-    fixture.detectChanges();
+      component.highlightActivePeriod();
+      component.highlightActivePeriod();
+      fixture.detectChanges();
 
-    const buttons = fixture.nativeElement.querySelectorAll('button.periods');
-    buttons[1].click();
-    buttons[1].click();
-    fixture.detectChanges();
+      const buttons = fixture.nativeElement.querySelectorAll('button.periods');
+      buttons[1].click();
+      buttons[1].click();
+      fixture.detectChanges();
 
-    const activeCount = Array.from(buttons).filter((b) => {
-      return (b as HTMLElement).classList.contains('active-period');
-    }).length;
+      const activeCount = Array.from(buttons).filter((b) => {
+        return (b as HTMLElement).classList.contains('active-period');
+      }).length;
 
-    expect(activeCount).toBe(1);
-    expect(spy).toHaveBeenCalledTimes(2);
-  });
-
-  it('should correctly add all valid to-do items to the timeline', () => {
-    const initialLength = component.items.length;
-    const spy = spyOn(timelineService, 'itemPush').and.callThrough();
-
-    for (let i = 0; i < 3; i++) {
-      let entry = toDoListService.createObject(
-        `Test Item ${i}`,
-        mockDateString,
-        mockDateString,
-        1
-      );
-
-      toDoListService.toDoList.push(entry);
-    }
-    toDoListService.saveEntrys();
-
-    component.addItem();
-
-    expect(spy).toHaveBeenCalledTimes(toDoListService.toDoList.length);
-    expect(component.items.length).toBeGreaterThan(initialLength);
-    toDoListService.toDoList.forEach((entry, i) => {
-      expect(spy.calls.argsFor(i)[0]).toEqual(
-        jasmine.objectContaining({
-          id: entry.itemID,
-          sectionID: entry.sectionID,
-          name: entry.name,
-          start: jasmine.any(Object),
-          end: jasmine.any(Object),
-          classes: jasmine.stringMatching(/item-\d+ category-1/),
-        })
-      );
+      expect(activeCount).toBe(1);
+      expect(spy).toHaveBeenCalledTimes(2);
     });
   });
 
-  it('should set initial category correctly', () => {
-    const spy = spyOn(toDoListService, 'saveEntrys').and.callThrough();
-    const item = component.items[0];
-    component.categorizeItem(item);
+  describe('addItem', () => {
+    it('should correctly add all valid to-do items to the timeline', () => {
+      const initialLength = component.items.length;
+      const spy = spyOn(timelineService, 'itemPush').and.callThrough();
 
-    expect(spy).toHaveBeenCalled();
-    expect(item.classes.split(' ')).toContain('category-1');
-    expect(item.sectionID).toBe(1);
-    expect(toDoListService.toDoList[0].sectionID).toBe(1);
+      for (let i = 0; i < 3; i++) {
+        let entry = toDoListService.createObject(
+          `Test Item ${i}`,
+          mockDateString,
+          mockDateString,
+          1
+        );
+
+        toDoListService.toDoList.push(entry);
+      }
+      toDoListService.saveEntrys();
+
+      component.addItem();
+
+      expect(spy).toHaveBeenCalledTimes(toDoListService.toDoList.length);
+      expect(component.items.length).toBeGreaterThan(initialLength);
+      toDoListService.toDoList.forEach((entry, i) => {
+        expect(spy.calls.argsFor(i)[0]).toEqual(
+          jasmine.objectContaining({
+            id: entry.itemID,
+            sectionID: entry.sectionID,
+            name: entry.name,
+            start: jasmine.any(Object),
+            end: jasmine.any(Object),
+            classes: jasmine.stringMatching(/item-\d+ category-1/),
+          })
+        );
+      });
+    });
   });
 
-  it('should update category on section change', () => {
-    const spy = spyOn(toDoListService, 'saveEntrys').and.callThrough();
-    const item = component.items[0];
-    item.sectionID = 2;
-    component.categorizeItem(item);
+  describe('categorizeItem', () => {
+    it('should set initial category correctly', () => {
+      const spy = spyOn(toDoListService, 'saveEntrys').and.callThrough();
+      const item = component.items[0];
+      component.categorizeItem(item);
 
-    expect(spy).toHaveBeenCalled();
-    expect(item.classes.split(' ')).toContain('category-2');
-    expect(item.sectionID).toBe(2);
-    expect(toDoListService.toDoList[0].sectionID).toBe(2);
+      expect(spy).toHaveBeenCalled();
+      expect(item.classes.split(' ')).toContain('category-1');
+      expect(item.sectionID).toBe(1);
+      expect(toDoListService.toDoList[0].sectionID).toBe(1);
+    });
+
+    it('should update category on section change', () => {
+      const spy = spyOn(toDoListService, 'saveEntrys').and.callThrough();
+      const item = component.items[0];
+      item.sectionID = 2;
+      component.categorizeItem(item);
+
+      expect(spy).toHaveBeenCalled();
+      expect(item.classes.split(' ')).toContain('category-2');
+      expect(item.sectionID).toBe(2);
+      expect(toDoListService.toDoList[0].sectionID).toBe(2);
+    });
   });
 
   afterEach(() => {
