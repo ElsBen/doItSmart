@@ -114,7 +114,7 @@ export class CalendarComponent implements OnInit {
   }
 
   swipePreviousAndNext() {
-    const calendar = document.querySelector('.calendar-container');
+    const calendar = document.querySelector('.time-sch-table');
     const timeBtnElement = document.getElementsByClassName(
       'time-sch-time-container'
     );
@@ -161,6 +161,46 @@ export class CalendarComponent implements OnInit {
         if (input.value !== currentDate) input.value = currentDate;
       }, 5);
     });
+  }
+
+  addInfoButton() {
+    const header = document.querySelector('.time-sch-header-wrapper');
+    if (!header) return;
+    const container = document.createElement('div');
+    container.className =
+      'info-btn-container col-12 col-md-6 d-flex justify-content-end';
+    const infoBtn = document.createElement('button');
+    infoBtn.className = 'info-btn btn btn-link p-0 m-0 ';
+    infoBtn.innerHTML = `<i class="bi bi-info-circle"></i>`;
+    infoBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      this.displayInfoWindow();
+    });
+    header.appendChild(container.appendChild(infoBtn));
+    this.addInfoWindow();
+  }
+
+  addInfoWindow() {
+    const infoContainer = document.querySelector('.info-btn-container');
+    if (!infoContainer) return;
+    const infoWindow = document.createElement('div');
+    infoWindow.className = 'info-window';
+    infoWindow.innerHTML = `
+      <h2>Willkommen zum Kalender!</h2>
+      <p>Hier können Sie Ihre Aufgaben verwalten und kategorisieren.</p>
+      <p>Nutzen Sie die Perioden, um verschiedene Zeitrahmen anzuzeigen.</p>
+      <p>Sie können Aufgaben per Drag & Drop in verschiedene Kategorien verschieben.</p>
+      <p>Bei mobilen Geräten können Sie durch rechts oder links swipen über den Zeitstrahl zur vorherigen oder nächsten Zeitperiode gelangen.</p>
+      <p>Im Querformat stehen Ihnen aber auch die Schaltflächen und eine bessere Ansicht zur verfügung.</p>
+      <p>Viel Spaß beim Organisieren!</p>
+    `;
+    infoContainer.appendChild(infoWindow);
+  }
+
+  displayInfoWindow() {
+    const infoWindow = document.querySelector('.info-window') as HTMLElement;
+    if (!infoWindow) return;
+    infoWindow.style.display = 'block';
   }
 
   ngOnInit() {
@@ -216,5 +256,6 @@ export class CalendarComponent implements OnInit {
 
     this.swipePreviousAndNext();
     this.displayCurrentDate();
+    this.addInfoButton();
   }
 }

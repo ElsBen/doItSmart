@@ -199,4 +199,28 @@ ngx-rt {
   .category-6:hover {
     background-color: var(--color-hover-task-priority-critical) !important;
   }
+
+  .info-btn-container {
+    position: relative !important;
+  }
+
+  .info-btn {
+    height: max-content !important;
+    background-color: black !important;
+  }
+
+  .info-btn:hover {
+    background-color: black !important;
+  }
+
+  .info-window {
+    padding: 5px 3px;
+    background-color: #00000098;
+    color: #fff;
+    border-radius: 6px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+  }
 }
